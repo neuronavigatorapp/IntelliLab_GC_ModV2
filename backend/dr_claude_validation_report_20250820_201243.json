@@ -1,0 +1,151 @@
+{
+  "test_date": "2025-08-20T20:12:43.679149",
+  "total_tests": 5,
+  "results": [
+    {
+      "test": "Split Ratio Calculator",
+      "timestamp": "2025-08-20T20:12:31.371825",
+      "results": [
+        {
+          "scenario": "Standard method (1.2 mL/min, 50:1)",
+          "input_flow": 1.2,
+          "split_ratio": 50,
+          "calculated_total": 64.2,
+          "expected_total": 64.2,
+          "formula_verification": 64.2,
+          "deviation": 0.0,
+          "uncertainty": 2.568,
+          "passed": true,
+          "split_vent_flow": 60.0,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 95.0
+        },
+        {
+          "scenario": "High split concentrated sample (1.0 mL/min, 200:1)",
+          "input_flow": 1.0,
+          "split_ratio": 200,
+          "calculated_total": 204.0,
+          "expected_total": 204.0,
+          "formula_verification": 204.0,
+          "deviation": 0.0,
+          "uncertainty": 8.16,
+          "passed": true,
+          "split_vent_flow": 200.0,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 85.0
+        },
+        {
+          "scenario": "Splitless trace analysis (1.5 mL/min, 1:1)",
+          "input_flow": 1.5,
+          "split_ratio": 1,
+          "calculated_total": 6.0,
+          "expected_total": 6.0,
+          "formula_verification": 6.0,
+          "deviation": 0.0,
+          "uncertainty": 0.24,
+          "passed": true,
+          "split_vent_flow": 1.5,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 60.0
+        }
+      ]
+    },
+    {
+      "test": "Detection Limits",
+      "timestamp": "2025-08-20T20:12:33.416379",
+      "result": {
+        "test": "Detection Limits",
+        "method": "3-sigma",
+        "calibration_points": 6,
+        "api_results": {
+          "lod": 0.518338,
+          "loq": 1.727792,
+          "slope": 1004.36033,
+          "intercept": 132.720943,
+          "r_squared": 0.999729
+        },
+        "manual_verification": {
+          "lod": 0.5183376080876616,
+          "loq": 1.7277920269588716,
+          "slope": 1004.3603296391022,
+          "intercept": 132.72094344984473,
+          "r_squared": 0.9997286087989824,
+          "std_error": 173.5325769744225
+        },
+        "validations": {
+          "lod_match": "True",
+          "loq_match": "True",
+          "linearity_pass": true,
+          "loq_lod_ratio": 3.333330761009226,
+          "expected_ratio": 3.33
+        }
+      }
+    },
+    {
+      "test": "Void Volume Calculator",
+      "timestamp": "2025-08-20T20:12:37.498739",
+      "results": [
+        {
+          "error": "HTTP 405: {\"detail\":\"Method Not Allowed\"}"
+        },
+        {
+          "error": "HTTP 405: {\"detail\":\"Method Not Allowed\"}"
+        }
+      ]
+    },
+    {
+      "test": "Ghost Peak Identifier",
+      "timestamp": "2025-08-20T20:12:41.617740",
+      "results": [
+        {
+          "scenario": "Column bleed scenario",
+          "identified_type": "Column Bleed",
+          "confidence": 95,
+          "root_cause": "Siloxane backbone degradation releasing cyclic compounds",
+          "solution": "Reduce max temp to 305.0\u00b0C or replace column",
+          "evidence": [
+            "Baseline rose 80.0% during run",
+            "Elution at 95% of column max temp",
+            "Expected bleed level: 800.0 pA"
+          ],
+          "validation": {
+            "type_correct": true,
+            "confidence_reasonable": true
+          }
+        },
+        {
+          "scenario": "Septum bleed scenario",
+          "identified_type": "Unknown",
+          "confidence": 0,
+          "root_cause": "",
+          "solution": "",
+          "evidence": [],
+          "validation": {
+            "type_correct": false,
+            "confidence_reasonable": false
+          }
+        }
+      ]
+    },
+    {
+      "test": "Peak Capacity",
+      "timestamp": "2025-08-20T20:12:43.678750",
+      "result": {
+        "error": "HTTP 405: {\"detail\":\"Method Not Allowed\"}"
+      }
+    }
+  ],
+  "validation_summary": {
+    "passed": 2,
+    "failed": 3,
+    "success_rate": 40.0,
+    "dr_claude_approval": false
+  },
+  "dr_claude_criteria": {
+    "split_ratio_formula": "Total flow = Column flow \u00d7 Split ratio + Column flow + 3 mL/min",
+    "detection_limits": "LOD = 3.3 \u00d7 \u03c3 / slope, LOQ = 10 \u00d7 \u03c3 / slope, R\u00b2 > 0.995",
+    "void_volume": "Physical chemistry principles with compressibility correction",
+    "ghost_peaks": "Pattern recognition based on temperature, baseline, and timing",
+    "peak_capacity": "Gradient separation theory with statistical overlap"
+  }
+}

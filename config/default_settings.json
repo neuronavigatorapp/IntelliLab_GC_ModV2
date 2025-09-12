@@ -1,0 +1,20 @@
+{
+  "application": {
+    "name": "IntelliLab GC ModV2",
+    "version": "0.1.0",
+    "theme": "dark",
+    "auto_save": true
+  },
+  "paths": {
+    "tools_directory": "tools",
+    "database_directory": "database",
+    "exports_directory": "exports",
+    "logs_directory": "logs"
+  },
+  "ui": {
+    "window_width": 1200,
+    "window_height": 800,
+    "plot_style": "seaborn-v0_8",
+    "font_size": 10
+  }
+}

@@ -1,0 +1,37 @@
+{
+    "tool_info": {
+        "name": "Oven Ramp Visualizer",
+        "version": "1.0.0",
+        "description": "Calculate and visualize GC oven temperature programs",
+        "author": "IntelliLab GC Team",
+        "category": "visualization",
+        "tags": ["oven", "temperature", "visualization", "method-development"]
+    },
+    "dependencies": {
+        "python_packages": ["matplotlib", "numpy"],
+        "internal_modules": ["common.data_models", "common.base_tool"]
+    },
+    "capabilities": [
+        "temperature_profile_calculation",
+        "oven_program_visualization", 
+        "program_efficiency_analysis",
+        "optimization_suggestions",
+        "interactive_program_creation"
+    ],
+    "input_types": [
+        "oven_program",
+        "gc_method",
+        "manual_input"
+    ],
+    "output_types": [
+        "temperature_profile_plot",
+        "efficiency_analysis",
+        "optimization_report"
+    ],
+    "example_use_cases": [
+        "Method development and optimization",
+        "Teaching GC oven programming concepts",
+        "Comparing different temperature programs",
+        "Analyzing existing methods for efficiency"
+    ]
+}

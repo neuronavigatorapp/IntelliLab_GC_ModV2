@@ -1,0 +1,39 @@
+[
+  {
+    "name": "noise",
+    "cause": "Electronic noise or environmental interference",
+    "effects": ["Raised baseline", "Lower SNR"],
+    "simulation_params": {"noise_level": 1.0}
+  },
+  {
+    "name": "rt_shift",
+    "cause": "Oven temperature offset or carrier flow change",
+    "effects": ["Uniform RT shift"],
+    "simulation_params": {"rt_shift": 0.2}
+  },
+  {
+    "name": "drift",
+    "cause": "Detector baseline drift",
+    "effects": ["Tilted baseline"],
+    "simulation_params": {"drift": 1.0}
+  },
+  {
+    "name": "ghost_peaks",
+    "cause": "Carryover or contamination",
+    "effects": ["Extra peaks"],
+    "simulation_params": {"ghost_peak_probability": 0.1}
+  },
+  {
+    "name": "leak",
+    "cause": "Leak in carrier path",
+    "effects": ["Peak broadening", "Lower height"],
+    "simulation_params": {"leak_severity": 0.3}
+  },
+  {
+    "name": "detector_drift",
+    "cause": "Detector response drift",
+    "effects": ["Slope over time"],
+    "simulation_params": {"detector_drift": 0.5}
+  }
+]
+

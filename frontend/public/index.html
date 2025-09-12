@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+    <meta name="theme-color" content="#1976d2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="IntelliLab GC" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#1976d2" />
+    <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+    <meta
+      name="description"
+      content="IntelliLab GC - Professional Gas Chromatography Instrumentation Toolkit with AI-powered calculations and troubleshooting"
+    />
+    <meta name="keywords" content="gas chromatography, GC, analytical chemistry, detection limits, method development, AI troubleshooting" />
+    <meta name="author" content="IntelliLab GC Team" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="%PUBLIC_URL%/logo192.png" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Preconnect to API -->
+    <link rel="preconnect" href="http://localhost:8000" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="%PUBLIC_URL%/static/js/bundle.js" as="script" />
+    
+    <title>IntelliLab GC</title>
+    
+    <!-- PWA Installation Prompt -->
+    <script>
+      // Unregister existing service workers in development
+      if ('serviceWorker' in navigator && window.location.hostname === 'localhost') {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+            console.log('SW unregistered for development');
+          }
+        });
+      }
+      
+      // Register service worker for PWA functionality (production only)
+      if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('SW registered: ', registration);
+            })
+            .catch(function(registrationError) {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+      
+      // PWA installation prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show custom install prompt
+        if (window.showInstallPrompt) {
+          window.showInstallPrompt();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html> 

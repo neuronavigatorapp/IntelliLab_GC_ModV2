@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: intellilab-postgres
+    environment:
+      POSTGRES_DB: intellilab_gc
+      POSTGRES_USER: intellilab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-intellilab_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - intellilab-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U intellilab -d intellilab_gc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: intellilab-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-intellilab_redis}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - intellilab-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: intellilab-backend
+    environment:
+      - DATABASE_URL=postgresql://intellilab:${POSTGRES_PASSWORD:-intellilab_password}@postgres:5432/intellilab_gc
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-intellilab_redis}@redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+      - ./backend/models:/app/models
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - intellilab-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: intellilab-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - intellilab-network
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    container_name: intellilab-nginx
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - intellilab-network
+    restart: unless-stopped
+
+  # Monitoring (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: intellilab-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - intellilab-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: intellilab-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - intellilab-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  intellilab-network:
+    driver: bridge 

@@ -1,0 +1,17 @@
+name,rt,molecular_weight,category,intensity,width
+Methane,1.2,16.04,Hydrocarbon,60,0.05
+Ethane,1.8,30.07,Hydrocarbon,100,0.06
+Propane,2.6,44.10,Hydrocarbon,140,0.08
+n-Butane,3.9,58.12,Hydrocarbon,170,0.10
+n-Pentane,5.2,72.15,Hydrocarbon,180,0.12
+Benzene,8.5,78.11,Aromatic,160,0.12
+Toluene,10.2,92.14,Aromatic,190,0.14
+Ethylbenzene,12.8,106.17,Aromatic,170,0.16
+o-Xylene,13.5,106.17,Aromatic,180,0.17
+p-Xylene,14.1,106.17,Aromatic,175,0.16
+Methanol,2.8,32.04,Oxygenate,90,0.08
+Ethanol,4.1,46.07,Oxygenate,110,0.10
+IPA,5.8,60.10,Oxygenate,130,0.11
+MTBE,3.2,88.15,Oxygenate,140,0.09
+Acetone,3.5,58.08,Carbonyl,100,0.08
+

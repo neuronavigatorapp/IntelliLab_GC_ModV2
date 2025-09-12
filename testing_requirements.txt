@@ -1,0 +1,63 @@
+# Testing Framework Dependencies for IntelliLab GC
+# Install with: pip install -r testing_requirements.txt
+
+# Core testing framework
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# HTTP client for API testing
+aiohttp>=3.8.0
+requests>=2.28.0
+
+# Data manipulation and analysis
+numpy>=1.21.0
+pandas>=1.5.0
+
+# Visualization for test reports
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# HTML report generation
+jinja2>=3.1.0
+
+# FastAPI testing client
+httpx>=0.24.0
+
+# Additional testing utilities
+faker>=18.0.0  # For generating test data
+factory-boy>=3.2.0  # For creating test fixtures
+
+# Performance and profiling
+memory-profiler>=0.60.0
+psutil>=5.9.0
+
+# Code coverage (optional)
+coverage>=7.0.0
+pytest-cov>=4.0.0
+
+# Linting and formatting (optional)
+flake8>=6.0.0
+black>=23.0.0
+
+# Database testing (if needed)
+pytest-postgresql>=5.0.0
+sqlalchemy-utils>=0.41.0
+
+# Async testing support
+pytest-mock>=3.10.0
+asynctest>=0.13.0
+
+# Report generation dependencies
+reportlab>=4.0.0  # For PDF reports
+openpyxl>=3.1.0   # For Excel reports
+
+# Logging and debugging
+loguru>=0.7.0
+colorlog>=6.7.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Type checking (optional)
+mypy>=1.0.0
+types-requests>=2.28.0

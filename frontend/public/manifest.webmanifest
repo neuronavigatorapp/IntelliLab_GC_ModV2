@@ -1,0 +1,61 @@
+{
+  "name": "IntelliLab GC",
+  "short_name": "IntelliLab",
+  "description": "Intelligent Gas Chromatography Lab Management System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "science", "utilities"],
+  "icons": [
+    {
+      "src": "/logo192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick QC",
+      "short_name": "QC",
+      "description": "Record QC measurements",
+      "url": "/m/qc",
+      "icons": [
+        {
+          "src": "/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "short_name": "Inventory",
+      "description": "Manage consumables",
+      "url": "/m/inventory",
+      "icons": [
+        {
+          "src": "/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}

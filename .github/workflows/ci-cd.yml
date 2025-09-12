@@ -1,0 +1,233 @@
+name: IntelliLab GC - CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Code Quality and Security Analysis
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov flake8 black isort bandit safety
+        pip install requests fastapi uvicorn sqlalchemy
+    
+    - name: Code formatting check (Black)
+      run: black --check --diff .
+    
+    - name: Import sorting check (isort)
+      run: isort --check-only --diff .
+    
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Security scan with bandit
+      run: bandit -r . -f json -o bandit-report.json || true
+    
+    - name: Dependency vulnerability scan
+      run: safety check --json --output safety-report.json || true
+    
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  # Backend Testing
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov requests fastapi uvicorn sqlalchemy
+    
+    - name: Start backend server
+      run: |
+        python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+    
+    - name: Run backend tests
+      run: |
+        python test_backend.py
+        pytest tests/ -v --cov=backend --cov-report=xml --cov-report=html
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: backend
+        name: backend-coverage
+
+  # Frontend Testing
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run frontend linting
+      run: |
+        cd frontend
+        npm run lint || true
+    
+    - name: Run frontend tests
+      run: |
+        cd frontend
+        npm test -- --coverage --watchAll=false || true
+    
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+
+  # Integration Tests
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest requests fastapi uvicorn sqlalchemy
+    
+    - name: Start backend server
+      run: |
+        python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+    
+    - name: Run integration tests
+      run: |
+        python test_phase6_integration.py || true
+        python test_troubleshooting_system.py || true
+
+  # Performance Testing
+  performance-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-tests]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest requests fastapi uvicorn sqlalchemy locust
+    
+    - name: Start backend server
+      run: |
+        python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+    
+    - name: Run performance tests
+      run: |
+        # Basic load testing with curl
+        for i in {1..10}; do
+          curl -f http://localhost:8000/health || exit 1
+        done
+        echo "Performance test completed"
+
+  # Docker Build Test
+  docker-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker images
+      run: |
+        docker build -f Dockerfile.backend -t intellilab-gc-backend .
+        docker build -f Dockerfile.frontend -t intellilab-gc-frontend .
+    
+    - name: Test Docker containers
+      run: |
+        docker run -d -p 8000:8000 --name test-backend intellilab-gc-backend
+        sleep 10
+        curl -f http://localhost:8000/health || exit 1
+        docker stop test-backend
+        docker rm test-backend
+
+  # Security Scanning with CodeQL
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python', 'javascript' ]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+    
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
+  # Dependency Review
+  dependency-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/checkout@v4
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v3

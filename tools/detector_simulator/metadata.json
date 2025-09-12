@@ -1,0 +1,61 @@
+{
+    "name": "GC Detector Simulator",
+    "version": "1.0.0",
+    "description": "Simulate detector responses, peak detection, and chromatographic analysis for various GC detector types",
+    "author": "IntelliLab GC Team",
+    "category": "Simulation",
+    "tags": ["detector", "chromatography", "peak-detection", "simulation"],
+    "dependencies": {
+        "python_packages": ["matplotlib", "numpy"],
+        "internal_modules": ["common.data_models", "common.base_tool"]
+    },
+    "capabilities": [
+        "detector_response_simulation",
+        "peak_detection_algorithms",
+        "chromatogram_generation",
+        "detector_comparison",
+        "performance_optimization"
+    ],
+    "detector_types": [
+        "FID (Flame Ionization Detector)",
+        "TCD (Thermal Conductivity Detector)",
+        "ECD (Electron Capture Detector)", 
+        "MS (Mass Spectrometer)",
+        "NPD (Nitrogen Phosphorus Detector)",
+        "FPD (Flame Photometric Detector)"
+    ],
+    "input_types": [
+        "detector_settings",
+        "compound_list",
+        "analysis_conditions",
+        "custom_parameters"
+    ],
+    "output_types": [
+        "chromatogram_plot",
+        "peak_table",
+        "performance_metrics",
+        "optimization_report"
+    ],
+    "features": [
+        "Multiple detector type simulation",
+        "Peak shape modeling with tailing factors",
+        "Signal-to-noise ratio calculation",
+        "Detection limit estimation",
+        "Performance metrics (resolution, peak capacity)",
+        "Detector comparison tools",
+        "Optimization recommendations",
+        "Professional chromatogram visualization"
+    ],
+    "example_use_cases": [
+        "Detector selection for method development",
+        "Sensitivity optimization and validation",
+        "Peak detection algorithm testing",
+        "Teaching GC detector principles",
+        "Method transfer between detector types"
+    ],
+    "limitations": [
+        "Simplified detector physics models",
+        "Limited matrix effect simulation",
+        "Theoretical peak shapes (not instrument-specific)"
+    ]
+}

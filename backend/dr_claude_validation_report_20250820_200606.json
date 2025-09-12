@@ -1,0 +1,76 @@
+{
+  "test_date": "2025-08-20T20:06:06.922444",
+  "total_tests": 5,
+  "results": [
+    {
+      "test": "Split Ratio Calculator",
+      "timestamp": "2025-08-20T20:05:54.629767",
+      "results": [
+        {
+          "scenario": "Standard method (1.2 mL/min, 50:1)",
+          "input_flow": 1.2,
+          "split_ratio": 50,
+          "calculated_total": 64.2,
+          "expected_total": 64.2,
+          "formula_verification": 64.2,
+          "deviation": 0.0,
+          "uncertainty": 2.568,
+          "passed": true,
+          "split_vent_flow": 60.0,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 95.0
+        },
+        {
+          "scenario": "High split concentrated sample (1.0 mL/min, 200:1)",
+          "input_flow": 1.0,
+          "split_ratio": 200,
+          "calculated_total": 204.0,
+          "expected_total": 204.0,
+          "formula_verification": 204.0,
+          "deviation": 0.0,
+          "uncertainty": 8.16,
+          "passed": true,
+          "split_vent_flow": 200.0,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 85.0
+        },
+        {
+          "scenario": "Splitless trace analysis (1.5 mL/min, 1:1)",
+          "input_flow": 1.5,
+          "split_ratio": 1,
+          "calculated_total": 6.0,
+          "expected_total": 6.0,
+          "formula_verification": 6.0,
+          "deviation": 0.0,
+          "uncertainty": 0.24,
+          "passed": true,
+          "split_vent_flow": 1.5,
+          "septum_purge_flow": 3.0,
+          "efficiency_score": 60.0
+        }
+      ]
+    },
+    {
+      "test": "Detection Limits",
+      "timestamp": "2025-08-20T20:05:56.679999",
+      "result": {
+        "test": "Detection Limits",
+        "method": "3-sigma",
+        "calibration_points": 6,
+        "api_results": {
+          "lod": 0.518338,
+          "loq": 1.727792,
+          "slope": 1004.36033,
+          "intercept": 132.720943,
+          "r_squared": 0.999729
+        },
+        "manual_verification": {
+          "lod": 0.5183376080876616,
+          "loq": 1.7277920269588716,
+          "slope": 1004.3603296391022,
+          "intercept": 132.72094344984473,
+          "r_squared": 0.9997286087989824,
+          "std_error": 173.5325769744225
+        },
+        "validations": {
+          "lod_match": 

@@ -1,0 +1,62 @@
+{
+    "name": "gc_inlet_simulator",
+    "display_name": "GC Inlet Simulator",
+    "description": "Simulate inlet performance, discrimination, and efficiency for different GC inlet types including split, splitless, PTV, and cool-on-column",
+    "version": "1.0.0",
+    "category": "simulation",
+    "author": "IntelliLab Team",
+    "main_module": "inlet_sim",
+    "tool_class": "GCInletSimulator",
+    "requirements": [
+        "numpy"
+    ],
+    "config_schema": {
+        "type": "object",
+        "properties": {
+            "default_temperature": {
+                "type": "number",
+                "description": "Default inlet temperature for simulations",
+                "default": 250
+            },
+            "simulation_precision": {
+                "type": "string",
+                "enum": ["basic", "detailed", "research"],
+                "description": "Level of simulation detail",
+                "default": "detailed"
+            }
+        }
+    },
+    "input_examples": [
+        {
+            "name": "Basic Split Injection",
+            "description": "Simulate a standard split injection",
+            "inputs": {
+                "gc_method": "GCMethod object with split inlet settings",
+                "sample_volume": 1.0,
+                "detailed_analysis": true
+            }
+        },
+        {
+            "name": "Splitless Analysis",
+            "description": "Analyze splitless injection performance",
+            "inputs": {
+                "gc_method": "GCMethod object with splitless inlet settings",
+                "compounds": "List of target compounds",
+                "sample_volume": 2.0
+            }
+        }
+    ],
+    "features": [
+        "Inlet discrimination calculation",
+        "Peak broadening estimation",
+        "Transfer efficiency analysis",
+        "Compound-specific response prediction",
+        "Optimization recommendations",
+        "Support for all major inlet types"
+    ],
+    "limitations": [
+        "Simplified thermodynamic model",
+        "Does not account for matrix effects",
+        "Limited to gas-phase compounds"
+    ]
+}
