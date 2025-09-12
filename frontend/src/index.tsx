@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import './index.css';
+import { AppLayout } from './layouts/AppLayout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initializeMonitoring } from './utils/monitoring-simple';
 
@@ -24,7 +25,16 @@ root.render(
         }
       }}
     >
-      <App />
+      <AppLayout
+        currentPath="/"
+        currentSection="Dashboard"
+        onNavigate={(path) => console.log('Navigate to:', path)}
+      >
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-primary">IntelliLab GC</h1>
+          <p className="text-muted-foreground">Professional Gas Chromatography Platform</p>
+        </div>
+      </AppLayout>
     </ErrorBoundary>
   </React.StrictMode>
 );

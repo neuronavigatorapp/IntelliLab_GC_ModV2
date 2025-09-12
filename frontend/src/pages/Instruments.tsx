@@ -195,12 +195,11 @@ export const Instruments: React.FC<InstrumentsProps> = ({ onNavigate }) => {
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
-            <div 
-              className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4"
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            >
+              <div 
+                className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Create New Instrument</h2>
               <Button
@@ -273,8 +272,8 @@ export const Instruments: React.FC<InstrumentsProps> = ({ onNavigate }) => {
                 </Button>
               </div>
             </div>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       )}

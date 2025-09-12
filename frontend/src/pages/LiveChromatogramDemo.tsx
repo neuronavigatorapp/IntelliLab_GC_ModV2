@@ -36,19 +36,19 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
     {
       id: 'mixture',
       title: 'Select Sample Mixture',
-      description: 'Choose a test mixture for the chromatogram simulation',
+      description: 'Choose a simple mixture (e.g., methane/ethane)',
       completed: selectedMixture !== ''
     },
     {
       id: 'ramp',
-      title: 'Configure Oven Ramp',
-      description: 'Set up the temperature program for optimal separation',
+      title: 'Choose Oven Ramp',
+      description: 'Select default ramp or use current from Oven Ramp',
       completed: true
     },
     {
       id: 'simulate',
-      title: 'Run Chromatogram',
-      description: 'Watch the real-time chromatogram simulation',
+      title: 'Animated Chart',
+      description: 'Watch the left-to-right trace animation',
       completed: isPlaying
     }
   ];
@@ -148,9 +148,9 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
       case 0:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Choose a Test Mixture</h3>
+            <h3 className="text-lg font-semibold">Step 1: Select a Simple Mixture</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {mixtures.map((mixture) => (
+              {mixtures.slice(0, 2).map((mixture) => (
                 <Card
                   key={mixture.id}
                   className={`cursor-pointer transition-all ${
@@ -178,7 +178,6 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
               <Button
                 onClick={() => setCurrentStep(1)}
                 disabled={!selectedMixture}
-                variant="brand"
               >
                 Next Step
               </Button>
@@ -189,7 +188,7 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
       case 1:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Oven Ramp Configuration</h3>
+            <h3 className="text-lg font-semibold">Step 2: Choose Default Oven Ramp or Use Current</h3>
             <Card>
               <CardContent className="p-4">
                 <div className="space-y-4">
@@ -202,7 +201,7 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
                       onChange={() => setUseCurrentRamp(false)}
                     />
                     <label htmlFor="default-ramp" className="text-sm">
-                      Use default ramp (50°C → 200°C at 10°C/min)
+                      Use default oven ramp
                     </label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -214,7 +213,7 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
                       onChange={() => setUseCurrentRamp(true)}
                     />
                     <label htmlFor="current-ramp" className="text-sm">
-                      Use current ramp from Oven Ramp page
+                      Use current from Oven Ramp
                     </label>
                   </div>
                 </div>
@@ -229,7 +228,6 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
               </Button>
               <Button
                 onClick={handlePlay}
-                variant="brand"
               >
                 <Play className="h-4 w-4 mr-2" />
                 Start Simulation
@@ -242,11 +240,10 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
         return (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Live Chromatogram</h3>
+              <h3 className="text-lg font-semibold">Step 3: Animated Chart</h3>
               <div className="flex space-x-2">
                 <Button
                   onClick={isPlaying ? handlePause : handlePlay}
-                  variant="brand"
                   size="sm"
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -272,6 +269,13 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
               </CardContent>
             </Card>
 
+            {/* Legend chips */}
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline" className="text-xs">Peak 1: 2.5 min</Badge>
+              <Badge variant="outline" className="text-xs">Peak 2: 4.2 min</Badge>
+              <Badge variant="outline" className="text-xs">Baseline: 0.1 mV</Badge>
+            </div>
+
             <div className="flex justify-between">
               <Button
                 onClick={() => setCurrentStep(1)}
@@ -281,7 +285,6 @@ export const LiveChromatogramDemo: React.FC<LiveChromatogramDemoProps> = ({ onNa
               </Button>
               <Button
                 onClick={() => onNavigate('/detection-limit')}
-                variant="brand"
               >
                 Try Detection Limit Calculator
               </Button>

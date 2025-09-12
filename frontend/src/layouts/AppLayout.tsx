@@ -37,6 +37,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           currentSection={currentSection}
           lastUpdated={lastUpdated}
           onSettingsClick={() => console.log('Settings clicked')}
+          isOnline={true}
         />
 
         {/* Page Content */}

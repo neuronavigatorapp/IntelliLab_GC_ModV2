@@ -78,22 +78,25 @@ export const OvenRamp: React.FC<OvenRampProps> = ({ onNavigate }) => {
     <div className="space-y-6">
       {/* Page Header with Tabs */}
       <div className="flex items-center justify-between">
-        <Tabs defaultValue="oven-ramp" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            {pageTabs.map((tab) => (
-              <TabsTrigger 
-                key={tab.id} 
-                value={tab.id}
-                onClick={() => {
-                  if (tab.id === 'detection-limit') onNavigate('/detection-limit');
-                  else if (tab.id === 'inlet-simulator') onNavigate('/inlet-simulator');
-                }}
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        <div className="flex space-x-1">
+          {pageTabs.map((tab) => (
+            <Button
+              key={tab.id}
+              variant={tab.id === 'oven-ramp' ? 'default' : 'ghost'}
+              size="sm"
+              className="text-sm"
+              onClick={() => {
+                if (tab.id === 'detection-limit') onNavigate('/detection-limit');
+                else if (tab.id === 'inlet-simulator') onNavigate('/inlet-simulator');
+                else if (tab.id === 'ai-troubleshooting') onNavigate('/troubleshooting');
+                else if (tab.id === 'fleet-manager') onNavigate('/fleet-manager');
+                else if (tab.id === 'split-ratio') onNavigate('/split-ratio');
+              }}
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -150,7 +153,7 @@ export const OvenRamp: React.FC<OvenRampProps> = ({ onNavigate }) => {
                 />
                 
                 <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-                  <p><strong>Elution timing shifts with ramp rate;</strong> use with demo chromatogram to visualize peak separation effects.</p>
+                  <p>Elution timing shifts with ramp rate; use with demo chromatogram.</p>
                 </div>
 
                 {/* Legend */}

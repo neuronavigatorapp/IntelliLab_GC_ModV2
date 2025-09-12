@@ -69,46 +69,41 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-8" data-testid="dashboard">
       {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="text-center space-y-6 py-12">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-bold text-gray-900">
+      <div className="relative">
+        <div className="text-center space-y-8 py-16">
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
               Professional GC Analysis Platform
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Advanced gas chromatography simulation, optimization, and troubleshooting toolkit for analytical professionals.
             </p>
           </div>
 
           {/* Feature Badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div>
             <div className="flex flex-wrap justify-center gap-3">
-              <Badge variant="brand">Method Development</Badge>
-              <Badge variant="accent">Virtual Instruments</Badge>
-              <Badge variant="brand">Real-time Simulation</Badge>
-              <Badge variant="accent">Professional Tools</Badge>
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 shadow-sm">
+                Method Development
+              </span>
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200 shadow-sm">
+                Virtual Instruments
+              </span>
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200 shadow-sm">
+                Real-time Simulation
+              </span>
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-800 border border-orange-200 shadow-sm">
+                Professional Tools
+              </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
                 size="lg"
-                variant="brand"
-                className="px-8 py-3 text-lg"
+                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0"
                 onClick={() => onNavigate('/demo')}
               >
                 <Play className="h-5 w-5 mr-2" />
@@ -116,95 +111,80 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               </Button>
               <Button
                 size="lg"
-                variant="brandOutline"
-                className="px-8 py-3 text-lg"
+                variant="outline"
+                className="px-8 py-4 text-lg font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white hover:shadow-lg transition-all duration-200"
                 onClick={() => onNavigate('/instruments')}
               >
                 Build Virtual GC
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Info Banner */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
-              <p className="text-sm text-blue-800">
-                <strong>LinkedIn Demo Access:</strong> Full functionality for core GC calculation and simulation tools.
-              </p>
+          <div>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 max-w-2xl mx-auto shadow-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <p className="text-sm text-blue-800 font-medium">
+                  <strong>LinkedIn Demo Access:</strong> Full functionality for core GC calculation and simulation tools.
+                </p>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
+      </div>
 
       {/* Stats Row */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-      >
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stats.map((stat, index) => (
-            <motion.div
-              key={stat.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
-            >
+            <div key={stat.title}>
               <StatCard {...stat} />
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Feature Cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.2 }}
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Feature Cards Row */}
+      <div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {featureCards.map((card, index) => (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 1.3 + index * 0.1 }}
-            >
-              <Card className={`card-hover bg-gradient-to-br ${card.color} border-0`}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    {card.icon}
-                    <CardTitle className="text-lg">{card.title}</CardTitle>
+            <div key={card.title}>
+              <Card className="card-hover bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-4">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${
+                      index === 0 ? 'from-blue-50 to-blue-100' :
+                      index === 1 ? 'from-green-50 to-green-100' :
+                      'from-purple-50 to-purple-100'
+                    } group-hover:scale-110 transition-transform duration-200`}>
+                      {card.icon}
+                    </div>
+                    <CardTitle className="text-xl font-semibold text-gray-900">
+                      {card.title}
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-700">
+                  <CardDescription className="text-gray-600 text-base leading-relaxed">
                     {card.description}
                   </CardDescription>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Tip Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.6 }}
-      >
+      <div>
         <div className="max-w-md">
-          <TipCard>
+          <TipCard title="Pro Tip">
             Use Detection Limit Calculator first, then Oven Ramp Visualizer for optimal results.
           </TipCard>
         </div>
-      </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };
