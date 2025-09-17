@@ -1,0 +1,469 @@
+
+export const routes = {
+  // Core Dashboard
+  dashboard: '/',
+  
+  // Instruments
+  instruments: '/instruments',
+  
+  // Methods
+  methods: '/methods',
+  
+  // Runs
+  runs: '/runs',
+  
+  // QC/Calibration
+  qcCalibration: '/qc-calibration',
+  
+  // Inventory
+  inventory: '/inventory',
+  
+  // AI Assistant (with sub-sections)
+  aiAssistant: '/ai-assistant',
+  aiDashboard: '/ai-dashboard',
+  aiMethodOptimization: '/ai-method-optimization',
+  predictiveMaintenance: '/predictive-maintenance',
+  costOptimization: '/cost-optimization',
+  
+  // Analysis Tools
+  chromatogramAnalyzer: '/chromatogram-analyzer',
+  batchAnalyzer: '/batch-analyzer',
+  comparisonTool: '/comparison-tool',
+  
+  // Calculators
+  detectionLimit: '/detection-limit',
+  ovenRamp: '/oven-ramp',
+  inletSimulator: '/inlet-simulator',
+  splitRatio: '/split-ratio',
+  splitlessTiming: '/splitless-timing',
+  pressureDrop: '/pressure-drop',
+  columnCalculator: '/column-calculator',
+  mdlCalculator: '/mdl-calculator',
+  
+  // Simulation
+  chromatogramSimulator: '/chromatogram-simulator',
+  gcSandbox: '/gc-sandbox',
+  
+  // Management
+  methodDevelopment: '/method-development',
+  fieldReports: '/field-reports',
+  fleetManager: '/fleet-manager',
+  settings: '/settings',
+  aboutValidity: '/about-validity',
+  
+  // Utilities
+  swissArmyKnife: '/swiss-army-knife',
+  veteranTools: '/veteran-tools',
+  personalPortfolio: '/portfolio',
+  
+  // Demo
+  demo: '/demo',
+  persistenceDemo: '/persistence-demo',
+} as const;
+
+// Navigation structure matching requirements - IntelliLab GC Professional
+export const navigationSections = [
+  {
+    id: 'main',
+    label: 'Core',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        path: routes.dashboard,
+        icon: 'LayoutDashboard',
+      },
+      {
+        id: 'instruments',
+        label: 'Instruments',
+        path: routes.instruments,
+        icon: 'Microscope',
+      },
+      {
+        id: 'methods',
+        label: 'Methods',
+        path: routes.methods,
+        icon: 'FileText',
+      },
+      {
+        id: 'runs',
+        label: 'Runs',
+        path: routes.runs,
+        icon: 'Activity',
+      },
+      {
+        id: 'qc-calibration',
+        label: 'QC/Calibration',
+        path: routes.qcCalibration,
+        icon: 'Target',
+      },
+      {
+        id: 'inventory',
+        label: 'Inventory',
+        path: routes.inventory,
+        icon: 'BarChart3',
+      }
+    ]
+  },
+  {
+    id: 'ai-assistant',
+    label: 'AI Assistant',
+    items: [
+      {
+        id: 'ai-dashboard',
+        label: 'AI Dashboard',
+        path: routes.aiDashboard,
+        icon: 'Brain',
+      },
+      {
+        id: 'ai-method-optimization',
+        label: 'Method Optimization',
+        path: routes.aiMethodOptimization,
+        icon: 'Target',
+      },
+      {
+        id: 'predictive-maintenance',
+        label: 'Predictive Maintenance',
+        path: routes.predictiveMaintenance,
+        icon: 'Wrench',
+      },
+      {
+        id: 'cost-optimization',
+        label: 'Cost Optimization',
+        path: routes.costOptimization,
+        icon: 'TrendingDown',
+      },
+      {
+        id: 'ai-assistant',
+        label: 'Chat with AI',
+        path: routes.aiAssistant,
+        icon: 'Bot',
+      }
+    ]
+  },
+  {
+    id: 'analysis-tools',
+    label: 'Analysis Tools',
+    items: [
+      {
+        id: 'chromatogram-analyzer',
+        label: 'ChromaVision AI',
+        path: routes.chromatogramAnalyzer,
+        icon: 'Eye',
+      },
+      {
+        id: 'batch-analyzer',
+        label: 'Batch Analyzer',
+        path: routes.batchAnalyzer,
+        icon: 'BarChart3',
+      },
+      {
+        id: 'comparison-tool',
+        label: 'Comparison Tool',
+        path: routes.comparisonTool,
+        icon: 'GitCompare',
+      }
+    ]
+  },
+  {
+    id: 'calculators',
+    label: 'Calculators',
+    items: [
+      {
+        id: 'detection-limit',
+        label: 'Detection Limit',
+        path: routes.detectionLimit,
+        icon: 'Target',
+      },
+      {
+        id: 'oven-ramp',
+        label: 'Oven Ramp',
+        path: routes.ovenRamp,
+        icon: 'Thermometer',
+      },
+      {
+        id: 'inlet-simulator',
+        label: 'Inlet Simulator',
+        path: routes.inletSimulator,
+        icon: 'Zap',
+      },
+      {
+        id: 'split-ratio',
+        label: 'Split Ratio',
+        path: routes.splitRatio,
+        icon: 'Target',
+      },
+      {
+        id: 'splitless-timing',
+        label: 'Splitless Timing',
+        path: routes.splitlessTiming,
+        icon: 'Thermometer',
+      },
+      {
+        id: 'pressure-drop',
+        label: 'Pressure Drop',
+        path: routes.pressureDrop,
+        icon: 'Zap',
+      },
+      {
+        id: 'column-calculator',
+        label: 'Column Calculator',
+        path: routes.columnCalculator,
+        icon: 'Microscope',
+      },
+      {
+        id: 'mdl-calculator',
+        label: 'MDL Calculator',
+        path: routes.mdlCalculator,
+        icon: 'Target',
+      }
+    ]
+  },
+  {
+    id: 'simulation',
+    label: 'Simulation',
+    items: [
+      {
+        id: 'chromatogram-simulator',
+        label: 'Chromatogram Simulator',
+        path: routes.chromatogramSimulator,
+        icon: 'LayoutDashboard',
+      },
+      {
+        id: 'gc-sandbox',
+        label: 'GC Instrument Sandbox',
+        path: routes.gcSandbox,
+        icon: 'Settings',
+      }
+    ]
+  },
+  {
+    id: 'management',
+    label: 'Management',
+    items: [
+      {
+        id: 'method-development',
+        label: 'Method Development',
+        path: routes.methodDevelopment,
+        icon: 'Activity',
+      },
+      {
+        id: 'field-reports',
+        label: 'Field Reports',
+        path: routes.fieldReports,
+        icon: 'FileText',
+      },
+      {
+        id: 'fleet-manager',
+        label: 'Fleet Manager',
+        path: routes.fleetManager,
+        icon: 'Microscope',
+      },
+      {
+        id: 'settings',
+        label: 'Settings',
+        path: routes.settings,
+        icon: 'Settings',
+      }
+    ]
+  },
+  {
+    id: 'utilities',
+    label: 'Utilities',
+    items: [
+      {
+        id: 'swiss-army-knife',
+        label: 'Swiss Army Knife',
+        path: routes.swissArmyKnife,
+        icon: 'Calculator',
+      },
+      {
+        id: 'veteran-tools',
+        label: 'Veteran Tools',
+        path: routes.veteranTools,
+        icon: 'Thermometer',
+      },
+      {
+        id: 'personal-portfolio',
+        label: 'Portfolio',
+        path: routes.personalPortfolio,
+        icon: 'User',
+      }
+    ]
+  },
+  {
+    id: 'demo',
+    label: 'Demo',
+    items: [
+      {
+        id: 'demo',
+        label: 'Live Demo',
+        path: routes.demo,
+        icon: 'Zap',
+      }
+    ]
+  }
+] as const;
+
+// Legacy flat navigation items for backward compatibility
+export const navigationItems = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    path: routes.dashboard,
+    icon: 'LayoutDashboard',
+  },
+  {
+    id: 'detection-limit',
+    label: 'Detection Limit',
+    path: routes.detectionLimit,
+    icon: 'Target',
+  },
+  {
+    id: 'oven-ramp',
+    label: 'Oven Ramp',
+    path: routes.ovenRamp,
+    icon: 'Thermometer',
+  },
+  {
+    id: 'inlet-simulator',
+    label: 'Inlet Simulator',
+    path: routes.inletSimulator,
+    icon: 'Zap',
+  },
+  {
+    id: 'split-ratio',
+    label: 'Split Ratio',
+    path: routes.splitRatio,
+    icon: 'Target',
+  },
+  {
+    id: 'splitless-timing',
+    label: 'Splitless Timing',
+    path: routes.splitlessTiming,
+    icon: 'Thermometer',
+  },
+  {
+    id: 'pressure-drop',
+    label: 'Pressure Drop',
+    path: routes.pressureDrop,
+    icon: 'Zap',
+  },
+  {
+    id: 'column-calculator',
+    label: 'Column Calculator',
+    path: routes.columnCalculator,
+    icon: 'Microscope',
+  },
+  {
+    id: 'chromatogram-simulator',
+    label: 'Chromatogram Simulator',
+    path: routes.chromatogramSimulator,
+    icon: 'LayoutDashboard',
+  },
+  {
+    id: 'chromatogram-analyzer',
+    label: 'ChromaVision AI',
+    path: routes.chromatogramAnalyzer,
+    icon: 'Eye',
+  },
+  {
+    id: 'batch-analyzer',
+    label: 'Batch Analyzer',
+    path: routes.batchAnalyzer,
+    icon: 'BarChart3',
+  },
+  {
+    id: 'comparison-tool',
+    label: 'Comparison Tool',
+    path: routes.comparisonTool,
+    icon: 'GitCompare',
+  },
+  {
+    id: 'method-development',
+    label: 'Method Development',
+    path: routes.methodDevelopment,
+    icon: 'Activity',
+  },
+  {
+    id: 'field-reports',
+    label: 'Field Reports',
+    path: routes.fieldReports,
+    icon: 'FileText',
+  },
+  {
+    id: 'ai-dashboard',
+    label: 'AI Analytics Dashboard',
+    path: routes.aiDashboard,
+    icon: 'Brain',
+  },
+  {
+    id: 'ai-method-optimization',
+    label: 'AI Method Optimization',
+    path: routes.aiMethodOptimization,
+    icon: 'Target',
+  },
+  {
+    id: 'predictive-maintenance',
+    label: 'Predictive Maintenance',
+    path: routes.predictiveMaintenance,
+    icon: 'Wrench',
+  },
+  {
+    id: 'cost-optimization',
+    label: 'Cost Optimization',
+    path: routes.costOptimization,
+    icon: 'TrendingDown',
+  },
+  {
+    id: 'personal-portfolio',
+    label: 'Portfolio',
+    path: routes.personalPortfolio,
+    icon: 'User',
+  },
+  {
+    id: 'swiss-army-knife',
+    label: 'Swiss Army Knife',
+    path: routes.swissArmyKnife,
+    icon: 'Calculator',
+  },
+  {
+    id: 'mdl-calculator',
+    label: 'MDL Calculator',
+    path: routes.mdlCalculator,
+    icon: 'Target',
+  },
+  {
+    id: 'veteran-tools',
+    label: 'Veteran Tools',
+    path: routes.veteranTools,
+    icon: 'Thermometer',
+  },
+  {
+    id: 'fleet-manager',
+    label: 'Fleet Manager',
+    path: routes.fleetManager,
+    icon: 'Microscope',
+  },
+  {
+    id: 'instruments',
+    label: 'Instruments',
+    path: routes.instruments,
+    icon: 'Microscope',
+  },
+  {
+    id: 'demo',
+    label: 'Live Demo',
+    path: routes.demo,
+    icon: 'Zap',
+  },
+] as const;
+
+export const pageTabs = [
+  { id: 'detection-limit', label: 'Detection Limit' },
+  { id: 'oven-ramp', label: 'Oven Ramp' },
+  { id: 'inlet-simulator', label: 'Inlet Simulator' },
+  { id: 'ai-troubleshooting', label: 'AI Troubleshooting' },
+  { id: 'fleet-manager', label: 'Fleet Manager' },
+  { id: 'split-ratio', label: 'Split Ratio' },
+] as const;

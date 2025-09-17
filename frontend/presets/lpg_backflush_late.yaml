@@ -1,0 +1,10 @@
+seed: 21
+peaks:
+  - {name: C1 , rt: 1.0 , height: 1.0 , width: 0.05, tail: 0.05}
+  - {name: C2 , rt: 1.6 , height: 0.9 , width: 0.06, tail: 0.06}
+  - {name: C6+ , rt: 3.5 , height: 0.5 , width: 0.20, tail: 0.20}
+baseline: {drift: 0.02, ripple: 0.01}
+noise: {white: 0.02, pink: 0.02}
+method: {oven_steps: [{temp:40, hold:1.0},{ramp:15,to:120}], backflush_start: 3.7} # intentionally late
+inlet: {pressure_kpa: 75, split: 40}
+column: {id_mm: 0.25, length_m: 30, gas: Helium}

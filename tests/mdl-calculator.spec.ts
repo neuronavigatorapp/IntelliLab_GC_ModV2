@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('MDL Calculator handles real lab data correctly', async ({ page }) => {
   // Navigate to MDL calculator
-  await page.goto('http://localhost:3000');
+  await page.goto('http://localhost:5173');
   await page.click('text=Detection');
   
   // Enter real replicate data

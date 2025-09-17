@@ -1,0 +1,7 @@
+{
+  "dead_time_min": 0.35,
+  "anchors": [
+    { "name": "C1", "observed_rt": 1.02, "target_rt": 1.00 },
+    { "name": "C4", "observed_rt": 2.74, "target_rt": 2.70 }
+  ]
+}

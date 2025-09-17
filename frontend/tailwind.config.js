@@ -17,64 +17,127 @@ module.exports = {
     },
     extend: {
       colors: {
-        // IntelliLab GC Brand Identity - Dark theme with teal/blue accents
-        brand: {
-          primary: "hsl(var(--brand-primary))",
-          accent: "hsl(var(--brand-accent))", 
-          secondary: "hsl(var(--brand-secondary))",
+        // === PROFESSIONAL THEME PALETTE ===
+        // New comprehensive color system
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+          hover: 'var(--color-surface-hover)',
+          active: 'var(--color-surface-active)',
         },
-        // Enhanced color palette for dark professional theme
-        slate: {
-          950: '#020617',
+        
+        text: {
+          primary: 'var(--color-text-primary)',
+          secondary: 'var(--color-text-secondary)',
+          tertiary: 'var(--color-text-tertiary)',
+          inverse: 'var(--color-text-inverse)',
+          accent: 'var(--color-text-accent)',
         },
-        teal: {
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
+        
+        'border-color': {
+          DEFAULT: 'var(--color-border)',
+          hover: 'var(--color-border-hover)',
+          focus: 'var(--color-border-focus)',
         },
-        cyan: {
-          400: '#22d3ee',
-          500: '#06b6d4',
+        
+        // Legacy compatibility
+        theme: {
+          bg: "var(--bg)",
+          surface: "var(--surface)", 
+          "surface-2": "var(--surface-2)",
+          text: "var(--text)",
+          muted: "var(--muted)",
+          border: "var(--border)",
+          "primary-500": "var(--primary-500)",
+          "primary-700": "var(--primary-700)",
+          focus: "var(--focus)",
         },
-        // shadcn/ui color system
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        
+        // Chart colors for data visualization
+        chart: {
+          1: "var(--chart-1)",
+          2: "var(--chart-2)", 
+          3: "var(--chart-3)",
+          4: "var(--chart-4)",
+          5: "var(--chart-5)",
+          6: "var(--chart-6)",
+        },
+        
+        // Semantic colors
+        success: {
+          DEFAULT: "var(--success)",
+          bg: "var(--success-bg)",
+          border: "var(--success-border)",
+        },
+        warning: {
+          DEFAULT: "var(--warn)",
+          bg: "var(--warn-bg)",
+          border: "var(--warn-border)",
+        },
+        error: {
+          DEFAULT: "var(--danger)",
+          bg: "var(--danger-bg)",
+          border: "var(--danger-border)",
+        },
+        info: {
+          DEFAULT: "var(--info)",
+          bg: "var(--info-bg)",
+          border: "var(--info-border)",
+        },
+
+        // === SHADCN/UI INTEGRATION ===
+        // Map shadcn/ui tokens to our canonical palette
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xs: "var(--radius-xs)",
+        sm: "var(--radius-sm)", 
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        // Keep shadcn defaults for compatibility
+        DEFAULT: "var(--radius)",
+      },
+      spacing: {
+        xs: "var(--spacing-xs)",
+        sm: "var(--spacing-sm)",
+        md: "var(--spacing-md)", 
+        lg: "var(--spacing-lg)",
+        xl: "var(--spacing-xl)",
+        "2xl": "var(--spacing-2xl)",
+        "3xl": "var(--spacing-3xl)",
       },
       keyframes: {
         "accordion-down": {
@@ -110,19 +173,41 @@ module.exports = {
         mono: ['JetBrains Mono', 'monospace'],
       },
       boxShadow: {
+        // Canonical shadows using theme tokens
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)", 
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        
+        // Special effects
+        glow: "0 0 20px color-mix(in srgb, var(--color-primary-500) 30%, transparent)",
+        "glow-mint": "0 0 20px color-mix(in srgb, var(--color-accent-mint) 30%, transparent)",
+        "glow-orange": "0 0 20px color-mix(in srgb, var(--color-accent-orange) 30%, transparent)",
+        
+        // Legacy enterprise shadows (keeping for compatibility)
         'enterprise': '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05)',
         'enterprise-lg': '0 8px 40px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)',
         'enterprise-xl': '0 16px 64px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1)',
-        'glow-teal': '0 0 20px rgba(20, 184, 166, 0.3)',
-        'glow-blue': '0 0 20px rgba(34, 211, 238, 0.3)',
       },
       backdropBlur: {
         'xs': '2px',
       },
       backgroundImage: {
+        // Professional gradients
+        "grad-primary": "var(--grad-primary)",
+        "grad-spectrum": "var(--grad-spectrum)",
+        
+        // Utility gradients
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'intellilab-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e293b  50%, #334155 100%)',
+      },
+      transitionDuration: {
+        fast: "var(--motion-duration-fast)",
+        normal: "var(--motion-duration-normal)", 
+        slow: "var(--motion-duration-slow)",
+      },
+      transitionTimingFunction: {
+        theme: "var(--motion-ease)",
       },
     },
   },

@@ -1,0 +1,9 @@
+seed: 7
+peaks:
+  - {name: C3, rt: 2.10, height: 0.9, width: 0.07, tail: 0.06}
+  - {name: C4, rt: 2.16, height: 0.8, width: 0.08, tail: 0.07}
+baseline: {drift: 0.0, ripple: 0.0}
+noise: {white: 0.02, pink: 0.01}
+method: {oven_steps: [{temp: 40, hold: 0.8}, {ramp: 20, to: 120}], backflush_start: 3.2}
+inlet: {pressure_kpa: 70, split: 60}
+column: {id_mm: 0.25, length_m: 30, gas: Helium}

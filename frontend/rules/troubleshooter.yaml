@@ -1,0 +1,24 @@
+# LPG/NG, vapor loop, rotary valve, FID/TCD – neutral wording
+version: 1
+checks:
+  - id: early_tailing
+    when: "any_peak.tailing_factor > 1.5 and any_peak.rt < 3.0"
+    ask: "Is split flow stable (±5%) for 2 minutes after injection?"
+    if_yes:
+      advise:
+        - "Inspect/replace inlet liner; check for active sites."
+        - "Reduce inlet temperature by 10–20 °C and re-check tailing."
+    if_no:
+      advise:
+        - "Suspect split-vent restriction. Inspect split vent path and trap."
+        - "Simulate lower split ratio and confirm area response."
+  - id: baseline_rise_backflush
+    when: "baseline.slope_increase and near(method.backflush_start, 0.3)"
+    advise:
+      - "Move backflush start earlier by 0.2–0.5 min and re-run."
+      - "Check bleed/contamination on post-column path."
+  - id: c3_c4_coelution
+    when: "coelution('C3','C4', threshold=0.08)"
+    advise:
+      - "Add 0.2–0.5 min hold before ramp or reduce ramp rate by 2–4 °C/min."
+      - "Simulate alternate oven step and confirm ΔRT > 0.1 min."

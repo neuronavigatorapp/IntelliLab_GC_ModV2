@@ -91,7 +91,7 @@ class BulletproofLogger {
     }
 
     // Output to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.MODE === 'development') {
       const consoleMethod = level.toLowerCase() as 'debug' | 'info' | 'warn' | 'error';
       console[consoleMethod](`[${component}] ${message}`, data || '');
     }
@@ -241,7 +241,7 @@ class BulletproofLogger {
 
 // Global logger instance
 export const bulletproofLogger = new BulletproofLogger(
-  process.env.NODE_ENV === 'development' ? 'DEBUG' : 'INFO'
+  import.meta.env.MODE === 'development' ? 'DEBUG' : 'INFO'
 );
 
 // React Hook for component logging

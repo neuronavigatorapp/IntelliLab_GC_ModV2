@@ -1,6 +1,7 @@
 {
     "name": "intellilab-gc-frontend",
     "version": "1.0.0",
+    "type": "module",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.11.1",
@@ -32,26 +33,26 @@
         "axios": "^1.6.0",
         "chart.js": "^4.5.0",
         "chartjs-adapter-date-fns": "^2.0.1",
-        "class-variance-authority": "^0.7.0",
-        "clsx": "^2.0.0",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
         "cmdk": "^0.2.0",
         "d3": "^7.9.0",
         "date-fns": "^2.30.0",
         "framer-motion": "^10.16.4",
+        "js-yaml": "^4.1.0",
         "plotly.js": "^3.1.0",
         "react": "^18.2.0",
         "react-chartjs-2": "^5.3.0",
         "react-dom": "^18.2.0",
         "react-plotly.js": "^2.6.0",
         "react-router-dom": "^6.17.0",
-        "react-scripts": "^5.0.1",
         "recharts": "^2.8.0",
-        "tailwind-merge": "^2.0.0",
+        "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "npm run placeholder:check && react-scripts build",
+        "start": "vite",
+        "build": "npm run placeholder:check && vite build",
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:run": "vitest run",
@@ -65,21 +66,15 @@
         "lint:fix": "eslint src --ext .ts,.tsx --fix",
         "placeholder:check": "node ../scripts/placeholder-guard.js",
         "placeholder:check:verbose": "node ../scripts/placeholder-guard.js --verbose",
+        "brand-guard": "node ../scripts/brand-guard.js",
+        "brand-guard:verbose": "node ../scripts/brand-guard.js --verbose",
         "pre-commit": "node ../scripts/pre-commit-hook.js",
-        "quality:check": "npm run type-check && npm run lint && npm run test:run && npm run placeholder:check",
+        "quality:check": "npm run type-check && npm run lint && npm run test:run && npm run placeholder:check && npm run brand-guard",
         "demo:gif": "node scripts/generate-demo-gif.js",
         "demo:gif:advanced": "node scripts/generate-demo-gif-advanced.js",
-        "dev": "react-scripts start",
-        "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead"
-        ],
-        "development": [
-            "last 1 chrome version"
-        ]
+        "dev": "vite",
+        "preview": "vite preview --port 5173",
+        "analyze": "npm run build && npx vite-bundle-analyzer build"
     },
     "devDependencies": {
         "@fontsource/inter": "^5.2.6",
@@ -103,7 +98,8 @@
         "postcss": "^8.5.6",
         "puppeteer": "^21.5.0",
         "tailwindcss": "^3.4.17",
-        "typescript": "^4.9.5",
+        "typescript": "~5.4.5",
+        "vite": "^5.4.0",
         "vitest": "^3.2.4"
     }
 }

@@ -28,21 +28,21 @@ try {
 }
 
 export function initializeMonitoring() {
-  const sentryDsn = process.env.REACT_APP_SENTRY_DSN;
+  const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
 
-  if (Sentry && sentryDsn && process.env.NODE_ENV === 'production') {
+  if (Sentry && sentryDsn && import.meta.env.MODE === 'production') {
     try {
       Sentry.init({
         dsn: sentryDsn,
         tracesSampleRate: 0.1, // 10% of transactions
-        environment: process.env.NODE_ENV,
+        environment: import.meta.env.MODE,
         beforeSend(event: any, hint: any) {
           // Filter out non-critical errors
           if (event.exception) {
             const error = hint.originalException;
             
             // Don't send network errors in development
-            if (error?.message?.includes('Network') && process.env.NODE_ENV === 'development') {
+            if (error?.message?.includes('Network') && import.meta.env.MODE === 'development') {
               return null;
             }
             
@@ -84,7 +84,7 @@ export function logError(error: Error, context?: ErrorContext) {
   console.error('Application error:', errorInfo);
 
   // Send to Sentry if available and in production
-  if (Sentry && process.env.NODE_ENV === 'production') {
+  if (Sentry && import.meta.env.MODE === 'production') {
     Sentry.withScope((scope: any) => {
       if (context) {
         Object.entries(context).forEach(([key, value]) => {
