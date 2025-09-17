@@ -41,7 +41,7 @@ async def create_compound(payload: CompoundCreate, db: Session = Depends(get_db)
         existing = db.query(CompoundModel).filter(CompoundModel.name == payload.name).first()
         if existing:
             raise HTTPException(status_code=400, detail="Compound already exists")
-        obj = CompoundModel(**payload.dict())
+        obj = CompoundModel(**payload.model_dump())
         db.add(obj)
         db.commit()
         db.refresh(obj)

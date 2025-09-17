@@ -32,7 +32,7 @@ async def create_template(
     try:
         template = method_template_service.create_template(
             db=db,
-            template_data=template_data.dict(),
+            template_data=template_data.model_dump(),
             user_id=current_user.id
         )
         return template

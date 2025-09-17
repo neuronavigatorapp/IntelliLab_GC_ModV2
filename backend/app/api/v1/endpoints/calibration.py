@@ -37,7 +37,7 @@ async def fit_calibration(request: CalibrationFitRequest, current_user: User = D
                 action="calibration_fitted",
                 entity_type="calibration",
                 entity_id=str(calibration.id) if calibration.id else None,
-                details={"request": request.dict(), "result": calibration.dict()}
+                details={"request": request.model_dump(), "result": calibration.model_dump()}
             )
         except Exception:
             pass

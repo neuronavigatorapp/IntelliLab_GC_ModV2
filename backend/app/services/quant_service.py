@@ -263,12 +263,25 @@ class QuantitationService:
             excluded_points = []
             included_mask = np.ones(len(levels), dtype=bool)
             
+            # Track which levels were used in the fit (have valid data)
+            valid_level_indices = []
+            for i, level in enumerate(levels):
+                if request.mode == CalibrationMode.INTERNAL_STANDARD:
+                    if (level.amount is not None and level.area is not None and 
+                        level.is_area is not None and level.is_area > 0):
+                        valid_level_indices.append(i)
+                else:
+                    if level.amount is not None and level.area is not None:
+                        valid_level_indices.append(i)
+            
             if request.outlier_policy == OutlierPolicy.GRUBBS:
-                outlier_indices = self.detect_outliers_grubbs(residuals)
-                excluded_points = outlier_indices
+                outlier_data_indices = self.detect_outliers_grubbs(residuals)
+                # Map data indices back to original level indices
+                excluded_points = [valid_level_indices[i] for i in outlier_data_indices if i < len(valid_level_indices)]
             elif request.outlier_policy == OutlierPolicy.IQR:
-                outlier_indices = self.detect_outliers_iqr(residuals)
-                excluded_points = outlier_indices
+                outlier_data_indices = self.detect_outliers_iqr(residuals)
+                # Map data indices back to original level indices
+                excluded_points = [valid_level_indices[i] for i in outlier_data_indices if i < len(valid_level_indices)]
             
             # Update level inclusion status
             for i, level in enumerate(levels):
@@ -334,9 +347,9 @@ class QuantitationService:
                 target_name=request.target_name,
                 model_type=request.model_type,
                 mode=request.mode,
-                internal_standard=request.internal_standard,
+                internal_standard=request.internal_standard.model_dump() if request.internal_standard and hasattr(request.internal_standard, 'model_dump') else request.internal_standard,
                 outlier_policy=request.outlier_policy,
-                levels=levels,
+                levels=[l.model_dump() if hasattr(l, 'model_dump') else l for l in levels],
                 slope=float(slope),
                 intercept=float(intercept),
                 r2=float(r2),

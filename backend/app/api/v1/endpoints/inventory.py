@@ -50,7 +50,7 @@ async def set_reorder_thresholds(
 ):
     """Set reorder thresholds for a consumable item"""
     try:
-        result = inventory_service.set_reorder_thresholds(db, consumable_id, thresholds.dict())
+        result = inventory_service.set_reorder_thresholds(db, consumable_id, thresholds.model_dump())
         
         if "error" in result:
             raise HTTPException(status_code=400, detail=result["error"])
@@ -70,7 +70,7 @@ async def record_consumable_usage(
 ):
     """Record consumable usage for predictive modeling"""
     try:
-        result = inventory_service.record_usage(db, consumable_id, usage_data.dict())
+        result = inventory_service.record_usage(db, consumable_id, usage_data.model_dump())
         
         if "error" in result:
             raise HTTPException(status_code=400, detail=result["error"])

@@ -22,7 +22,6 @@ import {
   Assessment,
   Biotech,
   Engineering,
-  PlayArrow,
   Settings,
   Refresh,
   Launch,
@@ -54,7 +53,7 @@ const metricPulse = keyframes`
 `;
 
 // Styled components
-const DashboardContainer = styled(Box)(({ theme }) => ({
+const DashboardContainer = styled(Box)(() => ({
   padding: '2rem',
   minHeight: 'calc(100vh - 90px)',
   background: 'transparent',
@@ -62,7 +61,7 @@ const DashboardContainer = styled(Box)(({ theme }) => ({
   overflow: 'auto',
 }));
 
-const MetricCard = styled(Card)(({ theme }) => ({
+const MetricCard = styled(Card)(() => ({
   height: '100%',
   position: 'relative',
   cursor: 'pointer',
@@ -86,7 +85,7 @@ const MetricCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-const MetricIcon = styled(Avatar)(({ theme }) => ({
+const MetricIcon = styled(Avatar)(() => ({
   width: '60px',
   height: '60px',
   background: 'linear-gradient(135deg, #4A90E2 0%, #63B3ED 100%)',
@@ -97,7 +96,7 @@ const MetricIcon = styled(Avatar)(({ theme }) => ({
   },
 }));
 
-const QuickActionButton = styled(Button)(({ theme }) => ({
+const QuickActionButton = styled(Button)(() => ({
   height: '120px',
   flexDirection: 'column',
   gap: '0.75rem',

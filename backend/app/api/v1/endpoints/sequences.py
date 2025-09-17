@@ -42,7 +42,7 @@ async def create_template(template: SequenceTemplate, current_user: User = Depen
                 action="sequence_template_created",
                 entity_type="sequence",
                 entity_id=new_template.id,
-                details={"template": new_template.dict()}
+                details={"template": new_template.model_dump()}
             )
         except Exception:
             pass
@@ -107,7 +107,7 @@ async def update_template(template_id: str, template: SequenceTemplate, current_
                 action="sequence_template_updated",
                 entity_type="sequence",
                 entity_id=template_id,
-                details={"template": updated_template.dict()}
+                details={"template": updated_template.model_dump()}
             )
         except Exception:
             pass

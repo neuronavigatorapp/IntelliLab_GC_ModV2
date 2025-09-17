@@ -125,7 +125,7 @@ async def update_current_user(
 ):
     """Update current user information"""
     # Remove None values
-    update_data = {k: v for k, v in user_update.dict().items() if v is not None}
+    update_data = {k: v for k, v in user_update.model_dump().items() if v is not None}
     
     if not update_data:
         raise HTTPException(
@@ -225,7 +225,7 @@ async def update_user(
 ):
     """Update user (admin only)"""
     # Remove None values
-    update_data = {k: v for k, v in user_update.dict().items() if v is not None}
+    update_data = {k: v for k, v in user_update.model_dump().items() if v is not None}
     
     if not update_data:
         raise HTTPException(

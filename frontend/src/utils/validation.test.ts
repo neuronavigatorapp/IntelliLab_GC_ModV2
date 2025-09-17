@@ -70,24 +70,30 @@ describe('Validation Utilities', () => {
 
     it('provides scientific reasoning for low ratios', () => {
       expect(() => validateSplitRatio(0)).toThrow(ScientificValidationError);
-      
+    });
+
+    it('explains splitless injection for zero ratio', () => {
+      let thrownError: ScientificValidationError | null = null;
       try {
         validateSplitRatio(0);
       } catch (error) {
-        expect((error as ScientificValidationError).scientificReason)
-          .toContain('Splitless injection');
+        thrownError = error as ScientificValidationError;
       }
+      expect(thrownError?.scientificReason).toContain('Splitless injection');
     });
 
     it('provides scientific reasoning for high ratios', () => {
       expect(() => validateSplitRatio(501)).toThrow(ScientificValidationError);
-      
+    });
+
+    it('explains insufficient sample for high ratios', () => {
+      let thrownError: ScientificValidationError | null = null;
       try {
         validateSplitRatio(501);
       } catch (error) {
-        expect((error as ScientificValidationError).scientificReason)
-          .toContain('insufficient sample');
+        thrownError = error as ScientificValidationError;
       }
+      expect(thrownError?.scientificReason).toContain('insufficient sample');
     });
 
     it('warns about suboptimal ranges', () => {
@@ -130,20 +136,24 @@ describe('Validation Utilities', () => {
       });
     });
 
-    it('provides scientific reasoning', () => {
+    it('explains peak broadening for low flow rates', () => {
+      let thrownError: ScientificValidationError | null = null;
       try {
         validateFlowRate(0.05);
       } catch (error) {
-        expect((error as ScientificValidationError).scientificReason)
-          .toContain('peak broadening');
+        thrownError = error as ScientificValidationError;
       }
+      expect(thrownError?.scientificReason).toContain('peak broadening');
+    });
 
+    it('explains separation efficiency for high flow rates', () => {
+      let thrownError: ScientificValidationError | null = null;
       try {
         validateFlowRate(15);
       } catch (error) {
-        expect((error as ScientificValidationError).scientificReason)
-          .toContain('separation efficiency');
+        thrownError = error as ScientificValidationError;
       }
+      expect(thrownError?.scientificReason).toContain('separation efficiency');
     });
 
     it('warns about suboptimal flow rates', () => {
@@ -342,8 +352,8 @@ describe('Validation Utilities', () => {
     });
 
     it('warns about wide concentration ranges', () => {
-      const concentrations = [0.001, 1000];
-      const peakAreas = [1, 1000000];
+      const concentrations = [0.001, 1, 1000];
+      const peakAreas = [1, 1000, 1000000];
 
       validateCalibrationData(concentrations, peakAreas);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
@@ -433,13 +443,27 @@ describe('Validation Utilities', () => {
     it('provides detailed error messages for invalid elements', () => {
       const input = [1, 'invalid', 3];
       
+      let thrownError: Error | null = null;
       try {
         sanitizeNumericArray(input);
         throw new Error('Should have thrown an error');
       } catch (error) {
-        expect((error as Error).message).toContain('position 2');
-        expect((error as Error).message).toContain('invalid');
+        thrownError = error as Error;
       }
+      expect(thrownError?.message).toContain('position 2');
+    });
+
+    it('includes invalid element in error message', () => {
+      const input = [1, 'invalid', 3];
+      
+      let thrownError: Error | null = null;
+      try {
+        sanitizeNumericArray(input);
+        throw new Error('Should have thrown an error');
+      } catch (error) {
+        thrownError = error as Error;
+      }
+      expect(thrownError?.message).toContain('invalid');
     });
   });
 

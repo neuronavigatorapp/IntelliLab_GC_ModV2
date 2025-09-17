@@ -49,8 +49,8 @@ async def calculate_inlet_simulation(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="inlet_simulation",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)
@@ -60,7 +60,7 @@ async def calculate_inlet_simulation(
         await websocket_manager.broadcast(json.dumps({
             "type": "calculation_update",
             "calculation_type": "inlet_simulation",
-            "results": result.dict(),
+            "results": result.model_dump(),
             "timestamp": datetime.now().isoformat()
         }))
         
@@ -132,8 +132,8 @@ async def calculate_detection_limit(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="detection_limit",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)
@@ -143,7 +143,7 @@ async def calculate_detection_limit(
         await websocket_manager.broadcast(json.dumps({
             "type": "calculation_update",
             "calculation_type": "detection_limit",
-            "results": result.dict(),
+            "results": result.model_dump(),
             "timestamp": datetime.now().isoformat()
         }))
         
@@ -213,8 +213,8 @@ async def calculate_oven_ramp(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="oven_ramp",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)
@@ -224,7 +224,7 @@ async def calculate_oven_ramp(
         await websocket_manager.broadcast(json.dumps({
             "type": "calculation_update",
             "calculation_type": "oven_ramp",
-            "results": result.dict(),
+            "results": result.model_dump(),
             "timestamp": datetime.now().isoformat()
         }))
         
@@ -354,8 +354,8 @@ async def calculate_column_parameters(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="column_parameters",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)
@@ -439,8 +439,8 @@ async def calculate_pressure_drop(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="pressure_drop",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)
@@ -520,8 +520,8 @@ async def calculate_splitless_timing(
         # Save calculation to database
         calculation_record = CalculationModel(
             calculation_type="splitless_timing",
-            input_parameters=request.dict(),
-            output_results=result.dict(),
+            input_parameters=request.model_dump(),
+            output_results=result.model_dump(),
             execution_time=execution_time
         )
         db.add(calculation_record)

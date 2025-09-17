@@ -37,7 +37,7 @@ async def create_work_mode(
     """Create or update work mode for authenticated user."""
     try:
         # Validate the work mode configuration
-        validation = work_mode_service.validate_work_mode(work_mode_data.dict())
+        validation = work_mode_service.validate_work_mode(work_mode_data.model_dump())
         if not validation["valid"]:
             raise HTTPException(
                 status_code=400, 

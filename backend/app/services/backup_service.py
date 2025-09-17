@@ -2,7 +2,7 @@
 """
 Backup and Restore service for IntelliLab GC
 
-Supports exporting/importing selected domains into a ZIP archive containing
+Supports exporting/importing selec                k: [v.model_dump() if hasattr(v, "model_dump") else v for v in values]ed domains into a ZIP archive containing
 JSON files and a manifest. Intended for safe, scoped backups with optional
 merge or replace modes on import.
 """
@@ -105,11 +105,11 @@ class BackupService:
         try:
             # These attributes are part of QuantitationService in this codebase
             payload["calibrations"] = {
-                key: value.dict() if hasattr(value, "dict") else value
+                key: value.model_dump() if hasattr(value, "model_dump") else value
                 for key, value in getattr(quant_service, "calibrations", {}).items()
             }
             payload["calibration_versions"] = {
-                key: [v.dict() if hasattr(v, "dict") else v for v in values]
+                key: [v.model_dump() if hasattr(v, "model_dump") else v for v in values]
                 for key, values in getattr(quant_service, "calibration_versions", {}).items()
             }
             payload["active_calibrations"] = getattr(quant_service, "active_calibrations", {})
@@ -126,13 +126,13 @@ class BackupService:
         }
         try:
             payload["targets"] = {
-                k: v.dict() if hasattr(v, "dict") else v for k, v in getattr(qc_service, "targets", {}).items()
+                k: v.model_dump() if hasattr(v, "model_dump") else v for k, v in getattr(qc_service, "targets", {}).items()
             }
             payload["records"] = {
-                k: v.dict() if hasattr(v, "dict") else v for k, v in getattr(qc_service, "records", {}).items()
+                k: v.model_dump() if hasattr(v, "model_dump") else v for k, v in getattr(qc_service, "records", {}).items()
             }
             policy = getattr(qc_service, "policy", None)
-            payload["policy"] = policy.dict() if hasattr(policy, "dict") else policy
+            payload["policy"] = policy.model_dump() if hasattr(policy, "model_dump") else policy
         except Exception as e:
             logger.exception(f"QC export failed: {e}")
         return json.dumps(payload, indent=2, default=str)
@@ -143,7 +143,7 @@ class BackupService:
         }
         try:
             payload["templates"] = {
-                k: v.dict() if hasattr(v, "dict") else v
+                k: v.model_dump() if hasattr(v, "model_dump") else v
                 for k, v in getattr(sequence_service, "templates", {}).items()
             }
         except Exception as e:
@@ -157,14 +157,14 @@ class BackupService:
         }
         try:
             payload["run_records"] = {
-                k: v.dict() if hasattr(v, "dict") else v for k, v in runs_storage.items()
+                k: v.model_dump() if hasattr(v, "model_dump") else v for k, v in runs_storage.items()
             }
         except Exception as e:
             logger.exception(f"Run records export failed: {e}")
 
         try:
             payload["sequence_runs"] = {
-                k: v.dict() if hasattr(v, "dict") else v
+                k: v.model_dump() if hasattr(v, "model_dump") else v
                 for k, v in getattr(sequence_service, "runs", {}).items()
             }
         except Exception as e:

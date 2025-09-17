@@ -4,14 +4,12 @@ import {
   TextField, Select, MenuItem, FormControl, InputLabel,
   Alert, Tabs, Tab, LinearProgress, Chip, Divider,
   Table, TableBody, TableCell, TableHead, TableRow,
-  TableContainer, Paper, Accordion, AccordionSummary,
-  AccordionDetails, Dialog, DialogTitle, DialogContent,
-  DialogActions, Switch, FormControlLabel, CircularProgress
+  TableContainer, Paper, CircularProgress
 } from '@mui/material';
 import {
-  Build, Warning, CheckCircle, Timeline, BugReport,
-  ExpandMore, History, TrendingUp, Assessment,
-  Science, LocalFireDepartment, Visibility, ElectricBolt
+  Build, Warning, Timeline, BugReport,
+  History, TrendingUp, Assessment,
+  Science, LocalFireDepartment
 } from '@mui/icons-material';
 import { troubleshootingAPI } from '../services/api';
 

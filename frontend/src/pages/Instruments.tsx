@@ -1,71 +1,37 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Microscope, Settings, Activity, AlertCircle, Plus, Edit, Copy, Archive } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { Badge } from '../components/Badge';
-import { 
-  Microscope, 
-  Plus, 
-  Edit, 
-  Copy, 
-  Archive,
-  Settings,
-  Activity,
-  AlertCircle
-} from 'lucide-react';
+
+// Types
+interface InstrumentsProps {
+  onNavigate?: (path: string) => void;
+}
 
 interface VirtualInstrument {
   id: string;
   name: string;
   model: string;
-  column: string;
-  detector: string[];
   status: 'active' | 'maintenance' | 'offline';
+  location: string;
+  lastMaintenance: string;
+  nextMaintenance: string;
+  uptime: string;
+  temperature?: string;
+  pressure?: string;
+  detector: string[];
+  column: string;
+  currentMethod?: string;
   lastUsed: string;
 }
 
-interface InstrumentsProps {
-  onNavigate: (path: string) => void;
-}
+// Dead code removed - using fresh implementations below
 
-export const Instruments: React.FC<InstrumentsProps> = ({ onNavigate }) => {
+export const Instruments: React.FC<InstrumentsProps> = ({ onNavigate: _onNavigate }) => {
   const [instruments] = useState<VirtualInstrument[]>([
-    {
-      id: '1',
-      name: 'GC-2030 Main',
-      model: 'Shimadzu GC-2030',
-      column: 'Rxi-5ms (30m × 0.25mm × 0.25μm)',
-      detector: ['FID', 'MS'],
-      status: 'active',
-      lastUsed: '2 hours ago'
-    },
-    {
-      id: '2',
-      name: 'GC-2014 Plus',
-      model: 'Shimadzu GC-2014 Plus',
-      column: 'DB-624 (30m × 0.25mm × 1.4μm)',
-      detector: ['FID', 'ECD'],
-      status: 'active',
-      lastUsed: '1 day ago'
-    },
-    {
-      id: '3',
-      name: 'GC-2030 Backup',
-      model: 'Shimadzu GC-2030',
-      column: 'Rxi-5ms (30m × 0.25mm × 0.25μm)',
-      detector: ['FID'],
-      status: 'maintenance',
-      lastUsed: '1 week ago'
-    },
-    {
-      id: '4',
-      name: 'GC-2010 Plus',
-      model: 'Shimadzu GC-2010 Plus',
-      column: 'DB-1 (30m × 0.25mm × 0.25μm)',
-      detector: ['FID', 'TCD'],
-      status: 'offline',
-      lastUsed: '2 weeks ago'
-    }
+    // Fresh start - no pre-existing instruments
   ]);
 
   const [showCreateForm, setShowCreateForm] = useState(false);

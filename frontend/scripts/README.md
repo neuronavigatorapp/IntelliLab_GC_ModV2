@@ -117,3 +117,4 @@ DEBUG=puppeteer:* npm run demo:gif
 - Demo duration is approximately 12 seconds
 - Resolution is set to 1280×720 for optimal quality
 - Frame rate is 10 FPS for smooth animation
+

@@ -229,7 +229,7 @@ class MethodPresetsService:
     def create_preset(self, preset_data: MethodPresetCreate) -> MethodPreset:
         """Create a new method preset."""
         with SessionLocal() as db:
-            db_preset = MethodPresetModel(**preset_data.dict())
+            db_preset = MethodPresetModel(**preset_data.model_dump())
             db.add(db_preset)
             db.commit()
             db.refresh(db_preset)

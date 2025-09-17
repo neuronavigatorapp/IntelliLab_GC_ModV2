@@ -1,6 +1,7 @@
+// This file has been removed as it is no longer used in routing.
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/Badge';
 import { LineChart } from '../components/LineChart';
@@ -10,7 +11,6 @@ import {
   RotateCcw, 
   ArrowLeft,
   CheckCircle,
-  Clock,
   BarChart3
 } from 'lucide-react';
 

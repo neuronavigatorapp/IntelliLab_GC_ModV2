@@ -33,7 +33,7 @@ async def create_sample(
     try:
         sample = sample_tracking_service.create_sample(
             db=db,
-            sample_data=sample_data.dict(),
+            sample_data=sample_data.model_dump(),
             created_by=current_user.id
         )
         return sample
@@ -259,7 +259,7 @@ async def create_batch_samples(
     try:
         samples = sample_tracking_service.create_batch_samples(
             db=db,
-            samples_data=[sample.dict() for sample in samples_data],
+            samples_data=[sample.model_dump() for sample in samples_data],
             created_by=current_user.id
         )
         return samples

@@ -1,0 +1,39 @@
+{
+  "name": "intellilab-gc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IntelliLab GC - Professional Gas Chromatography Analysis Platform",
+  "main": "index.js",
+  "scripts": {
+    "eslint:baseline": "node .eslint-baseline.js",
+    "placeholder:check": "node scripts/placeholder-guard.js",
+    "placeholder:check:verbose": "node scripts/placeholder-guard.js --verbose",
+    "pre-commit": "node scripts/pre-commit-hook.js",
+    "quality:check:all": "npm run placeholder:check && npm run eslint:baseline && cd frontend && npm run quality:check",
+    "install:all": "cd frontend && npm install",
+    "build:all": "cd frontend && npm run build",
+    "test:all": "cd frontend && npm run test:all",
+    "start:frontend": "cd frontend && npm start",
+    "setup": "npm run install:all"
+  },
+  "devDependencies": {
+    "glob": "^10.3.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/intellilab-gc.git"
+  },
+  "keywords": [
+    "gas-chromatography",
+    "analytical-chemistry",
+    "laboratory",
+    "scientific-instruments",
+    "data-analysis"
+  ],
+  "author": "IntelliLab Team",
+  "license": "UNLICENSED"
+}

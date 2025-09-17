@@ -2,13 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enterprise Premium Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+/* Premium CSS Enhancements */
+@import url('./premium-styles.css');
+
+/* Agilent-Level Enterprise System */
+@import url('./styles/agilent-enterprise.css');
+
 @layer base {
   :root {
-    /* IntelliLab GC Brand Colors */
-    --brand-primary: 210 100% 25%; /* Deep laboratory blue */
-    --brand-accent: 45 100% 50%;   /* Gold accent */
-    --brand-secondary: 210 40% 15%; /* Darker blue */
+    /* IntelliLab GC Professional Brand Colors - Teal/Blue Theme */
+    --brand-primary: 174 72% 45%;    /* Teal #14b8a6 */
+    --brand-accent: 188 96% 53%;     /* Cyan #22d3ee */
+    --brand-secondary: 220 13% 18%;  /* Slate-800 #1e293b */
+    --brand-tertiary: 215 28% 17%;   /* Slate-700 #334155 */
     
+    /* Light theme (rarely used - we'll focus on dark) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -28,34 +39,46 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: var(--brand-primary);
-    --radius: 1rem;
-    
-    /* Custom brand variables */
-    --brand-primary-rgb: 30, 64, 175;
-    --brand-accent-rgb: 251, 191, 36;
-    --brand-secondary-rgb: 30, 41, 59;
+    --radius: 0.75rem;
   }
 
+  /* IntelliLab GC Dark Professional Theme */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    /* Main backgrounds - deep navy/charcoal gradient */
+    --background: 222 84% 5%;        /* Very dark slate #0f172a */
+    --foreground: 210 40% 98%;       /* Near white */
+    
+    /* Card system - elevated surfaces */
+    --card: 215 28% 17%;             /* Slate-700 #334155 */
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 215 25% 15%;          /* Darker slate */
     --popover-foreground: 210 40% 98%;
-    --primary: 210 100% 25%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
+    
+    /* Brand colors in dark theme */
+    --primary: var(--brand-primary);        /* Teal */
+    --primary-foreground: 220 13% 18%;      /* Dark slate text */
+    --secondary: 215 25% 27%;               /* Lighter slate */
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 45 100% 50%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 62.8% 30.6%;
+    
+    /* UI element colors */
+    --muted: 215 25% 15%;                   /* Muted background */
+    --muted-foreground: 217.9 10.6% 64.9%; /* Muted text */
+    --accent: var(--brand-accent);          /* Cyan accent */
+    --accent-foreground: 220 13% 18%;
+    
+    /* Status colors */
+    --destructive: 0 62.8% 50.6%;          /* Red for errors */
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 210 100% 25%;
+    
+    /* Borders and inputs */
+    --border: 215 25% 27%;                  /* Subtle borders */
+    --input: 215 25% 27%;                   /* Input backgrounds */
+    --ring: var(--brand-primary);          /* Focus rings in teal */
+    
+    /* Success and warning colors */
+    --success: 142 76% 36%;                 /* Green */
+    --warning: 38 92% 50%;                  /* Orange */
+    --info: var(--brand-accent);           /* Cyan for info */
   }
 }
 
@@ -70,54 +93,151 @@
 }
 
 @layer components {
-  .glass-effect {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20;
-  }
-  
+  /* Premium Gradients */
   .brand-gradient {
-    background: linear-gradient(135deg, hsl(var(--brand-primary)) 0%, hsl(var(--brand-secondary)) 100%);
-  }
-  
-  .accent-gradient {
-    background: linear-gradient(135deg, hsl(var(--brand-accent)) 0%, hsl(35, 100%, 60%) 100%);
-  }
-  
-  .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
-  }
-  
-  .button-primary {
-    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 py-2 rounded-lg transition-colors duration-200;
-  }
-  
-  .button-secondary {
-    @apply border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium px-6 py-2 rounded-lg transition-colors duration-200;
-  }
-  
-  .hero-gradient {
     background: linear-gradient(135deg, 
       hsl(var(--brand-primary)) 0%, 
-      hsl(var(--brand-secondary)) 50%, 
-      hsl(var(--brand-primary)) 100%);
+      hsl(var(--brand-secondary)) 100%);
   }
-  
-  .status-ready {
-    @apply bg-green-100 text-green-800 border-green-200;
+
+  /* Ultra Premium Glass Morphism */
+  .backdrop-premium {
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.05) inset;
   }
-  
-  .status-warning {
-    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+
+  .backdrop-dark-premium {
+    backdrop-filter: blur(24px) saturate(180%);
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 1px 0 rgba(255, 255, 255, 0.1) inset;
   }
-  
-  .status-error {
-    @apply bg-red-100 text-red-800 border-red-200;
+
+  /* Scientific Shadows */
+  .shadow-enterprise {
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.08),
+      0 1px 4px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
   }
-  
-  .feature-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20;
+
+  .shadow-enterprise-lg {
+    box-shadow: 
+      0 8px 40px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
   }
-  
-  .tip-card {
-    @apply bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4;
+
+  .shadow-enterprise-xl {
+    box-shadow: 
+      0 16px 64px rgba(0, 0, 0, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  }
+
+  /* Premium Pattern Overlays */
+  .pattern-dots {
+    background-image: radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.15) 1px, transparent 0);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
+  }
+
+  .pattern-grid {
+    background-image: 
+      linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Enterprise Animations */
+  .animate-enterprise-fade-in {
+    animation: enterprise-fade-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes enterprise-fade-in {
+    from { 
+      opacity: 0; 
+      transform: translateY(24px) scale(0.98); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0) scale(1); 
+    }
+  }
+
+  /* Advanced Glass Cards */
+  .enterprise-glass-card {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(249, 250, 251, 0.9) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%) brightness(1.05);
+    border: 2px solid transparent;
+    border-image: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.4),
+      rgba(59, 130, 246, 0.2),
+      rgba(255, 255, 255, 0.3)
+    ) 1;
+    box-shadow: 
+      0 8px 32px rgba(59, 130, 246, 0.08),
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .enterprise-glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .enterprise-glass-card:hover::before {
+    left: 100%;
+  }
+
+  /* Professional Data Visualization */
+  .scientific-chart-container {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(248, 250, 252, 0.95) 100%
+    );
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow: 
+      0 4px 24px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(10px);
+    position: relative;
+  }
+
+  .scientific-chart-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.02) 0%,
+      transparent 50%,
+      rgba(139, 92, 246, 0.02) 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
   }
 }

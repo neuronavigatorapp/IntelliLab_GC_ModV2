@@ -7,8 +7,9 @@ import {
   Thermometer, 
   Zap, 
   Microscope,
-  Settings,
-  Menu
+  Eye,
+  User,
+  Calculator
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -17,7 +18,7 @@ interface SidebarProps {
   currentPath: string;
   onNavigate: (path: string) => void;
   collapsed?: boolean;
-  onToggleCollapse?: () => void;
+  _onToggleCollapse?: () => void;
 }
 
 const iconMap = {
@@ -26,13 +27,16 @@ const iconMap = {
   Thermometer,
   Zap,
   Microscope,
+  Eye,
+  User,
+  Calculator,
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({
   currentPath,
   onNavigate,
   collapsed = false,
-  onToggleCollapse
+  _onToggleCollapse
 }) => {
   return (
     <div 
@@ -87,7 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
-        {navigationItems.map((item, index) => {
+        {navigationItems.map((item, _index) => {
           const Icon = iconMap[item.icon as keyof typeof iconMap];
           const isActive = currentPath === item.path;
           

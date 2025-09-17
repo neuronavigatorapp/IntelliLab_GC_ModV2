@@ -7,8 +7,8 @@ import {
   InputLabel, LinearProgress, Divider
 } from '@mui/material';
 import {
-  Add, Delete, TrendingUp, Warning, CheckCircle,
-  Science, History, Build, Assessment
+  Add, Delete,
+  Science, Assessment
 } from '@mui/icons-material';
 
 interface PeakEntry {
@@ -62,15 +62,15 @@ export const GCFleetManager: React.FC = () => {
   const [columnID, setColumnID] = useState(0.25);
   const [carrierGas, setCarrierGas] = useState('Helium');
   const [flowRate, setFlowRate] = useState(1.2);
-  const [inletTemp, setInletTemp] = useState(250);
-  const [inletPressure, setInletPressure] = useState(25);
-  const [ovenInitial, setOvenInitial] = useState(40);
-  const [ovenFinal, setOvenFinal] = useState(300);
-  const [rampRate, setRampRate] = useState(10);
-  const [detectorType, setDetectorType] = useState('FID');
-  const [detectorTemp, setDetectorTemp] = useState(300);
-  const [baselineNoise, setBaselineNoise] = useState(20);
-  const [baselineDrift, setBaselineDrift] = useState(5);
+  const [inletTemp] = useState(250);
+  const [inletPressure] = useState(25);
+  const [ovenInitial] = useState(40);
+  const [ovenFinal] = useState(300);
+  const [rampRate] = useState(10);
+  const [detectorType] = useState('FID');
+  const [detectorTemp] = useState(300);
+  const [baselineNoise] = useState(20);
+  const [baselineDrift] = useState(5);
 
   useEffect(() => {
     loadInstruments();

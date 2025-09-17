@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -18,15 +18,19 @@ import {
   InputLabel,
   Tooltip,
 } from '@mui/material';
-import { Science, Speed, TrendingUp, LocalFireDepartment, Info as InfoIcon } from '@mui/icons-material';
+import { Science, Speed, TrendingUp, Info as InfoIcon } from '@mui/icons-material';
 import { calculateSplitRatio, SplitRatioOutput } from '../services/api';
 import { useFormPersistence } from '../hooks/useFormPersistence';
+import { useBulletproofLogger, withBulletproofLogging } from '../utils/bulletproofLogger';
 
 interface SplitRatioCalculatorProps {
   teachingMode?: boolean;
 }
 
-export const SplitRatioCalculator: React.FC<SplitRatioCalculatorProps> = ({ teachingMode = false }) => {
+const SplitRatioCalculatorComponent: React.FC<SplitRatioCalculatorProps> = ({ teachingMode = false }) => {
+  // =================== BULLETPROOF LOGGING ===================
+  const logger = useBulletproofLogger('SplitRatioCalculator');
+  
   const { values, updateField, clearSaved } = useFormPersistence({
     splitRatio: 50,
     columnFlow: 1.0,
@@ -42,31 +46,59 @@ export const SplitRatioCalculator: React.FC<SplitRatioCalculatorProps> = ({ teac
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // =================== BULLETPROOF INITIALIZATION ===================
   useEffect(() => {
-    const calculate = async () => {
-      if (values.columnFlow <= 0) return;
-      
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const result = await calculateSplitRatio({
-          split_ratio: values.splitRatio,
-          column_flow_rate: values.columnFlow,
-          carrier_gas: values.carrierGas as "Helium" | "Hydrogen" | "Nitrogen",
-        }, teachingMode);
-        setResults(result);
-      } catch (err) {
-        setError('Unable to connect to calculation service. Please ensure the backend is running.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    logger.info('Component initialized', { 
+      teachingMode, 
+      initialValues: values 
+    });
+  }, []);
 
+  // =================== BULLETPROOF CALCULATION ===================
+  const calculate = useCallback(async () => {
+    if (values.columnFlow <= 0) {
+      logger.warn('Skipping calculation - invalid column flow', { columnFlow: values.columnFlow });
+      return;
+    }
+    
+    const timerId = logger.startTimer();
+    logger.info('Starting split ratio calculation', { values });
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const result = await calculateSplitRatio({
+        split_ratio: values.splitRatio,
+        column_flow_rate: values.columnFlow,
+        carrier_gas: values.carrierGas as "Helium" | "Hydrogen" | "Nitrogen",
+      }, teachingMode);
+      
+      setResults(result);
+      logger.info('Calculation completed successfully', { result });
+      logger.trackCacheHit(); // API call succeeded
+      
+    } catch (err: any) {
+      const errorMsg = 'Unable to connect to calculation service. Please ensure the backend is running.';
+      setError(errorMsg);
+      logger.error('Calculation failed', { 
+        error: errorMsg, 
+        values, 
+        teachingMode,
+        stack: err instanceof Error ? err.stack : String(err)
+      });
+      logger.trackCacheMiss(); // API call failed
+      
+    } finally {
+      setLoading(false);
+      logger.endTimer(timerId, 'calculation');
+    }
+  }, [values.splitRatio, values.columnFlow, values.carrierGas, teachingMode, logger]);
+
+  useEffect(() => {
     const debounceTimer = setTimeout(calculate, 300);
     return () => clearTimeout(debounceTimer);
-  }, [values.splitRatio, values.columnFlow, values.carrierGas, teachingMode]);
+  }, [calculate]);
 
   const getEfficiencyColor = (score: number) => {
     if (score >= 90) return '#4caf50';
@@ -302,3 +334,9 @@ export const SplitRatioCalculator: React.FC<SplitRatioCalculatorProps> = ({ teac
     </Box>
   );
 };
+
+// =================== BULLETPROOF EXPORT ===================
+export const SplitRatioCalculator = withBulletproofLogging(
+  SplitRatioCalculatorComponent,
+  'SplitRatioCalculator'
+);

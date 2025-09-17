@@ -5,11 +5,10 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Switch } from '../components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+
 import { ResultCard } from '../components/ResultCard';
-import { Badge } from '../components/Badge';
 import { Calculator, HelpCircle } from 'lucide-react';
-import { validatePositive, validateRequired } from '../lib/validators';
+import { validatePositive } from '../lib/validators';
 import { useToast } from '../hooks/use-toast';
 
 interface DetectionLimitProps {
@@ -68,7 +67,6 @@ export const DetectionLimit: React.FC<DetectionLimitProps> = ({ onNavigate }) =>
     const signal = parseFloat(formData.signalIntensity);
     const noise = parseFloat(formData.noiseLevel);
     const concentration = parseFloat(formData.sampleConcentration);
-    const volume = parseFloat(formData.injectionVolume);
 
     // Professional detection limit calculation (3σ method)
     const signalToNoiseRatio = signal / noise;

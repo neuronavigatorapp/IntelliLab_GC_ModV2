@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Dict, Any
 import numpy as np
 import math
@@ -9,8 +9,17 @@ import logging
 import traceback
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from database import get_db, GCInstrument, GCRun, PeakData, MaintenanceRecord, CalculationLog, TroubleshootingLog, DetectorPerformance, init_database
+from backend.database import get_db, GCInstrument, GCRun, PeakData, MaintenanceRecord, CalculationLog, TroubleshootingLog, DetectorPerformance, init_database
 from scipy import stats, signal
+
+# Import chromatogram analysis routes
+from backend.api.chromatogram_routes import router as chromatogram_router
+
+# Import GC Sandbox routes
+from backend.app.api.gc_sandbox_routes import router as gc_sandbox_router
+
+# Temporarily disable OCR routes due to import issues
+# from backend.app.api.ocr import router as ocr_router
 
 # Configure logging
 logging.basicConfig(
@@ -24,6 +33,15 @@ app = FastAPI(
     description="Production-ready GC calculations with comprehensive error handling",
     version="1.0.0"
 )
+
+# Include the chromatogram analysis routes
+app.include_router(chromatogram_router, prefix="/api/chromatogram", tags=["chromatogram"])
+
+# Include the GC Sandbox routes
+app.include_router(gc_sandbox_router, tags=["GC Sandbox"])
+
+# Temporarily disable OCR routes due to import issues
+# app.include_router(ocr_router, tags=["OCR Processing"])
 
 # Global exception handler
 @app.exception_handler(Exception)
@@ -64,13 +82,15 @@ class SplitRatioInput(BaseModel):
         description="Carrier gas type"
     )
     
-    @validator('split_ratio')
+    @field_validator('split_ratio')
+    @classmethod
     def validate_split_ratio(cls, v):
         if v < 1 or v > 500:
             raise ValueError('Split ratio must be between 1 and 500')
         return v
     
-    @validator('column_flow_rate')
+    @field_validator('column_flow_rate')
+    @classmethod
     def validate_flow_rate(cls, v):
         if v <= 0:
             raise ValueError('Column flow rate must be positive')
@@ -91,12 +111,12 @@ class SplitRatioOutput(BaseModel):
 
 class DetectionLimitInput(BaseModel):
     peak_areas: List[float] = Field(
-        min_items=3, max_items=50,
+        min_length=3, max_length=50,
         description="Peak areas from chromatogram (minimum 3 points)",
         example=[100, 200, 300, 400, 500]
     )
     concentrations: List[float] = Field(
-        min_items=3, max_items=50,
+        min_length=3, max_length=50,
         description="Known concentrations in ppm or ppb (minimum 3 points)",
         example=[1, 2, 3, 4, 5]
     )
@@ -110,7 +130,8 @@ class DetectionLimitInput(BaseModel):
         description="Detection limit method"
     )
     
-    @validator('peak_areas')
+    @field_validator('peak_areas')
+    @classmethod
     def validate_peak_areas(cls, v):
         if any(x < 0 for x in v):
             raise ValueError('Peak areas must be non-negative')
@@ -120,9 +141,10 @@ class DetectionLimitInput(BaseModel):
             raise ValueError('Too many duplicate peak area values detected')
         return v
     
-    @validator('concentrations')
-    def validate_concentrations(cls, v, values):
-        if 'peak_areas' in values and len(v) != len(values['peak_areas']):
+    @field_validator('concentrations')
+    @classmethod
+    def validate_concentrations(cls, v, info):
+        if info.data and 'peak_areas' in info.data and len(v) != len(info.data['peak_areas']):
             raise ValueError('Number of concentrations must match number of peak areas')
         if any(x <= 0 for x in v):
             raise ValueError('All concentrations must be positive')
@@ -837,18 +859,14 @@ def identify_ghost_peak(
     
     # SEPTUM BLEED - Based on inlet temp and run count
     elif inlet_temp > 280 and retention_time_min < 2.0:
-        peak_type = "Septum Bleed"
-        confidence_percent = 85
-        evidence.append("High inlet temperature with early elution")
-        evidence.append("Characteristic of septum degradation products")
-        root_cause = f"Inlet at {inlet_temp}°C degrading septum"
-        solution = "Replace septum and reduce inlet temperature to 250°C"
-        
-        identification["peak_type"] = peak_type
-        identification["confidence_percent"] = confidence_percent
-        identification["evidence"] = evidence
-        identification["root_cause"] = root_cause
-        identification["solution"] = solution
+        identification["peak_type"] = "Septum Bleed"
+        identification["confidence_percent"] = 85
+        identification["evidence"] = [
+            "High inlet temperature with early elution",
+            "Characteristic of septum degradation products"
+        ]
+        identification["root_cause"] = f"Inlet at {inlet_temp}°C degrading septum"
+        identification["solution"] = "Replace septum and reduce inlet temperature to 250°C"
     elif inlet_temp > 280:
         # Septum degradation rate = k * exp(-Ea/RT) * puncture_count
         puncture_stress = run_number * (inlet_temp / 250) ** 2

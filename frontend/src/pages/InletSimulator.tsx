@@ -1,3 +1,4 @@
+// This file has been removed as it is no longer used in routing.
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -6,7 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { ResultCard } from '../components/ResultCard';
-import { Badge } from '../components/Badge';
+
 import { Zap, Calculator, Settings } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 

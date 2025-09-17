@@ -2,9 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './index.html',
-    './src/**/*.{ts,tsx,js,jsx}',
+    './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
   theme: {
     container: {
@@ -16,6 +17,26 @@ module.exports = {
     },
     extend: {
       colors: {
+        // IntelliLab GC Brand Identity - Dark theme with teal/blue accents
+        brand: {
+          primary: "hsl(var(--brand-primary))",
+          accent: "hsl(var(--brand-accent))", 
+          secondary: "hsl(var(--brand-secondary))",
+        },
+        // Enhanced color palette for dark professional theme
+        slate: {
+          950: '#020617',
+        },
+        teal: {
+          400: '#2dd4bf',
+          500: '#14b8a6',
+          600: '#0d9488',
+        },
+        cyan: {
+          400: '#22d3ee',
+          500: '#06b6d4',
+        },
+        // shadcn/ui color system
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -49,12 +70,6 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // IntelliLab GC Brand Colors
-        brand: {
-          primary: "hsl(210, 100%, 25%)", // Deep laboratory blue
-          accent: "hsl(45, 100%, 50%)",   // Gold accent
-          secondary: "hsl(210, 40%, 15%)", // Darker blue
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -78,17 +93,36 @@ module.exports = {
           "0%": { opacity: 0, transform: "translateX(-20px)" },
           "100%": { opacity: 1, transform: "translateX(0)" },
         },
-        "stagger-in": {
-          "0%": { opacity: 0, transform: "translateY(20px)" },
-          "100%": { opacity: 1, transform: "translateY(0)" },
+        "shimmer": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.3s ease-out",
+        "fade-in": "fade-in 0.5s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
-        "stagger-in": "stagger-in 0.4s ease-out",
+        "shimmer": "shimmer 2s infinite",
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      boxShadow: {
+        'enterprise': '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05)',
+        'enterprise-lg': '0 8px 40px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)',
+        'enterprise-xl': '0 16px 64px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1)',
+        'glow-teal': '0 0 20px rgba(20, 184, 166, 0.3)',
+        'glow-blue': '0 0 20px rgba(34, 211, 238, 0.3)',
+      },
+      backdropBlur: {
+        'xs': '2px',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'intellilab-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e293b  50%, #334155 100%)',
       },
     },
   },

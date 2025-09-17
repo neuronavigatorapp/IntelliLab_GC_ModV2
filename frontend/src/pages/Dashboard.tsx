@@ -1,10 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/Badge';
-import { StatCard } from '../components/StatCard';
 import { TipCard } from '../components/TipCard';
+import { ScientificChart, RealTimeDataDisplay, ScientificProgress } from '../components/ScientificVisualization';
+import { EnterpriseSystemStatus, SystemResourceMonitor } from '../components/EnterpriseStatusSystem';
 import { 
   BarChart3, 
   Microscope, 
@@ -12,8 +9,9 @@ import {
   Play,
   ArrowRight,
   TrendingUp,
-  Users,
-  Zap
+  Activity,
+  Thermometer,
+  Gauge
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -42,136 +40,231 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
     }
   ];
 
-  const stats = [
-    {
-      title: "Active Instruments",
-      value: "12",
-      description: "Connected GC systems",
-      icon: <Microscope className="h-4 w-4" />,
-      trend: { value: 8, isPositive: true }
-    },
-    {
-      title: "Methods Optimized",
-      value: "47",
-      description: "This month",
-      icon: <TrendingUp className="h-4 w-4" />,
-      trend: { value: 12, isPositive: true }
-    },
-    {
-      title: "Users Online",
-      value: "23",
-      description: "Active sessions",
-      icon: <Users className="h-4 w-4" />,
-      trend: { value: 5, isPositive: true }
-    }
-  ];
+
+
+  // Sample chromatogram data
+  const sampleData = Array.from({ length: 100 }, (_, i) => ({
+    x: i * 0.2,
+    y: Math.random() * 1000 + Math.sin(i * 0.1) * 500 + 200
+  }));
 
   return (
-    <div className="space-y-8" data-testid="dashboard">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="text-center space-y-8 py-16">
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Professional GC Analysis Platform
-            </h1>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Advanced gas chromatography simulation, optimization, and troubleshooting toolkit for analytical professionals.
+    <div className="space-y-10" data-testid="dashboard">
+      {/* Ultra-Premium Hero Section */}
+      <div className="relative overflow-hidden">
+        {/* Ambient background effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-indigo-50/20 rounded-3xl" />
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-br from-blue-400/5 to-purple-400/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-gradient-to-br from-indigo-400/5 to-cyan-400/5 rounded-full blur-3xl" />
+        
+        <div className="relative z-10 text-center space-y-10 py-16">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h1 className="enterprise-h1 leading-tight">
+                IntelliLab GC Enterprise
+              </h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto shadow-lg" />
+            </div>
+            <p className="enterprise-body-lg max-w-5xl mx-auto leading-relaxed text-gray-600">
+              Advanced gas chromatography simulation, optimization, and troubleshooting platform designed for analytical professionals and research laboratories worldwide. Experience enterprise-grade analytical precision with AI-powered insights.
             </p>
           </div>
 
-          {/* Feature Badges */}
-          <div>
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 shadow-sm">
-                Method Development
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200 shadow-sm">
-                Virtual Instruments
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200 shadow-sm">
-                Real-time Simulation
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-800 border border-orange-200 shadow-sm">
-                Professional Tools
-              </span>
-            </div>
+          {/* Ultra-Premium Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button
+              className="enterprise-btn enterprise-btn-primary px-8 py-4 text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              onClick={() => onNavigate('/demo')}
+            >
+              <Play className="h-5 w-5 mr-3" />
+              Launch Chromatogram Analysis
+            </button>
+            <button
+              className="enterprise-btn enterprise-btn-secondary px-8 py-4 text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              onClick={() => onNavigate('/instruments')}
+            >
+              Configure Virtual Instrument
+              <ArrowRight className="h-5 w-5 ml-3" />
+            </button>
           </div>
+        </div>
+      </div>
 
-          {/* CTAs */}
-          <div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                size="lg"
-                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0"
-                onClick={() => onNavigate('/demo')}
-              >
-                <Play className="h-5 w-5 mr-2" />
-                Try Live Chromatogram Demo
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-8 py-4 text-lg font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white hover:shadow-lg transition-all duration-200"
-                onClick={() => onNavigate('/instruments')}
-              >
-                Build Virtual GC
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-            </div>
+      {/* Enterprise System Status - Premium Design */}
+      <div className="enterprise-glass-card p-8">
+        <EnterpriseSystemStatus
+          isOnline={true}
+          lastUpdated={new Date()}
+          systemHealth="excellent"
+          temperature={25.4}
+          pressure={14.7}
+          flowRate={1.2}
+        />
+      </div>
+
+      {/* Real-time Data Dashboard - Professional Grid */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="enterprise-h3">Real-Time Analytics</h2>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="enterprise-mono">Live Data Stream</span>
           </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <RealTimeDataDisplay
+            title="Column Temperature"
+            value={150.5}
+            unit="°C"
+            trend="stable"
+            status="normal"
+          />
+          <RealTimeDataDisplay
+            title="Injection Volume"
+            value={1.0}
+            unit="μL"
+            trend="stable"
+            status="normal"
+          />
+          <RealTimeDataDisplay
+            title="Carrier Flow Rate"
+            value={1.2}
+            unit="mL/min"
+            trend="up"
+            status="normal"
+          />
+          <RealTimeDataDisplay
+            title="Detector Response"
+            value={98.7}
+            unit="%"
+            trend="stable"
+            status="normal"
+          />
+        </div>
+      </div>
 
-          {/* Info Banner */}
-          <div>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 max-w-2xl mx-auto shadow-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <p className="text-sm text-blue-800 font-medium">
-                  <strong>LinkedIn Demo Access:</strong> Full functionality for core GC calculation and simulation tools.
-                </p>
+      {/* Advanced Scientific Visualization */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="enterprise-h3">Scientific Data Visualization</h2>
+          <div className="flex items-center gap-4">
+            <button className="enterprise-btn enterprise-btn-secondary px-4 py-2 text-sm">
+              <Thermometer className="h-4 w-4 mr-2" />
+              Export Data
+            </button>
+            <button className="enterprise-btn enterprise-btn-secondary px-4 py-2 text-sm">
+              <Gauge className="h-4 w-4 mr-2" />
+              Full Screen
+            </button>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <div className="scientific-chart-container">
+            <ScientificChart
+              title="Real-time Chromatogram"
+              data={sampleData}
+              xLabel="Retention Time (min)"
+              yLabel="Detector Response (mV)"
+              showGrid={true}
+              showPeaks={true}
+              color="#3b82f6"
+            />
+          </div>
+          
+          <div className="space-y-6">
+            <div className="enterprise-glass-card p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="enterprise-h4">Method Progress</h3>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <Activity className="h-4 w-4" />
+                  <span className="enterprise-mono">Real-time</span>
+                </div>
+              </div>
+              <div className="space-y-6">
+                <ScientificProgress
+                  label="Sample Injection"
+                  current={100}
+                  total={100}
+                  unit="%"
+                  color="#10b981"
+                />
+                <ScientificProgress
+                  label="Separation Analysis"
+                  current={73.2}
+                  total={100}
+                  unit="%"
+                  color="#3b82f6"
+                />
+                <ScientificProgress
+                  label="Detection & Integration"
+                  current={45.8}
+                  total={100}
+                  unit="%"
+                  color="#f59e0b"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat, index) => (
-            <div key={stat.title}>
-              <StatCard {...stat} />
-            </div>
-          ))}
+      {/* System Resources Monitor - Professional Layout */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="enterprise-h3">System Resources</h2>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+            <span className="enterprise-mono">Monitoring Active</span>
+          </div>
+        </div>
+        <div className="enterprise-glass-card p-6">
+          <SystemResourceMonitor />
         </div>
       </div>
 
-      {/* Feature Cards Row */}
-      <div>
+      {/* Ultra-Premium Feature Cards */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="enterprise-h3">Platform Features</h2>
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-green-500" />
+            <span className="text-sm text-green-600 font-medium">All Systems Operational</span>
+          </div>
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {featureCards.map((card, index) => (
-            <div key={card.title}>
-              <Card className="card-hover bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${
-                      index === 0 ? 'from-blue-50 to-blue-100' :
-                      index === 1 ? 'from-green-50 to-green-100' :
-                      'from-purple-50 to-purple-100'
-                    } group-hover:scale-110 transition-transform duration-200`}>
+            <div key={card.title} className="group cursor-pointer">
+              <div className="enterprise-glass-card p-8 hover:scale-105 transition-all duration-300 animate-enterprise-fade-in">
+                <div className="space-y-6">
+                  <div className="flex items-start justify-between">
+                    <div className={`p-4 rounded-2xl bg-gradient-to-br shadow-lg ${
+                      index === 0 ? 'from-blue-500 to-blue-600 shadow-blue-500/25' :
+                      index === 1 ? 'from-green-500 to-green-600 shadow-green-500/25' :
+                      'from-purple-500 to-purple-600 shadow-purple-500/25'
+                    } group-hover:scale-110 transition-transform duration-300`}>
                       {card.icon}
                     </div>
-                    <CardTitle className="text-xl font-semibold text-gray-900">
-                      {card.title}
-                    </CardTitle>
+                    <div className="w-2 h-2 bg-green-400 rounded-full shadow-lg shadow-green-400/50" />
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-gray-600 text-base leading-relaxed">
-                    {card.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                  <div className="space-y-4">
+                    <h3 className="enterprise-h4 group-hover:text-blue-600 transition-colors">
+                      {card.title}
+                    </h3>
+                    <p className="enterprise-body text-gray-600 leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+                  <div className="pt-4 border-t border-gray-100">
+                    <div className="flex items-center text-sm text-blue-600 font-medium">
+                      <span>Learn more</span>
+                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>

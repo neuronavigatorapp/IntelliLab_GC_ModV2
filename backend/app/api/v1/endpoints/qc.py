@@ -45,7 +45,7 @@ async def create_or_update_qc_target(target: QCTarget, current_user: User = Depe
                 action="qc_target_upserted",
                 entity_type="qcRecord",
                 entity_id=result.id,
-                details={"target": result.dict()}
+                details={"target": result.model_dump()}
             )
         except Exception:
             pass

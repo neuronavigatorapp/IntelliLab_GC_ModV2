@@ -287,6 +287,15 @@ def init_database():
     finally:
         db.close()
 
+# Database session dependency
+def get_db():
+    """Dependency to get database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 # Initialize database on import
 if __name__ == "__main__":
     init_database()

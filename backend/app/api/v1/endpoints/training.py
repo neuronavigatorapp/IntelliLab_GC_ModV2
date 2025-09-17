@@ -63,7 +63,7 @@ async def update_lesson(
     lesson_data: CreateLesson
 ):
     """Update a training lesson"""
-    lesson = training_service.update_lesson(lesson_id, lesson_data.dict())
+    lesson = training_service.update_lesson(lesson_id, lesson_data.model_dump())
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
     
@@ -113,7 +113,7 @@ async def update_exercise(
     exercise_data: CreateExercise
 ):
     """Update a training exercise"""
-    exercise = training_service.update_exercise(exercise_id, exercise_data.dict())
+    exercise = training_service.update_exercise(exercise_id, exercise_data.model_dump())
     if not exercise:
         raise HTTPException(status_code=404, detail="Exercise not found")
     

@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 
 // Enterprise-grade status card matching Agilent/Thermo instrument panels
-const StatusCard = styled(Card)(({ theme }) => ({
+const StatusCard = styled(Card)(() => ({
   backgroundColor: '#ffffff',
   border: '1px solid #e5e7eb',
   borderRadius: '8px',
@@ -31,7 +31,7 @@ const StatusCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-const StatusHeader = styled(Box)(({ theme }) => ({
+const StatusHeader = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -40,7 +40,7 @@ const StatusHeader = styled(Box)(({ theme }) => ({
   borderBottom: '1px solid #f3f4f6',
 }));
 
-const MetricValue = styled(Typography)(({ theme }) => ({
+const MetricValue = styled(Typography)(() => ({
   fontSize: '2rem',
   fontWeight: 600,
   fontFamily: 'Monaco, "Lucida Console", monospace',
@@ -48,7 +48,7 @@ const MetricValue = styled(Typography)(({ theme }) => ({
   marginBottom: '4px',
 }));
 
-const MetricLabel = styled(Typography)(({ theme }) => ({
+const MetricLabel = styled(Typography)(() => ({
   fontSize: '0.75rem',
   fontWeight: 500,
   textTransform: 'uppercase',
@@ -247,6 +247,7 @@ export const EnterpriseStatusPanel: React.FC<EnterpriseStatusPanelProps> = ({
 };
 
 export default EnterpriseStatusPanel;
+
 
 
 

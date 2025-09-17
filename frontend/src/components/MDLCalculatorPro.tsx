@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import {
   Box, Card, Grid, TextField, Select, MenuItem,
   Button, Typography, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Paper,
-  Alert, Tabs, Tab, Chip, LinearProgress,
-  FormControl, InputLabel, Tooltip
+  TableContainer, TableRow, Paper,
+  Alert, Chip, LinearProgress,
+  FormControl, InputLabel
 } from '@mui/material';
-import { Science, CheckCircle, Warning, GetApp } from '@mui/icons-material';
-import { Line } from 'recharts';
+import { CheckCircle, Warning, GetApp } from '@mui/icons-material';
 
 interface MDLResult {
   mdl_stats: number;

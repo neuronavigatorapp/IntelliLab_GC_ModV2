@@ -114,7 +114,7 @@ class ReportingService:
                     'size': len(content)
                 }
             elif format.lower() in ('json',):
-                data = json.dumps({'sequence_run': sequence_run.dict()}, indent=2, default=str)
+                data = json.dumps({'sequence_run': sequence_run.model_dump()}, indent=2, default=str)
                 return {
                     'content': base64.b64encode(data.encode()).decode(),
                     'filename': f"sequence_{sequence_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
@@ -149,7 +149,7 @@ class ReportingService:
                 }
             else:
                 # JSON fallback
-                data = json.dumps([rec.dict() for rec in records], indent=2, default=str)
+                data = json.dumps([rec.model_dump() for rec in records], indent=2, default=str)
                 return {
                     'content': base64.b64encode(data.encode()).decode(),
                     'filename': f"qc_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
@@ -510,7 +510,7 @@ class ReportingService:
                 "format": "json",
                 "generator": "IntelliLab GC"
             },
-            "calibration": calibration.dict()
+            "calibration": calibration.model_dump()
         }
         
         json_content = json.dumps(report_data, indent=2, default=str)

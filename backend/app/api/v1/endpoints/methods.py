@@ -36,7 +36,7 @@ async def get_method(method_id: int, db: Session = Depends(get_db)):
 @router.post("/", response_model=Method)
 async def create_method(payload: MethodCreate, db: Session = Depends(get_db)):
     try:
-        obj = MethodModel(**payload.dict())
+        obj = MethodModel(**payload.model_dump())
         db.add(obj)
         db.commit()
         db.refresh(obj)

@@ -283,7 +283,7 @@ class AuditService:
         ))
         
         if format.lower() == "json":
-            return json.dumps([entry.dict() for entry in entries], indent=2)
+            return json.dumps([entry.model_dump() for entry in entries], indent=2)
         elif format.lower() == "csv":
             import csv
             import io

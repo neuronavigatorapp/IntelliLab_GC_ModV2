@@ -136,3 +136,4 @@ To generate actual GIF:
 
 // Run the demo generation
 generateDemoGif().catch(console.error);
+

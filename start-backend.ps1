@@ -11,4 +11,4 @@ if ($port8000) {
 }
 
 Write-Host "Starting backend server on port 8000..." -ForegroundColor Green
-python -m uvicorn main:app --reload --port 8000
+py -m uvicorn main:app --reload --port 8000

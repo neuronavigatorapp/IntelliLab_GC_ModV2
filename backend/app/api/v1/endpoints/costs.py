@@ -38,7 +38,7 @@ async def create_cost_item(
     try:
         cost_item = cost_service.create_cost_item(
             db=db,
-            cost_data=cost_data.dict()
+            cost_data=cost_data.model_dump()
         )
         return cost_item
     except Exception as e:

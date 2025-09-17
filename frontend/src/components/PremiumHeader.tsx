@@ -7,8 +7,7 @@ import {
   IconButton,
   Badge,
   Tooltip,
-  Avatar,
-  Button
+  Avatar
 } from '@mui/material';
 import {
   Notifications,
@@ -43,7 +42,7 @@ const statusPulse = keyframes`
 `;
 
 // Styled components for premium look
-const PremiumToolbar = styled(Toolbar)(({ theme }) => ({
+const PremiumToolbar = styled(Toolbar)(() => ({
   background: 'transparent',
   position: 'relative',
   zIndex: 10,
@@ -54,7 +53,7 @@ const PremiumToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
-const LogoContainer = styled(Box)(({ theme }) => ({
+const LogoContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
@@ -65,7 +64,7 @@ const LogoContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const LogoIcon = styled(Box)(({ theme }) => ({
+const LogoIcon = styled(Box)(() => ({
   width: '50px',
   height: '50px',
   background: `
@@ -120,13 +119,13 @@ const LogoIcon = styled(Box)(({ theme }) => ({
   },
 }));
 
-const BrandText = styled(Box)(({ theme }) => ({
+const BrandText = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
 }));
 
-const StatusIndicator = styled(Box)(({ theme }) => ({
+const StatusIndicator = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
@@ -137,7 +136,7 @@ const StatusIndicator = styled(Box)(({ theme }) => ({
   backdropFilter: 'blur(10px)',
 }));
 
-const StatusDot = styled(Box)(({ theme }) => ({
+const StatusDot = styled(Box)(() => ({
   width: '8px',
   height: '8px',
   borderRadius: '50%',
@@ -146,7 +145,7 @@ const StatusDot = styled(Box)(({ theme }) => ({
   boxShadow: '0 0 10px rgba(72, 187, 120, 0.6)',
 }));
 
-const ActionButton = styled(IconButton)(({ theme }) => ({
+const ActionButton = styled(IconButton)(() => ({
   background: 'rgba(74, 144, 226, 0.1)',
   border: '1px solid rgba(74, 144, 226, 0.2)',
   backdropFilter: 'blur(10px)',

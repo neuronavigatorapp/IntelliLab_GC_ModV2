@@ -1,0 +1,95 @@
+{
+  "name": "ASTM_D2163_LPG_Analysis",
+  "description": "ASTM D2163 - Analysis of LPG by GC with molecular sieve column and FID detection",
+  "method_parameters": {
+    "inlets": [
+      {
+        "inlet_id": "INL1",
+        "inlet_type": "split",
+        "temperature_c": 150,
+        "split_ratio": 20.0,
+        "total_flow_ml_min": 60.0,
+        "carrier_gas": "helium",
+        "gas_saver": true,
+        "gas_saver_flow_ml_min": 25.0,
+        "gas_saver_delay_min": 2.0,
+        "pulse_pressure_kpa": 250,
+        "pulse_duration_min": 0.5
+      }
+    ],
+    "columns": [
+      {
+        "column_id": "COL1_MOLECULAR_SIEVE",
+        "length_m": 6.0,
+        "inner_diameter_mm": 2.0,
+        "film_thickness_um": 0.0,
+        "stationary_phase": "PLOT_MOLECULAR_SIEVE_5A",
+        "flow_mode": "constant_flow",
+        "flow_ml_min": 3.0,
+        "average_velocity_cm_s": 0,
+        "backflush_enabled": true,
+        "backflush_start_min": 8.0,
+        "backflush_duration_min": 2.0
+      },
+      {
+        "column_id": "COL2_ALUMINA_PLOT",
+        "length_m": 50.0,
+        "inner_diameter_mm": 0.53,
+        "film_thickness_um": 10.0,
+        "stationary_phase": "PLOT_ALUMINA_KCl",
+        "flow_mode": "constant_flow",
+        "flow_ml_min": 5.0,
+        "average_velocity_cm_s": 0,
+        "backflush_enabled": false,
+        "backflush_start_min": 0,
+        "backflush_duration_min": 0
+      }
+    ],
+    "detectors": [
+      {
+        "detector_id": "FID1",
+        "detector_type": "FID",
+        "temperature_c": 200,
+        "h2_flow_ml_min": 40,
+        "air_flow_ml_min": 400,
+        "makeup_flow_ml_min": 30,
+        "data_rate_hz": 50,
+        "attenuation": 0,
+        "offset": 0
+      }
+    ],
+    "oven_program": [
+      {
+        "step_number": 1,
+        "temperature_c": 80,
+        "hold_time_min": 8.0,
+        "ramp_rate_c_min": 0.0,
+        "final_temperature_c": 80
+      },
+      {
+        "step_number": 2,
+        "temperature_c": 80,
+        "hold_time_min": 0.0,
+        "ramp_rate_c_min": 10.0,
+        "final_temperature_c": 200
+      },
+      {
+        "step_number": 3,
+        "temperature_c": 200,
+        "hold_time_min": 5.0,
+        "ramp_rate_c_min": 0.0,
+        "final_temperature_c": 200
+      }
+    ],
+    "valve_program": [
+      {
+        "valve_id": "BACKFLUSH_VALVE",
+        "time_min": 8.0,
+        "state": "backflush",
+        "duration_min": 2.0
+      }
+    ]
+  },
+  "created_at": "2024-12-29T12:00:00Z",
+  "version": "1.0"
+}

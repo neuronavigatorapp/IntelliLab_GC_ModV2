@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { Sidebar } from '../components/Sidebar';
-import { Topbar } from '../components/Topbar';
+import React from 'react';
+import { Layout } from '../components/layout/Layout';
 import { Toasts } from '../components/Toasts';
-import { cn } from '../lib/utils';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -17,39 +15,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   currentSection,
   onNavigate
 }) => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [lastUpdated] = useState(new Date());
-
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar
+    <>
+      {/* Use our new professional Layout system */}
+      <Layout 
+        currentSection={currentSection}
         currentPath={currentPath}
         onNavigate={onNavigate}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <Topbar
-          currentSection={currentSection}
-          lastUpdated={lastUpdated}
-          onSettingsClick={() => console.log('Settings clicked')}
-          isOnline={true}
-        />
-
-        {/* Page Content */}
-        <main className="flex-1 overflow-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
-      </div>
+      >
+        <div className="max-w-7xl mx-auto w-full">
+          {children}
+        </div>
+      </Layout>
 
       {/* Toasts */}
       <Toasts />
-    </div>
+    </>
   );
 };

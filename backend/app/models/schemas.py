@@ -3,7 +3,7 @@
 Pydantic schemas for IntelliLab GC API
 """
 
-from pydantic import BaseModel, Field, validator, EmailStr
+from pydantic import BaseModel, Field, EmailStr, field_validator, ConfigDict
 from typing import Optional, Dict, List, Any, Union, Literal
 from datetime import datetime
 from enum import Enum
@@ -115,8 +115,7 @@ class User(UserBase):
     modified_date: datetime
     last_login: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserLogin(BaseModel):
@@ -243,7 +242,7 @@ class TroubleshootingResponse(BaseModel):
 class MethodOptimizationRequest(BaseModel):
     """AI method optimization request schema"""
     current_method: Dict[str, Any]
-    target_compounds: List[str] = Field(..., min_items=1)
+    target_compounds: List[str] = Field(..., min_length=1)
     performance_issues: Optional[List[str]] = None
 
 
@@ -257,7 +256,7 @@ class MethodOptimizationResponse(BaseModel):
 
 class MaintenancePredictionRequest(BaseModel):
     """Predictive maintenance request schema"""
-    instrument_data: Dict[str, Any] = Field(..., min_items=1)
+    instrument_data: Dict[str, Any] = Field(..., min_length=1)
 
 
 class MaintenancePredictionResponse(BaseModel):
@@ -273,14 +272,14 @@ class MaintenancePredictionResponse(BaseModel):
 
 class ChromatogramAnalysisRequest(BaseModel):
     """Chromatogram analysis request schema"""
-    time_data: List[float] = Field(..., min_items=10)
-    intensity_data: List[float] = Field(..., min_items=10)
+    time_data: List[float] = Field(..., min_length=10)
+    intensity_data: List[float] = Field(..., min_length=10)
     compound_names: Optional[List[str]] = None
     method_parameters: Optional[Dict[str, Any]] = None
 
-    @validator('intensity_data')
-    def validate_data_length(cls, v, values):
-        if 'time_data' in values and len(v) != len(values['time_data']):
+    @field_validator('intensity_data')
+    def validate_data_length(cls, v, info):
+        if info.data and 'time_data' in info.data and len(v) != len(info.data['time_data']):
             raise ValueError('Time and intensity data must have same length')
         return v
 
@@ -360,8 +359,7 @@ class Instrument(InstrumentBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Calculation schemas
@@ -480,7 +478,7 @@ class MethodBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     description: Optional[str] = None
     method_type: str = Field(..., min_length=1, max_length=50)
-    parameters: Dict[str, Any] = Field(..., min_items=1)
+    parameters: Dict[str, Any] = Field(..., min_length=1)
     results: Optional[Dict[str, Any]] = None
     optimization_data: Optional[Dict[str, Any]] = None
 
@@ -506,8 +504,7 @@ class Method(MethodBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # File schemas
@@ -520,8 +517,7 @@ class FileUploadResponse(BaseModel):
     file_type: str
     upload_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # WebSocket schemas
@@ -612,8 +608,7 @@ class MethodTemplate(MethodTemplateBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Sample Tracking Schemas
@@ -673,8 +668,7 @@ class Sample(SampleBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Cost Calculation Schemas
@@ -724,8 +718,7 @@ class CostItem(CostItemBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CostCalculationRequest(BaseModel):
@@ -791,8 +784,7 @@ class Report(BaseModel):
     created_date: datetime
     completed_date: Optional[datetime]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Method Comparison Schemas
@@ -1005,8 +997,7 @@ class RunRecord(BaseModel):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AIRecommendationCategory(str, Enum):
@@ -1030,8 +1021,7 @@ class AIRecommendation(BaseModel):
     severity: str = Field("info", description="info, warning, error, critical")
     actionable: bool = True
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MaintenancePrediction(BaseModel):
@@ -1047,8 +1037,7 @@ class MaintenancePrediction(BaseModel):
     confidence: float = Field(..., ge=0.0, le=1.0)
     recommended_action: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OptimizationSuggestion(BaseModel):
@@ -1064,8 +1053,7 @@ class OptimizationSuggestion(BaseModel):
     cost_savings: Optional[float] = None
     time_savings: Optional[float] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RunQuery(BaseModel):
@@ -1157,8 +1145,7 @@ class QCRecord(BaseModel):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class QCRecordCreate(BaseModel):
@@ -1297,8 +1284,7 @@ class LIMSConfig(BaseModel):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class LIMSConfigCreate(BaseModel):
@@ -1514,8 +1500,7 @@ class TrainingLesson(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TrainingExercise(BaseModel):
@@ -1533,8 +1518,7 @@ class TrainingExercise(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TrainingAttempt(BaseModel):
@@ -1555,8 +1539,7 @@ class TrainingAttempt(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TrainingCourse(BaseModel):
@@ -1573,8 +1556,7 @@ class TrainingCourse(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EnrollmentStatus(str, Enum):
@@ -1596,8 +1578,7 @@ class Enrollment(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ProgressSummary(BaseModel):
@@ -1619,9 +1600,9 @@ class ThemeConfig(BaseModel):
     id: int
     org_id: Optional[int] = None
     logo_url: Optional[str] = None
-    primary_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
-    accent_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
-    secondary_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
+    primary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    accent_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    secondary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
     typography: Optional[Dict[str, Any]] = None
     footer_links: Optional[List[Dict[str, str]]] = None
     company_name: Optional[str] = None
@@ -1630,8 +1611,7 @@ class ThemeConfig(BaseModel):
     created_date: datetime
     updated_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Training DTOs
@@ -1683,7 +1663,7 @@ class UpdateExercise(BaseModel):
 class AttemptSubmission(BaseModel):
     """Exercise attempt submission schema"""
     exercise_id: int
-    answers: Dict[str, Any] = Field(..., min_items=1)
+    answers: Dict[str, Any] = Field(..., min_length=1)
     time_taken_sec: Optional[int] = Field(None, ge=0)
 
 
@@ -1697,7 +1677,7 @@ class GradeOverride(BaseModel):
 class AssignCourse(BaseModel):
     """Assign course to user schema"""
     course_id: int
-    user_ids: List[int] = Field(..., min_items=1)
+    user_ids: List[int] = Field(..., min_length=1)
 
 
 class CreateCourse(BaseModel):
@@ -1723,9 +1703,9 @@ class UpdateCourse(BaseModel):
 class ThemeUpdate(BaseModel):
     """Theme update request schema"""
     logo_url: Optional[str] = None
-    primary_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
-    accent_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
-    secondary_color: Optional[str] = Field(None, regex=r'^#[0-9A-Fa-f]{6}$')
+    primary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    accent_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    secondary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
     typography: Optional[Dict[str, Any]] = None
     footer_links: Optional[List[Dict[str, str]]] = None
     company_name: Optional[str] = None
@@ -1799,24 +1779,23 @@ class RunRecord(BaseModel):
     instrument_id: Optional[int] = Field(None, description="Instrument used for the run")
     method_id: Optional[int] = Field(None, description="Method used for the run")
     sample_name: str = Field(..., min_length=1, max_length=255)
-    time: List[float] = Field(..., min_items=10, description="Time axis data")
-    signal: List[float] = Field(..., min_items=10, description="Signal intensity data")
+    time: List[float] = Field(..., min_length=10, description="Time axis data")
+    signal: List[float] = Field(..., min_length=10, description="Signal intensity data")
     peaks: List[Peak] = Field(default_factory=list, description="Detected peaks")
     baseline: Optional[List[float]] = Field(None, description="Baseline data")
     notes: Optional[str] = Field(None, description="Run notes")
     metadata: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Additional metadata")
     created_date: Optional[datetime] = None
     modified_date: Optional[datetime] = None
-
-    @validator('signal')
-    def validate_signal_length(cls, v, values):
-        if 'time' in values and len(v) != len(values['time']):
+    @field_validator('signal')
+    def validate_signal_length(cls, v, info):
+        if info.data and 'time' in info.data and len(v) != len(info.data['time']):
             raise ValueError('Signal data length must match time data length')
         return v
 
-    @validator('baseline')
-    def validate_baseline_length(cls, v, values):
-        if v is not None and 'time' in values and len(v) != len(values['time']):
+    @field_validator('baseline')
+    def validate_baseline_length(cls, v, info):
+        if v is not None and info.data and 'time' in info.data and len(v) != len(info.data['time']):
             raise ValueError('Baseline data length must match time data length')
         return v
 
@@ -1826,8 +1805,8 @@ class RunRecordCreate(BaseModel):
     instrument_id: Optional[int] = None
     method_id: Optional[int] = None
     sample_name: str = Field(..., min_length=1, max_length=255)
-    time: List[float] = Field(..., min_items=10)
-    signal: List[float] = Field(..., min_items=10)
+    time: List[float] = Field(..., min_length=10)
+    signal: List[float] = Field(..., min_length=10)
     peaks: List[Peak] = Field(default_factory=list)
     baseline: Optional[List[float]] = None
     notes: Optional[str] = None
@@ -1845,16 +1824,15 @@ class RunRecordUpdate(BaseModel):
 
 class PeakDetectionRequest(BaseModel):
     """Peak detection request schema"""
-    time: List[float] = Field(..., min_items=10)
-    signal: List[float] = Field(..., min_items=10)
+    time: List[float] = Field(..., min_length=10)
+    signal: List[float] = Field(..., min_length=10)
     prominence_threshold: float = Field(3.0, ge=1.0, le=10.0, description="Peak prominence threshold")
     min_distance: float = Field(0.1, ge=0.01, le=10.0, description="Minimum distance between peaks (minutes)")
     noise_window: int = Field(50, ge=10, le=200, description="Window size for noise calculation")
     baseline_method: str = Field("rolling_min", description="rolling_min, polynomial, or none")
-
-    @validator('signal')
-    def validate_signal_length(cls, v, values):
-        if 'time' in values and len(v) != len(values['time']):
+    @field_validator('signal')
+    def validate_signal_length(cls, v, info):
+        if info.data and 'time' in info.data and len(v) != len(info.data['time']):
             raise ValueError('Signal data length must match time data length')
         return v
 
@@ -1911,8 +1889,7 @@ class Compound(CompoundBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MethodPresetBase(BaseModel):
@@ -1942,8 +1919,7 @@ class MethodPreset(MethodPresetBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Sandbox
@@ -1975,7 +1951,7 @@ class OvenRampStep(BaseModel):
 
 class OvenRampConfig(BaseModel):
     """Multi-step oven ramp configuration"""
-    steps: List[OvenRampStep] = Field(..., min_items=1)
+    steps: List[OvenRampStep] = Field(..., min_length=1)
     post_run_temp: float = Field(50, ge=30, le=200)
     equilibration_time: float = Field(1.0, ge=0, le=60)
 
@@ -2043,8 +2019,7 @@ class SimulationProfile(SimulationProfileBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ChromatogramDiagnosticBase(BaseModel):
@@ -2070,8 +2045,7 @@ class ChromatogramDiagnostic(ChromatogramDiagnosticBase):
     file_path: Optional[str] = None
     created_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class WorkModeType(str, Enum):
@@ -2114,8 +2088,7 @@ class WorkMode(WorkModeBase):
     created_date: datetime
     modified_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SandboxRunRequest(BaseModel):
@@ -2292,7 +2265,7 @@ class CalibrationModel(BaseModel):
     mode: CalibrationMode = Field(CalibrationMode.EXTERNAL, description="Calibration mode")
     internal_standard: Optional[InternalStandard] = Field(None, description="Internal standard configuration")
     outlier_policy: OutlierPolicy = Field(OutlierPolicy.NONE, description="Outlier detection policy")
-    levels: List[CalibrationLevel] = Field(..., min_items=2, description="Calibration levels")
+    levels: List[CalibrationLevel] = Field(..., min_length=2, description="Calibration levels")
     slope: Optional[float] = Field(None, description="Calibration slope")
     intercept: Optional[float] = Field(None, description="Calibration intercept")
     r2: Optional[float] = Field(None, ge=0.0, le=1.0, description="R-squared value")
@@ -2314,7 +2287,7 @@ class CalibrationFitRequest(BaseModel):
     mode: CalibrationMode = Field(CalibrationMode.EXTERNAL, description="Calibration mode")
     internal_standard: Optional[InternalStandard] = Field(None, description="Internal standard configuration")
     outlier_policy: OutlierPolicy = Field(OutlierPolicy.NONE, description="Outlier detection policy")
-    levels: List[CalibrationLevel] = Field(..., min_items=2)
+    levels: List[CalibrationLevel] = Field(..., min_length=2)
 
 
 class CalibrationActivateRequest(BaseModel):
@@ -2352,7 +2325,7 @@ class SequenceTemplate(BaseModel):
     id: Optional[str] = None
     name: str = Field(..., min_length=1, max_length=255)
     instrument_id: Optional[int] = Field(None, description="Instrument ID")
-    items: List[SequenceItem] = Field(..., min_items=1, description="Sequence items")
+    items: List[SequenceItem] = Field(..., min_length=1, description="Sequence items")
     created_at: datetime = Field(default_factory=datetime.now)
     notes: Optional[str] = Field(None, description="Template notes")
 
@@ -2363,7 +2336,7 @@ class SequenceRun(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now)
     instrument_id: int = Field(..., description="Instrument ID")
     template_id: Optional[str] = Field(None, description="Template ID")
-    items: List[SequenceItem] = Field(..., min_items=1, description="Sequence items")
+    items: List[SequenceItem] = Field(..., min_length=1, description="Sequence items")
     runs: List[RunRecord] = Field(default_factory=list, description="Generated run records")
     quant: List[QuantResult] = Field(default_factory=list, description="Quantitation results")
     status: str = Field("draft", description="draft, running, completed, error")
@@ -2394,4 +2367,532 @@ class SequenceTemplateListResponse(BaseModel):
 class SequenceRunListResponse(BaseModel):
     """Sequence run list response schema"""
     runs: List[SequenceRun]
-    total: int 
+    total: int
+
+
+# =================== OCR INTEGRATION SCHEMAS ===================
+
+class OCRImageType(str, Enum):
+    """OCR image type enum for chromatogram processing"""
+    CHROMATOGRAM = "chromatogram"
+    SPECTRUM = "spectrum" 
+    PEAK_TABLE = "peak_table"
+    METHOD_PARAMETERS = "method_parameters"
+    SAMPLE_INFO = "sample_info"
+    CALIBRATION_CURVE = "calibration_curve"
+
+
+class OCRQualityLevel(str, Enum):
+    """OCR quality level for processing optimization"""
+    FAST = "fast"           # Quick processing, lower accuracy
+    BALANCED = "balanced"   # Good balance of speed and accuracy
+    HIGH_ACCURACY = "high_accuracy"  # Slower but most accurate
+
+
+class ImagePreprocessingOptions(BaseModel):
+    """Image preprocessing configuration for OCR"""
+    enhance_contrast: bool = Field(True, description="Enhance image contrast")
+    denoise: bool = Field(True, description="Apply noise reduction")
+    deskew: bool = Field(True, description="Auto-correct image skew")
+    binarize: bool = Field(False, description="Convert to binary image")
+    scale_factor: float = Field(2.0, ge=1.0, le=5.0, description="Image scaling factor")
+    gaussian_blur: bool = Field(False, description="Apply Gaussian blur for smoothing")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRProcessingRequest(BaseModel):
+    """OCR processing request schema"""
+    image_base64: str = Field(..., description="Base64 encoded image data")
+    image_type: OCRImageType = Field(..., description="Type of chromatogram image")
+    quality_level: OCRQualityLevel = Field(OCRQualityLevel.BALANCED, description="Processing quality level")
+    preprocessing: ImagePreprocessingOptions = Field(default_factory=ImagePreprocessingOptions)
+    extract_peaks: bool = Field(True, description="Extract peak information")
+    extract_method_params: bool = Field(True, description="Extract method parameters")
+    extract_sample_info: bool = Field(True, description="Extract sample information")
+    custom_roi: Optional[List[Dict[str, int]]] = Field(None, description="Custom regions of interest [x,y,width,height]")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRTextRegion(BaseModel):
+    """Extracted text region with coordinates and confidence"""
+    text: str = Field(..., description="Extracted text content")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="OCR confidence score")
+    bbox: Dict[str, int] = Field(..., description="Bounding box coordinates {x, y, width, height}")
+    region_type: str = Field(..., description="Type of region (header, data, label, etc.)")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRPeakData(BaseModel):
+    """Extracted chromatogram peak information"""
+    peak_number: Optional[int] = Field(None, description="Peak number/ID")
+    retention_time: Optional[float] = Field(None, description="Retention time in minutes")
+    area: Optional[float] = Field(None, description="Peak area")
+    height: Optional[float] = Field(None, description="Peak height") 
+    area_percent: Optional[float] = Field(None, description="Area percentage")
+    compound_name: Optional[str] = Field(None, description="Compound identification")
+    confidence: Optional[float] = Field(0.8, ge=0.0, le=1.0, description="Peak identification confidence")
+    coordinates: Optional[Dict[str, int]] = Field(None, description="Peak coordinates on image")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRMethodParameters(BaseModel):
+    """Extracted GC method parameters"""
+    column_type: Optional[str] = Field(None, description="Column type/model")
+    column_length: Optional[str] = Field(None, description="Column length")
+    carrier_gas: Optional[str] = Field(None, description="Carrier gas type")
+    flow_rate: Optional[str] = Field(None, description="Flow rate")
+    injection_volume: Optional[str] = Field(None, description="Injection volume")
+    inlet_temperature: Optional[str] = Field(None, description="Inlet temperature")
+    detector_type: Optional[str] = Field(None, description="Detector type")
+    oven_program: Optional[List[str]] = Field(None, description="Oven temperature program steps")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRSampleInfo(BaseModel):
+    """Extracted sample information"""
+    sample_name: Optional[str] = Field(None, description="Sample name/ID")
+    injection_date: Optional[str] = Field(None, description="Injection date/time")
+    operator: Optional[str] = Field(None, description="Operator name")
+    dilution_factor: Optional[str] = Field(None, description="Sample dilution factor")
+    vial_position: Optional[str] = Field(None, description="Autosampler vial position")
+    sequence_number: Optional[str] = Field(None, description="Sequence number")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRProcessingResult(BaseModel):
+    """Complete OCR processing result"""
+    success: bool = Field(..., description="Processing success status")
+    processing_time_ms: int = Field(..., description="Processing time in milliseconds")
+    image_dimensions: Dict[str, int] = Field(..., description="Original image dimensions")
+    
+    # Extracted content
+    text_regions: List[OCRTextRegion] = Field(default_factory=list, description="All detected text regions")
+    peaks_data: List[OCRPeakData] = Field(default_factory=list, description="Extracted peak information")
+    method_parameters: Optional[OCRMethodParameters] = Field(None, description="Extracted method parameters")
+    sample_info: Optional[OCRSampleInfo] = Field(None, description="Extracted sample information")
+    
+    # Quality metrics
+    overall_confidence: float = Field(..., ge=0.0, le=1.0, description="Overall confidence score")
+    text_extraction_quality: str = Field(..., description="Text extraction quality assessment")
+    peak_detection_quality: str = Field(..., description="Peak detection quality assessment")
+    
+    # Processing details
+    preprocessing_applied: ImagePreprocessingOptions = Field(..., description="Applied preprocessing steps")
+    warnings: List[str] = Field(default_factory=list, description="Processing warnings")
+    errors: List[str] = Field(default_factory=list, description="Processing errors")
+    
+    # Additional fields for AI integration
+    image_type: Optional[OCRImageType] = Field(None, description="Type of image processed")
+    processing_metadata: Dict[str, Any] = Field(default_factory=dict, description="Processing metadata")
+    
+    # AI compatibility properties
+    @property
+    def confidence_score(self) -> float:
+        """Alias for overall_confidence for AI integration compatibility"""
+        return self.overall_confidence
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRBatchProcessingRequest(BaseModel):
+    """Batch OCR processing for multiple images"""
+    images: List[OCRProcessingRequest] = Field(..., min_length=1, max_length=50, description="Images to process")
+    batch_name: Optional[str] = Field(None, description="Batch processing name")
+    parallel_processing: bool = Field(True, description="Enable parallel processing")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRBatchProcessingResult(BaseModel):
+    """Batch OCR processing result"""
+    batch_id: str = Field(..., description="Unique batch processing ID")
+    total_images: int = Field(..., description="Total number of images processed")
+    successful_extractions: int = Field(..., description="Number of successful extractions")
+    failed_extractions: int = Field(..., description="Number of failed extractions")
+    total_processing_time_ms: int = Field(..., description="Total batch processing time")
+    
+    results: List[OCRProcessingResult] = Field(..., description="Individual processing results")
+    batch_summary: Dict[str, Any] = Field(..., description="Batch processing summary statistics")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+# Aliases for API compatibility
+OCRBatchRequest = OCRBatchProcessingRequest
+OCRBatchResult = OCRBatchProcessingResult
+
+
+# =================== AI INTEGRATION SCHEMAS ===================
+# Placeholder schemas for AI troubleshooter integration
+
+class PeakData(BaseModel):
+    """Peak data for AI analysis"""
+    peak_number: int = Field(..., description="Peak number/ID")
+    retention_time: float = Field(..., description="Retention time in minutes")
+    area: float = Field(..., description="Peak area")
+    height: float = Field(..., description="Peak height")
+    area_percent: float = Field(..., description="Area percentage")
+    width_at_half_height: float = Field(0.0, description="Peak width at half height")
+    tailing_factor: float = Field(1.0, description="Peak tailing factor")
+    theoretical_plates: int = Field(0, description="Theoretical plates")
+    resolution: float = Field(0.0, description="Resolution from previous peak")
+    compound_name: str = Field("Unknown", description="Compound identification")
+    confidence: float = Field(0.0, description="Identification confidence")
+    processing_notes: Dict[str, Any] = Field(default_factory=dict, description="Processing metadata")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ChromatogramData(BaseModel):
+    """Complete chromatogram data for AI analysis"""
+    file_path: str = Field(..., description="File path or identifier")
+    sample_name: str = Field(..., description="Sample name")
+    method_name: str = Field(..., description="Analysis method name")
+    injection_date: datetime = Field(..., description="Injection date and time")
+    peaks: List[PeakData] = Field(default_factory=list, description="Peak data")
+    total_runtime: float = Field(0.0, description="Total run time in minutes")
+    instrument_type: str = Field("GC-MS", description="Instrument type")
+    detector_type: str = Field("Unknown", description="Detector type")
+    column_info: Dict[str, Any] = Field(default_factory=dict, description="Column information")
+    method_parameters: Dict[str, Any] = Field(default_factory=dict, description="Method parameters")
+    sample_info: Dict[str, Any] = Field(default_factory=dict, description="Sample information")
+    raw_data_available: bool = Field(False, description="Raw data availability")
+    processing_metadata: Dict[str, Any] = Field(default_factory=dict, description="Processing metadata")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class InstrumentData(BaseModel):
+    """Instrument data for AI analysis"""
+    instrument_id: str = Field(..., description="Instrument identifier")
+    instrument_type: str = Field(..., description="Instrument type")
+    manufacturer: str = Field(..., description="Manufacturer")
+    model: str = Field(..., description="Model")
+    serial_number: Optional[str] = Field(None, description="Serial number")
+    installation_date: Optional[datetime] = Field(None, description="Installation date")
+    last_maintenance: Optional[datetime] = Field(None, description="Last maintenance date")
+    status: str = Field("Active", description="Current status")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AnalysisRequest(BaseModel):
+    """AI analysis request"""
+    request_id: str = Field(..., description="Unique request identifier")
+    analysis_type: str = Field(..., description="Type of analysis")
+    chromatogram_data: ChromatogramData = Field(..., description="Chromatogram data to analyze")
+    priority: str = Field("normal", description="Analysis priority")
+    user_context: Dict[str, Any] = Field(default_factory=dict, description="User context")
+    analysis_parameters: Dict[str, Any] = Field(default_factory=dict, description="Analysis parameters")
+    requested_outputs: List[str] = Field(default_factory=list, description="Requested output types")
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Request creation time")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRCalibrationData(BaseModel):
+    """OCR-extracted calibration curve data"""
+    calibration_points: List[Dict[str, float]] = Field(..., description="Calibration points (concentration, response)")
+    r_squared: Optional[float] = Field(None, description="R-squared value if extracted")
+    equation: Optional[str] = Field(None, description="Calibration equation if extracted")
+    units: Optional[Dict[str, str]] = Field(None, description="Units for x and y axes")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OCRHealthStatus(BaseModel):
+    """OCR service health and performance status"""
+    service_status: Literal["healthy", "degraded", "offline"] = Field(..., description="Overall service status")
+    tesseract_version: str = Field(..., description="Tesseract OCR version")
+    opencv_version: str = Field(..., description="OpenCV version")
+    total_processed: int = Field(..., description="Total images processed")
+    average_processing_time_ms: float = Field(..., description="Average processing time")
+    success_rate_percent: float = Field(..., description="Success rate percentage")
+    last_error: Optional[str] = Field(None, description="Last processing error")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+# ========================================
+# AI TROUBLESHOOTER SCHEMAS
+# ========================================
+
+class DiagnosticIssue(BaseModel):
+    """Individual diagnostic issue identified by AI"""
+    issue_id: str = Field(..., description="Unique issue identifier")
+    category: Literal["peak_quality", "method_parameters", "instrument_performance", "sample_preparation", "data_quality"] = Field(..., description="Issue category")
+    severity: Literal["critical", "major", "minor", "warning", "info"] = Field(..., description="Issue severity")
+    title: str = Field(..., description="Brief issue title")
+    description: str = Field(..., description="Detailed issue description")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="AI confidence in diagnosis")
+    affected_peaks: Optional[List[int]] = Field(None, description="Peak numbers affected by this issue")
+    evidence: Dict[str, Any] = Field(default_factory=dict, description="Evidence supporting diagnosis")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TroubleshootingSolution(BaseModel):
+    """Troubleshooting solution recommendation"""
+    solution_id: str = Field(..., description="Unique solution identifier")
+    title: str = Field(..., description="Solution title")
+    category: Literal["method_adjustment", "instrument_maintenance", "sample_preparation", "data_processing", "preventive"] = Field(..., description="Solution category")
+    priority: Literal["immediate", "high", "medium", "low"] = Field(..., description="Implementation priority")
+    difficulty: Literal["beginner", "intermediate", "advanced", "expert"] = Field(..., description="Implementation difficulty")
+    estimated_time: str = Field(..., description="Estimated implementation time")
+    description: str = Field(..., description="Detailed solution description")
+    steps: List[str] = Field(..., description="Step-by-step implementation guide")
+    expected_outcome: str = Field(..., description="Expected results after implementation")
+    prerequisites: List[str] = Field(default_factory=list, description="Required prerequisites")
+    tools_required: List[str] = Field(default_factory=list, description="Tools/materials needed")
+    safety_notes: List[str] = Field(default_factory=list, description="Safety considerations")
+    references: List[str] = Field(default_factory=list, description="Reference materials")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DiagnosticResult(BaseModel):
+    """Complete diagnostic analysis result"""
+    analysis_id: str = Field(..., description="Unique analysis identifier")
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Analysis timestamp")
+    overall_score: float = Field(..., ge=0.0, le=100.0, description="Overall quality score (0-100)")
+    overall_status: Literal["excellent", "good", "acceptable", "poor", "critical"] = Field(..., description="Overall status assessment")
+    
+    # Detected issues
+    issues: List[DiagnosticIssue] = Field(default_factory=list, description="Identified issues")
+    critical_issues_count: int = Field(0, description="Number of critical issues")
+    major_issues_count: int = Field(0, description="Number of major issues")
+    
+    # Recommendations
+    solutions: List[TroubleshootingSolution] = Field(default_factory=list, description="Recommended solutions")
+    immediate_actions: List[str] = Field(default_factory=list, description="Immediate actions needed")
+    preventive_measures: List[str] = Field(default_factory=list, description="Preventive measures")
+    
+    # Analysis details
+    peak_analysis: Dict[str, Any] = Field(default_factory=dict, description="Peak-specific analysis")
+    method_analysis: Dict[str, Any] = Field(default_factory=dict, description="Method parameter analysis")
+    instrument_analysis: Dict[str, Any] = Field(default_factory=dict, description="Instrument performance analysis")
+    
+    # Metadata
+    processing_time_ms: int = Field(..., description="Analysis processing time")
+    ai_model_version: str = Field("v1.0", description="AI model version used")
+    confidence_metrics: Dict[str, float] = Field(default_factory=dict, description="AI confidence metrics")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TroubleshooterRequest(BaseModel):
+    """AI troubleshooter analysis request"""
+    request_id: str = Field(..., description="Unique request identifier")
+    analysis_type: Literal["comprehensive", "peak_analysis", "method_validation", "instrument_check", "quick_scan"] = Field("comprehensive", description="Type of analysis")
+    
+    # Data sources
+    chromatogram_data: Optional[ChromatogramData] = Field(None, description="Chromatogram data to analyze")
+    ocr_data: Optional[OCRProcessingResult] = Field(None, description="OCR-extracted data")
+    historical_data: Optional[List[ChromatogramData]] = Field(None, description="Historical data for comparison")
+    
+    # Analysis parameters
+    sensitivity_level: Literal["low", "medium", "high"] = Field("medium", description="Analysis sensitivity")
+    focus_areas: List[str] = Field(default_factory=list, description="Specific areas to focus on")
+    user_context: Dict[str, Any] = Field(default_factory=dict, description="User-provided context")
+    
+    # Options
+    include_solutions: bool = Field(True, description="Include troubleshooting solutions")
+    include_preventive: bool = Field(True, description="Include preventive recommendations")
+    priority_filter: Optional[List[str]] = Field(None, description="Filter by priority levels")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TroubleshooterResponse(BaseModel):
+    """AI troubleshooter analysis response"""
+    request_id: str = Field(..., description="Request identifier")
+    status: Literal["completed", "failed", "partial"] = Field(..., description="Analysis status")
+    
+    # Results
+    diagnostic_result: Optional[DiagnosticResult] = Field(None, description="Diagnostic analysis result")
+    
+    # Summary
+    executive_summary: str = Field(..., description="Executive summary of findings")
+    key_findings: List[str] = Field(default_factory=list, description="Key findings summary")
+    critical_alerts: List[str] = Field(default_factory=list, description="Critical alerts requiring immediate attention")
+    
+    # Processing info
+    processing_time_ms: int = Field(..., description="Total processing time")
+    data_quality_score: float = Field(..., ge=0.0, le=1.0, description="Input data quality score")
+    analysis_completeness: float = Field(..., ge=0.0, le=1.0, description="Analysis completeness percentage")
+    
+    # Errors and warnings
+    errors: List[str] = Field(default_factory=list, description="Analysis errors")
+    warnings: List[str] = Field(default_factory=list, description="Analysis warnings")
+    
+    # Metadata
+    generated_at: datetime = Field(default_factory=datetime.utcnow, description="Response generation time")
+    ai_version: str = Field("v1.0", description="AI troubleshooter version")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class KnowledgeBaseEntry(BaseModel):
+    """Knowledge base entry for troubleshooting patterns"""
+    entry_id: str = Field(..., description="Unique entry identifier")
+    category: str = Field(..., description="Knowledge category")
+    title: str = Field(..., description="Entry title")
+    description: str = Field(..., description="Detailed description")
+    
+    # Diagnostic patterns
+    symptoms: List[str] = Field(..., description="Observable symptoms")
+    causes: List[str] = Field(..., description="Possible causes")
+    diagnostic_criteria: Dict[str, Any] = Field(default_factory=dict, description="Diagnostic criteria")
+    
+    # Solutions
+    solutions: List[TroubleshootingSolution] = Field(default_factory=list, description="Associated solutions")
+    
+    # Metadata
+    confidence_threshold: float = Field(0.7, description="Minimum confidence for application")
+    applicable_instruments: List[str] = Field(default_factory=list, description="Applicable instrument types")
+    tags: List[str] = Field(default_factory=list, description="Searchable tags")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AITroubleshooterHealth(BaseModel):
+    """AI troubleshooter service health status"""
+    service_status: Literal["operational", "degraded", "offline"] = Field(..., description="Service status")
+    knowledge_base_entries: int = Field(..., description="Number of knowledge base entries")
+    total_analyses: int = Field(..., description="Total analyses performed")
+    success_rate: float = Field(..., ge=0.0, le=1.0, description="Analysis success rate")
+    average_processing_time_ms: float = Field(..., description="Average processing time")
+    last_analysis: Optional[datetime] = Field(None, description="Last successful analysis")
+    active_models: List[str] = Field(default_factory=list, description="Active AI models")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+# =================== AI TROUBLESHOOTER ADDITIONAL SCHEMAS ===================
+
+class MethodParameters(BaseModel):
+    """GC-MS Method Parameters"""
+    inlet_temperature: Optional[float] = Field(None, description="Inlet temperature in Celsius")
+    column_temperature: Optional[float] = Field(None, description="Initial column temperature in Celsius")
+    carrier_gas_flow: Optional[float] = Field(None, description="Carrier gas flow rate in mL/min")
+    injection_volume: Optional[float] = Field(None, description="Injection volume in microliters")
+    split_ratio: Optional[str] = Field(None, description="Split ratio (e.g., '10:1')")
+    oven_program: Optional[List[str]] = Field(None, description="Oven temperature program steps")
+    detector_temperature: Optional[float] = Field(None, description="Detector temperature in Celsius")
+    pressure: Optional[float] = Field(None, description="System pressure in psi")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class Peak(BaseModel):
+    """Chromatographic Peak Information"""
+    peak_number: int = Field(1, description="Peak number in chromatogram")
+    retention_time: float = Field(0.0, description="Retention time in minutes")
+    area: float = Field(0.0, description="Peak area")
+    height: float = Field(0.0, description="Peak height")
+    width: Optional[float] = Field(None, description="Peak width at base")
+    name: Optional[str] = Field(None, description="Compound name")
+    confidence_score: Optional[float] = Field(None, ge=0.0, le=1.0, description="Peak identification confidence")
+    area_percent: float = Field(0.0, description="Area percentage")
+    tailing_factor: float = Field(1.0, description="Peak tailing factor")
+    theoretical_plates: int = Field(1000, description="Theoretical plates (efficiency)")
+    resolution: float = Field(1.5, description="Resolution from previous peak")
+    
+    # Additional attributes for AI troubleshooter compatibility
+    signal_to_noise_ratio: Optional[float] = Field(10.0, description="Signal to noise ratio")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ChromatogramData(BaseModel):
+    """Complete Chromatogram Data Structure"""
+    file_path: str = Field(..., description="Path to chromatogram file")
+    sample_name: str = Field(..., description="Sample name")
+    method_name: str = Field(..., description="Analysis method name")
+    injection_date: datetime = Field(..., description="Injection/analysis date")
+    
+    # Peak information
+    peaks: List[Peak] = Field(default_factory=list, description="Detected peaks")
+    total_area: Optional[float] = Field(None, description="Total peak area")
+    peak_count: int = Field(0, description="Number of peaks")
+    
+    # Method and instrument parameters
+    method_parameters: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Method parameters")
+    instrument_type: str = Field("GC-MS", description="Instrument type")
+    
+    # Quality metrics
+    baseline_noise: Optional[float] = Field(None, description="Baseline noise level")
+    signal_to_noise_ratio: Optional[float] = Field(None, description="Signal-to-noise ratio")
+    
+    # Metadata
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class PeakData(BaseModel):
+    """Enhanced Peak Data for AI Analysis"""
+    peak_number: int = Field(1, description="Peak number in chromatogram")
+    retention_time: float = Field(0.0, description="Retention time in minutes")
+    area: float = Field(0.0, description="Peak area")
+    height: float = Field(0.0, description="Peak height")
+    area_percent: float = Field(0.0, description="Area percentage")
+    
+    # Quality metrics
+    width_at_half_height: float = Field(0.1, description="Peak width at half height")
+    tailing_factor: float = Field(1.0, description="Peak tailing factor")
+    theoretical_plates: int = Field(1000, description="Theoretical plates")
+    resolution: float = Field(1.5, description="Resolution from previous peak")
+    
+    # Identification
+    compound_name: Optional[str] = Field(None, description="Identified compound name")
+    confidence: float = Field(0.5, ge=0.0, le=1.0, description="Identification confidence")
+    
+    # Processing notes
+    processing_notes: Dict[str, Any] = Field(default_factory=dict, description="Processing metadata")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class InstrumentData(BaseModel):
+    """Instrument Configuration and Status"""
+    instrument_id: str = Field(..., description="Instrument identifier")
+    instrument_type: str = Field(..., description="Instrument type (e.g., GC-MS)")
+    model: Optional[str] = Field(None, description="Instrument model")
+    serial_number: Optional[str] = Field(None, description="Serial number")
+    
+    # Status
+    status: str = Field("online", description="Current status")
+    last_maintenance: Optional[datetime] = Field(None, description="Last maintenance date")
+    next_maintenance: Optional[datetime] = Field(None, description="Next scheduled maintenance")
+    
+    # Configuration
+    configuration: Dict[str, Any] = Field(default_factory=dict, description="Instrument configuration")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AnalysisRequest(BaseModel):
+    """Analysis Request for AI Processing"""
+    request_id: str = Field(..., description="Unique request identifier")
+    analysis_type: str = Field(..., description="Type of analysis requested")
+    chromatogram_data: ChromatogramData = Field(..., description="Chromatogram data to analyze")
+    
+    # Request parameters
+    priority: str = Field("normal", description="Request priority level")
+    user_context: Dict[str, Any] = Field(default_factory=dict, description="User context information")
+    analysis_parameters: Dict[str, Any] = Field(default_factory=dict, description="Analysis parameters")
+    
+    # Output requirements  
+    requested_outputs: List[str] = Field(default_factory=list, description="Requested output types")
+    
+    # Timestamps
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Request creation time")
+    
+    model_config = ConfigDict(from_attributes=True) 

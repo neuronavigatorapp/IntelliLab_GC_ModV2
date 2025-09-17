@@ -122,7 +122,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       path.setAttribute('stroke-dasharray', pathLength.toString());
       path.setAttribute('stroke-dashoffset', pathLength.toString());
       
-      const animation = path.animate([
+      path.animate([
         { strokeDashoffset: pathLength },
         { strokeDashoffset: 0 }
       ], {

@@ -1,0 +1,75 @@
+{
+  "name": "FastGC_Alkanes_C1_C6",
+  "description": "Fast GC analysis of C1-C6 alkanes using DB-1 column with temperature programming",
+  "method_parameters": {
+    "inlets": [
+      {
+        "inlet_id": "INL1",
+        "inlet_type": "splitless",
+        "temperature_c": 280,
+        "split_ratio": 1.0,
+        "total_flow_ml_min": 30.0,
+        "carrier_gas": "hydrogen",
+        "gas_saver": false,
+        "gas_saver_flow_ml_min": 0.0,
+        "gas_saver_delay_min": 0.0,
+        "pulse_pressure_kpa": 0,
+        "pulse_duration_min": 0
+      }
+    ],
+    "columns": [
+      {
+        "column_id": "COL1_DB1",
+        "length_m": 30.0,
+        "inner_diameter_mm": 0.25,
+        "film_thickness_um": 0.25,
+        "stationary_phase": "DB-1",
+        "flow_mode": "constant_velocity",
+        "flow_ml_min": 0.0,
+        "average_velocity_cm_s": 40.0,
+        "backflush_enabled": false,
+        "backflush_start_min": 0,
+        "backflush_duration_min": 0
+      }
+    ],
+    "detectors": [
+      {
+        "detector_id": "FID1",
+        "detector_type": "FID",
+        "temperature_c": 320,
+        "h2_flow_ml_min": 35,
+        "air_flow_ml_min": 350,
+        "makeup_flow_ml_min": 20,
+        "data_rate_hz": 100,
+        "attenuation": 0,
+        "offset": 0
+      }
+    ],
+    "oven_program": [
+      {
+        "step_number": 1,
+        "temperature_c": 40,
+        "hold_time_min": 1.0,
+        "ramp_rate_c_min": 0.0,
+        "final_temperature_c": 40
+      },
+      {
+        "step_number": 2,
+        "temperature_c": 40,
+        "hold_time_min": 0.0,
+        "ramp_rate_c_min": 25.0,
+        "final_temperature_c": 200
+      },
+      {
+        "step_number": 3,
+        "temperature_c": 200,
+        "hold_time_min": 2.0,
+        "ramp_rate_c_min": 0.0,
+        "final_temperature_c": 200
+      }
+    ],
+    "valve_program": []
+  },
+  "created_at": "2024-12-29T12:00:00Z",
+  "version": "1.0"
+}

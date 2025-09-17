@@ -201,7 +201,6 @@ export const validateCalibrationData = (
   }
   
   // Check for reasonable linearity expectation
-  const sortedConc = [...concentrations].sort((a, b) => a - b);
   const sortedAreas = concentrations.map((c, i) => ({ conc: c, area: peakAreas[i] }))
     .sort((a, b) => a.conc - b.conc)
     .map(item => item.area);

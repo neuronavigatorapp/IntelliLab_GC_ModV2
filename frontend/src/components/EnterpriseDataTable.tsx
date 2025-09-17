@@ -6,7 +6,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Chip,
   Typography,
   Box,
@@ -14,7 +13,7 @@ import {
 import { styled } from '@mui/material/styles';
 
 // Enterprise-grade table styling matching Agilent/Thermo standards
-const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+const StyledTableContainer = styled(TableContainer)(() => ({
   backgroundColor: '#ffffff',
   border: '1px solid #e2e8f0',
   borderRadius: '8px',
@@ -25,7 +24,7 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   },
 }));
 
-const StyledTableHead = styled(TableHead)(({ theme }) => ({
+const StyledTableHead = styled(TableHead)(() => ({
   backgroundColor: '#f8fafc',
   '& .MuiTableCell-head': {
     backgroundColor: '#f8fafc',
@@ -45,7 +44,7 @@ const StyledTableHead = styled(TableHead)(({ theme }) => ({
   },
 }));
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
   padding: '16px 24px',
   fontSize: '0.875rem',
   color: '#374151',
@@ -55,7 +54,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
   '&:hover': {
     backgroundColor: '#f9fafb',
     transition: 'background-color 0.15s ease-in-out',
@@ -242,6 +241,7 @@ export const EnterpriseDataTable: React.FC<EnterpriseDataTableProps> = ({
 };
 
 export default EnterpriseDataTable;
+
 
 
 

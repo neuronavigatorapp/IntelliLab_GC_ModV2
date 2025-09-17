@@ -323,7 +323,7 @@ class SandboxService:
                 method_id=request.method_id,
                 sample_name=request.sample_name,
                 compound_ids=request.compound_ids,
-                fault_params=fp.dict(),
+                fault_params=fp.model_dump(),
                 time=run_record.time,
                 signal=run_record.signal,
                 peaks=[p.model_dump() for p in peaks],
@@ -351,11 +351,11 @@ class SandboxService:
                 instrument_id=profile_data.instrument_id,
                 method_id=profile_data.method_id,
                 inlet_type=profile_data.inlet_type.value,
-                oven_ramp_config=profile_data.oven_ramp_config.dict(),
-                flow_config=profile_data.flow_config.dict(),
-                detector_config=profile_data.detector_config.dict(),
+                oven_ramp_config=profile_data.oven_ramp_config.model_dump(),
+                flow_config=profile_data.flow_config.model_dump(),
+                detector_config=profile_data.detector_config.model_dump(),
                 compound_ids=profile_data.compound_ids,
-                fault_config=profile_data.fault_config.dict() if profile_data.fault_config else None,
+                fault_config=profile_data.fault_config.model_dump() if profile_data.fault_config else None,
                 created_by=user_id,
                 is_public=profile_data.is_public,
                 tags=profile_data.tags
@@ -401,7 +401,7 @@ class SandboxService:
                 
             for field, value in profile_data.dict(exclude_unset=True).items():
                 if field in ['oven_ramp_config', 'flow_config', 'detector_config', 'fault_config'] and value:
-                    value = value.dict() if hasattr(value, 'dict') else value
+                    value = value.model_dump() if hasattr(value, 'model_dump') else value
                 setattr(profile, field, value)
                 
             db.commit()

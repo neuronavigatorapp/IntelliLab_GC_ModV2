@@ -94,7 +94,7 @@ async def create_instrument(
             )
         
         # Create new instrument
-        db_instrument = InstrumentModel(**instrument.dict())
+        db_instrument = InstrumentModel(**instrument.model_dump())
         db.add(db_instrument)
         db.commit()
         db.refresh(db_instrument)
@@ -104,7 +104,7 @@ async def create_instrument(
             "type": "instrument_update",
             "instrument_id": db_instrument.id,
             "action": "create",
-            "data": instrument.dict(),
+            "data": instrument.model_dump(),
             "timestamp": datetime.now().isoformat()
         }))
         
