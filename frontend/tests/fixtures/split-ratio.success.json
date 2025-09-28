@@ -1,0 +1,11 @@
+{
+  "total_inlet_flow": 62.4,
+  "split_vent_flow": 61.2,
+  "septum_purge_flow": 2.5,
+  "column_flow_rate": 1.2,
+  "actual_split_ratio": "51:1",
+  "efficiency_score": 87.5,
+  "uncertainty": 0.8,
+  "confidence_level": 95,
+  "explanation": "Split ratio is well-optimized for your current conditions. Consider increasing column flow slightly for better resolution."
+}

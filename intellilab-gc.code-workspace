@@ -1,0 +1,79 @@
+{
+  "folders": [
+    {
+      "name": "🚀 Root",
+      "path": "."
+    },
+    {
+      "name": "🎭 Frontend",
+      "path": "./frontend"
+    },
+    {
+      "name": "🐍 Backend", 
+      "path": "./backend"
+    },
+    {
+      "name": "🧪 Tests",
+      "path": "./frontend/tests"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/test-results": true,
+      "**/playwright-report": true,
+      "**/.pytest_cache": true,
+      "**/__pycache__": true,
+      "**/dist": true,
+      "**/.next": true,
+      "**/venv": false
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/test-results": true,
+      "**/playwright-report": true,
+      "**/.pytest_cache": true,
+      "**/__pycache__": true,
+      "**/dist": true,
+      "**/.next": true,
+      "**/venv": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-playwright.playwright",
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🚀 Quick Start",
+        "type": "shell",
+        "command": "echo",
+        "args": ["IntelliLab GC Testing Infrastructure Ready!"],
+        "dependsOrder": "sequence",
+        "dependsOn": [
+          "Start App (FE+BE)",
+          "🧪 Run All Tests"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared"
+        }
+      }
+    ]
+  }
+}

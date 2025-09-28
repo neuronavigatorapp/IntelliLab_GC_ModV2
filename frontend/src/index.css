@@ -1,5 +1,5 @@
-/* === CANONICAL THEME SYSTEM === */
-/* Logo-driven color palette and design tokens */
+/* === BLUE LAB THEME SYSTEM === */
+/* Professional laboratory interface with blue gradient branding */
 @import url('./styles/theme.css');
 
 /* Enterprise Premium Fonts */
@@ -19,17 +19,16 @@
   }
   
   body {
-    background-color: var(--color-background);
-    color: var(--color-text);
+    background-color: var(--bg);
+    color: var(--text);
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family: 'Inter', system-ui, sans-serif;
-    /* Ensure dark theme by default */
     transition: background-color var(--motion-duration-normal) var(--motion-ease);
   }
 
-  /* Default to dark theme - our canonical palette is dark-first */
+  /* Light theme by default for professional look */
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   /* Scrollbar styling using canonical colors */

@@ -9,7 +9,10 @@ import {
   Calculator,
   BarChart3,
   Settings,
-  ChevronRight
+  ChevronRight,
+  Beaker,
+  Clock,
+  TrendingUp
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -43,19 +46,28 @@ const navigationSections: NavSection[] = [
     ]
   },
   {
+    id: 'calculations',
+    label: 'Professional Calculations',
+    items: [
+      { id: 'split-ratio', label: 'Split Ratio', path: '/tools/split-ratio', icon: Calculator },
+      { id: 'void-volume', label: 'Void Volume', path: '/tools/void-volume', icon: Beaker },
+      { id: 'peak-capacity', label: 'Peak Capacity', path: '/tools/peak-capacity', icon: TrendingUp },
+      { id: 'backflush-timing', label: 'Backflush Timing', path: '/tools/backflush-timing', icon: Clock },
+    ]
+  },
+  {
     id: 'simulators',
     label: 'Simulators',
     items: [
-      { id: 'detection-limit', label: 'Detection Limit', path: '/detection-limit', icon: Calculator },
-      { id: 'oven-ramp', label: 'Oven Ramp', path: '/oven-ramp', icon: Calculator },
-      { id: 'inlet', label: 'Inlet Simulator', path: '/inlet-simulator', icon: Calculator },
+      { id: 'chromatogram', label: 'Chromatogram', path: '/tools/chromatogram', icon: BarChart3 },
+      { id: 'detection-limit', label: 'Detection Limit', path: '/simulators/detection-limit', icon: Calculator },
     ]
   },
   {
     id: 'analysis',
     label: 'Analysis',
     items: [
-      { id: 'ocr', label: 'OCR Vision', path: '/ocr', icon: Eye },
+      { id: 'ocr', label: 'OCR Vision', path: '/analysis/ocr', icon: Eye },
       { id: 'analytics', label: 'Analytics', path: '/analytics', icon: BarChart3 },
     ]
   },

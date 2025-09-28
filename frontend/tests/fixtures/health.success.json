@@ -1,0 +1,14 @@
+{
+  "status": "healthy",
+  "service": "IntelliLab GC API",
+  "version": "2.0.0",
+  "timestamp": "2025-09-22T10:30:00Z",
+  "uptime_seconds": 3600,
+  "database_connected": true,
+  "services": {
+    "ocr": "operational",
+    "troubleshooter": "operational",
+    "calculator": "operational",
+    "simulator": "operational"
+  }
+}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
 import { Badge, Button, Input } from '../components/ui';
-import { TestTube, Thermometer, Gauge, Activity, Play, Pause, RotateCcw, Database, Download, FileImage } from 'lucide-react';
+import { TestTube, Thermometer, Gauge, Activity, Play, Pause, RotateCcw, Database, Download, FileImage, Info, FlaskConical } from 'lucide-react';
 import { SandboxPreset, AVAILABLE_PRESETS, DEMO_PRESETS, ChromatogramGenerator, PresetId } from '../lib/presets';
 import { RTCalibrator, DEFAULT_CALIBRATION } from '../lib/calibration';
 
 export const Sandbox: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isRunning, setIsRunning] = useState(false);
   const [currentPreset, setCurrentPreset] = useState<SandboxPreset | null>(null);
   const [chromatogramData, setChromatogramData] = useState<{
@@ -16,6 +18,180 @@ export const Sandbox: React.FC = () => {
   const [crosshairPosition, setCrosshairPosition] = useState<{x: number, y: number} | null>(null);
   const [calibrator, setCalibrator] = useState<RTCalibrator>(new RTCalibrator(DEFAULT_CALIBRATION));
   const [showCalibration, setShowCalibration] = useState(false);
+  const [ocrData, setOcrData] = useState<{peaks: any[], hints: any} | null>(null);
+  const [troubleshooterData, setTroubleshooterData] = useState<{
+    recommendation?: string;
+    rule?: string;
+    suggestion?: string;
+    description?: string;
+    category?: string;
+    priority?: string;
+    context?: any;
+    data?: any;
+  } | null>(null);
+
+  // Handle OCR data and Troubleshooter data from URL parameters
+  useEffect(() => {
+    const peaksParam = searchParams.get('peaks');
+    const hintsParam = searchParams.get('hints');
+    const recommendationParam = searchParams.get('recommendation');
+    const suggestionParam = searchParams.get('suggestion');
+    const dataParam = searchParams.get('data');
+    
+    // Handle OCR data (legacy)
+    if (peaksParam && hintsParam) {
+      try {
+        const peaks = JSON.parse(decodeURIComponent(peaksParam));
+        const hints = JSON.parse(decodeURIComponent(hintsParam));
+        
+        setOcrData({ peaks, hints });
+        
+        // Generate overlay trace from OCR peaks
+        const ocrTrace = generateOCRTrace(peaks, hints);
+        setChromatogramData(ocrTrace);
+        
+        // Clear URL params after loading
+        setSearchParams({});
+      } catch (error) {
+        console.error('Failed to parse OCR data from URL:', error);
+      }
+    }
+    
+    // Handle Troubleshooter data
+    if (recommendationParam || suggestionParam || dataParam) {
+      try {
+        const troubleshooterParams: any = {};
+        
+        if (recommendationParam) {
+          troubleshooterParams.recommendation = decodeURIComponent(recommendationParam);
+        }
+        if (suggestionParam) {
+          troubleshooterParams.suggestion = decodeURIComponent(suggestionParam);
+        }
+        if (searchParams.get('rule')) {
+          troubleshooterParams.rule = decodeURIComponent(searchParams.get('rule')!);
+        }
+        if (searchParams.get('description')) {
+          troubleshooterParams.description = decodeURIComponent(searchParams.get('description')!);
+        }
+        if (searchParams.get('category')) {
+          troubleshooterParams.category = decodeURIComponent(searchParams.get('category')!);
+        }
+        if (searchParams.get('priority')) {
+          troubleshooterParams.priority = decodeURIComponent(searchParams.get('priority')!);
+        }
+        if (searchParams.get('context')) {
+          troubleshooterParams.context = JSON.parse(decodeURIComponent(searchParams.get('context')!));
+        }
+        if (dataParam) {
+          troubleshooterParams.data = JSON.parse(decodeURIComponent(dataParam));
+          
+          // Generate chromatogram from troubleshooter data
+          if (troubleshooterParams.data.peaks) {
+            const troubleshooterTrace = generateTroubleshooterTrace(troubleshooterParams.data);
+            setChromatogramData(troubleshooterTrace);
+          }
+        }
+        
+        setTroubleshooterData(troubleshooterParams);
+        
+        // Clear URL params after loading
+        setSearchParams({});
+      } catch (error) {
+        console.error('Failed to parse troubleshooter data from URL:', error);
+      }
+    }
+  }, [searchParams, setSearchParams]);
+
+  // Generate chromatogram trace from OCR peaks
+  const generateOCRTrace = (peaks: any[], hints: any) => {
+    const maxTime = hints.max_rt * 1.2; // Add some padding
+    const timePoints = Array.from({ length: 1000 }, (_, i) => (i * maxTime) / 999);
+    const signal = new Array(1000).fill(0);
+    
+    // Add baseline noise
+    const noiseLevel = Math.max(100 - hints.baseline_quality, 10);
+    for (let i = 0; i < signal.length; i++) {
+      signal[i] = noiseLevel * (0.5 - Math.random());
+    }
+    
+    // Add peaks
+    const processedPeaks = peaks.map(peak => ({
+      name: `Peak RT ${peak.rt.toFixed(2)}`,
+      rt: peak.rt,
+      area: peak.area,
+      height: peak.height,
+      snr: peak.snr,
+      tailing: 1.2 // Default tailing
+    }));
+    
+    // Generate Gaussian peaks
+    processedPeaks.forEach(peak => {
+      const peakCenter = (peak.rt / maxTime) * 999;
+      const peakWidth = 5; // Standard width
+      
+      for (let i = 0; i < signal.length; i++) {
+        const distance = Math.abs(i - peakCenter);
+        if (distance < peakWidth * 3) {
+          const gaussian = peak.height * Math.exp(-0.5 * Math.pow(distance / peakWidth, 2));
+          signal[i] += gaussian;
+        }
+      }
+    });
+    
+    return {
+      time: timePoints,
+      signal,
+      peaks: processedPeaks
+    };
+  };
+
+  // Generate chromatogram trace from troubleshooter data
+  const generateTroubleshooterTrace = (data: any) => {
+    const maxTime = 15; // Default run time
+    const timePoints = Array.from({ length: 1000 }, (_, i) => (i * maxTime) / 999);
+    const signal = new Array(1000).fill(0);
+    
+    // Add baseline noise based on quality
+    const noiseLevel = Math.max(100 - (data.baseline_quality || 80), 15);
+    for (let i = 0; i < signal.length; i++) {
+      signal[i] = noiseLevel * (0.5 - Math.random());
+    }
+    
+    // Add peaks from mock data
+    const processedPeaks = data.peaks?.map((peak: any, index: number) => ({
+      name: peak.name || `Peak ${index + 1}`,
+      rt: peak.rt || (index + 1) * 2,
+      area: peak.area || 1000 + Math.random() * 5000,
+      height: peak.height || 100 + Math.random() * 500,
+      snr: peak.snr || 10 + Math.random() * 20,
+      tailing: peak.tailing || 1.1 + Math.random() * 0.5
+    })) || [
+      { name: 'Component A', rt: 3.2, area: 2500, height: 180, snr: 15.2, tailing: 1.3 },
+      { name: 'Component B', rt: 6.8, area: 4200, height: 320, snr: 22.1, tailing: 1.1 },
+      { name: 'Component C', rt: 9.5, area: 1800, height: 140, snr: 8.9, tailing: 1.8 }
+    ];
+    
+    // Generate Gaussian peaks
+    processedPeaks.forEach((peak: any) => {
+      const peakCenter = (peak.rt / maxTime) * 999;
+      const peakWidth = 6; // Slightly wider peaks for troubleshooting scenarios
+      
+      for (let i = 0; i < signal.length; i++) {
+        const distance = Math.abs(i - peakCenter);
+        if (distance < peakWidth * 3) {
+          const gaussian = peak.height * Math.exp(-0.5 * Math.pow(distance / peakWidth, 2));
+          signal[i] += gaussian;
+        }
+      }
+    });
+    
+    return {
+      time: timePoints,
+      signal,
+      peaks: processedPeaks
+    };
+  };
 
   const loadPreset = (presetId: PresetId) => {
     const preset = DEMO_PRESETS[presetId];
@@ -35,6 +211,8 @@ export const Sandbox: React.FC = () => {
     setCurrentPreset(null);
     setChromatogramData(null);
     setCrosshairPosition(null);
+    setOcrData(null);
+    setTroubleshooterData(null);
   };
 
   const exportPNG = () => {
@@ -74,27 +252,83 @@ export const Sandbox: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-3">
-          <Badge variant={currentPreset ? "success" : "outline"}>
-            {currentPreset ? "Data Loaded" : "No Data"}
+          <Badge variant={currentPreset || chromatogramData ? "success" : "outline"}>
+            {currentPreset || chromatogramData ? "Data Loaded" : "No Data"}
           </Badge>
           {chromatogramData && (
             <>
-              <Button onClick={exportPNG} variant="outline" size="sm">
+              <Button onClick={exportPNG} variant="outline" size="sm" data-testid="export-png-btn">
                 <FileImage size={16} className="mr-2" />
                 PNG
               </Button>
-              <Button onClick={exportCSV} variant="outline" size="sm">
+              <Button onClick={exportCSV} variant="outline" size="sm" data-testid="export-csv-btn">
                 <Download size={16} className="mr-2" />
                 CSV
               </Button>
             </>
           )}
-          <Button onClick={resetSimulation} variant="outline" className="px-4">
+          <Button onClick={resetSimulation} variant="outline" className="px-4" data-testid="reset-btn">
             <RotateCcw size={18} className="mr-2" />
             Reset
           </Button>
         </div>
       </div>
+
+      {/* OCR Data Info Banner */}
+      {ocrData && (
+        <div className="card bg-blue-50 border-blue-200">
+          <div className="card-content">
+            <div className="flex items-center gap-3">
+              <Info className="text-blue-600" size={20} />
+              <div>
+                <h3 className="font-medium text-blue-900">Loaded from OCR Analysis</h3>
+                <p className="text-sm text-blue-700">
+                  Displaying {ocrData.peaks.length} peaks from chromatogram image analysis.
+                  Average S/N: {ocrData.hints.avg_snr.toFixed(1)}, 
+                  Baseline quality: {ocrData.hints.baseline_quality}%
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Troubleshooter Data Info Banner */}
+      {troubleshooterData && (
+        <div className="card bg-orange-50 border-orange-200" data-testid="troubleshooter-banner">
+          <div className="card-content">
+            <div className="flex items-center gap-3">
+              <FlaskConical className="text-orange-600" size={20} />
+              <div className="flex-1">
+                <h3 className="font-medium text-orange-900">Applied from AI Troubleshooter</h3>
+                <div className="text-sm text-orange-700 space-y-1">
+                  {troubleshooterData.recommendation && (
+                    <p><strong>Recommendation:</strong> {troubleshooterData.recommendation}</p>
+                  )}
+                  {troubleshooterData.suggestion && (
+                    <p><strong>Suggestion:</strong> {troubleshooterData.suggestion}</p>
+                  )}
+                  {troubleshooterData.description && (
+                    <p><strong>Issue:</strong> {troubleshooterData.description}</p>
+                  )}
+                  {troubleshooterData.rule && (
+                    <p><strong>Rule:</strong> {troubleshooterData.rule.replace(/_/g, ' ').toUpperCase()}</p>
+                  )}
+                  {troubleshooterData.category && troubleshooterData.priority && (
+                    <p>
+                      <strong>Category:</strong> {troubleshooterData.category} | 
+                      <strong> Priority:</strong> {troubleshooterData.priority.toUpperCase()}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <Badge variant="warning" className="text-xs">
+                Troubleshooter
+              </Badge>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Load Demo Dataset */}
       <Card variant="elevated">

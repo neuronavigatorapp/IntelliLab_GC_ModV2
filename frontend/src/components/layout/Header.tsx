@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { Menu, Bell, User, Settings, Wifi, WifiOff } from 'lucide-react';
+import { Menu, Bell, User, Settings, Wifi, WifiOff, TestTube } from 'lucide-react';
 import { useApiStatus } from '../../hooks/useApiStatus';
+import { isDemoMode } from '../../utils/demo';
 
 interface HeaderProps {
   currentSection: string;
@@ -26,6 +27,8 @@ export const Header: React.FC<HeaderProps> = ({
             size="sm"
             onClick={onMenuToggle}
             className="p-2"
+            data-testid="mobile-menu-toggle"
+            aria-label="Toggle mobile menu"
           >
             <Menu size={20} />
           </Button>
@@ -47,8 +50,18 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right section */}
         <div className="flex items-center space-x-2">
+          {/* Demo Mode Badge */}
+          {isDemoMode() && (
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-md bg-warning-50 border border-warning-200" data-testid="demo-mode-badge">
+              <TestTube size={16} className="text-warning-600" />
+              <Badge variant="warning" className="text-xs font-medium">
+                Demo Mode
+              </Badge>
+            </div>
+          )}
+          
           {/* API Status Indicator */}
-          <div className="flex items-center space-x-2 px-3 py-1 rounded-md bg-surface-sunken">
+          <div className="flex items-center space-x-2 px-3 py-1 rounded-md bg-surface-sunken" role="status" aria-label="API connection status">
             {status.isConnected ? (
               <Wifi size={16} className="text-status-success" />
             ) : (
@@ -63,13 +76,13 @@ export const Header: React.FC<HeaderProps> = ({
             </Badge>
           </div>
           
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button variant="ghost" size="sm" className="p-2" aria-label="Notifications">
             <Bell size={18} />
           </Button>
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button variant="ghost" size="sm" className="p-2" aria-label="Open settings">
             <Settings size={18} />
           </Button>
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button variant="ghost" size="sm" className="p-2" aria-label="User profile">
             <User size={18} />
           </Button>
         </div>

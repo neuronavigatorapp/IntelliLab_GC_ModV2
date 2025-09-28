@@ -1,0 +1,233 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button "Toggle navigation menu" [ref=e6] [cursor=pointer]:
+        - img [ref=e7] [cursor=pointer]
+      - heading "Field GC Toolkit" [level=1] [ref=e9]
+    - img [ref=e12]
+  - complementary [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Navigation" [level=2] [ref=e19]
+        - button [ref=e20] [cursor=pointer]:
+          - img [ref=e21] [cursor=pointer]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - button "Main ▶" [ref=e26] [cursor=pointer]:
+            - generic [ref=e27] [cursor=pointer]: Main
+            - generic [ref=e28] [cursor=pointer]: ▶
+          - generic [ref=e29]:
+            - button "Dashboard" [ref=e30] [cursor=pointer]:
+              - img [ref=e31] [cursor=pointer]
+              - generic [ref=e34] [cursor=pointer]: Dashboard
+            - button "Sandbox" [ref=e35] [cursor=pointer]:
+              - img [ref=e36] [cursor=pointer]
+              - generic [ref=e38] [cursor=pointer]: Sandbox
+            - button "Troubleshooter" [ref=e39] [cursor=pointer]:
+              - img [ref=e40] [cursor=pointer]
+              - generic [ref=e43] [cursor=pointer]: Troubleshooter
+        - generic [ref=e44]:
+          - button "Simulators ▶" [ref=e45] [cursor=pointer]:
+            - generic [ref=e46] [cursor=pointer]: Simulators
+            - generic [ref=e47] [cursor=pointer]: ▶
+          - generic [ref=e48]:
+            - button "Detection LimitAPI" [ref=e49] [cursor=pointer]:
+              - img [ref=e50] [cursor=pointer]
+              - generic [ref=e54] [cursor=pointer]: Detection Limit
+              - generic [ref=e55] [cursor=pointer]: API
+            - button "Oven Ramp" [ref=e56] [cursor=pointer]:
+              - img [ref=e57] [cursor=pointer]
+              - generic [ref=e59] [cursor=pointer]: Oven Ramp
+            - button "Inlet Simulator" [ref=e60] [cursor=pointer]:
+              - img [ref=e61] [cursor=pointer]
+              - generic [ref=e63] [cursor=pointer]: Inlet Simulator
+        - generic [ref=e64]:
+          - button "Core Calculation Tools ▶" [ref=e65] [cursor=pointer]:
+            - generic [ref=e66] [cursor=pointer]: Core Calculation Tools
+            - generic [ref=e67] [cursor=pointer]: ▶
+          - generic [ref=e68]:
+            - button "Split Ratio CalculatorAPI" [ref=e69] [cursor=pointer]:
+              - img [ref=e70] [cursor=pointer]
+              - generic [ref=e72] [cursor=pointer]: Split Ratio Calculator
+              - generic [ref=e73] [cursor=pointer]: API
+            - button "Chromatogram SimulatorAPI" [ref=e74] [cursor=pointer]:
+              - img [ref=e75] [cursor=pointer]
+              - generic [ref=e78] [cursor=pointer]: Chromatogram Simulator
+              - generic [ref=e79] [cursor=pointer]: API
+        - generic [ref=e80]:
+          - button "Advanced Analysis ▶" [ref=e81] [cursor=pointer]:
+            - generic [ref=e82] [cursor=pointer]: Advanced Analysis
+            - generic [ref=e83] [cursor=pointer]: ▶
+          - generic [ref=e84]:
+            - button "Chromatogram Vision AIAPI" [ref=e85] [cursor=pointer]:
+              - img [ref=e86] [cursor=pointer]
+              - generic [ref=e89] [cursor=pointer]: Chromatogram Vision AI
+              - generic [ref=e90] [cursor=pointer]: API
+            - button "GC Instrument SandboxAPI" [ref=e91] [cursor=pointer]:
+              - img [ref=e92] [cursor=pointer]
+              - generic [ref=e96] [cursor=pointer]: GC Instrument Sandbox
+              - generic [ref=e97] [cursor=pointer]: API
+        - generic [ref=e98]:
+          - button "Professional Suite ▶" [ref=e99] [cursor=pointer]:
+            - generic [ref=e100] [cursor=pointer]: Professional Suite
+            - generic [ref=e101] [cursor=pointer]: ▶
+          - generic [ref=e102]:
+            - button "Void VolumeAPI" [ref=e103] [cursor=pointer]:
+              - img [ref=e104] [cursor=pointer]
+              - generic [ref=e106] [cursor=pointer]: Void Volume
+              - generic [ref=e107] [cursor=pointer]: API
+            - button "Peak CapacityAPI" [ref=e108] [cursor=pointer]:
+              - img [ref=e109] [cursor=pointer]
+              - generic [ref=e110] [cursor=pointer]: Peak Capacity
+              - generic [ref=e111] [cursor=pointer]: API
+            - button "Backflush TimingAPI" [ref=e112] [cursor=pointer]:
+              - img [ref=e113] [cursor=pointer]
+              - generic [ref=e116] [cursor=pointer]: Backflush Timing
+              - generic [ref=e117] [cursor=pointer]: API
+        - generic [ref=e118]:
+          - button "Intelligent Troubleshooting ▶" [ref=e119] [cursor=pointer]:
+            - generic [ref=e120] [cursor=pointer]: Intelligent Troubleshooting
+            - generic [ref=e121] [cursor=pointer]: ▶
+          - generic [ref=e122]:
+            - button "AI Troubleshooter System" [ref=e123] [cursor=pointer]:
+              - img [ref=e124] [cursor=pointer]
+              - generic [ref=e132] [cursor=pointer]: AI Troubleshooter System
+            - button "Inlet DiscriminationAPI" [ref=e133] [cursor=pointer]:
+              - img [ref=e134] [cursor=pointer]
+              - generic [ref=e136] [cursor=pointer]: Inlet Discrimination
+              - generic [ref=e137] [cursor=pointer]: API
+            - button "Flashback DetectionAPI" [ref=e138] [cursor=pointer]:
+              - img [ref=e139] [cursor=pointer]
+              - generic [ref=e141] [cursor=pointer]: Flashback Detection
+              - generic [ref=e142] [cursor=pointer]: API
+            - button "Column Activity TestAPI" [ref=e143] [cursor=pointer]:
+              - img [ref=e144] [cursor=pointer]
+              - generic [ref=e146] [cursor=pointer]: Column Activity Test
+              - generic [ref=e147] [cursor=pointer]: API
+            - button "FID SensitivityAPI" [ref=e148] [cursor=pointer]:
+              - img [ref=e149] [cursor=pointer]
+              - generic [ref=e151] [cursor=pointer]: FID Sensitivity
+              - generic [ref=e152] [cursor=pointer]: API
+            - button "MS Tune EvaluationAPI" [ref=e153] [cursor=pointer]:
+              - img [ref=e154] [cursor=pointer]
+              - generic [ref=e157] [cursor=pointer]: MS Tune Evaluation
+              - generic [ref=e158] [cursor=pointer]: API
+            - button "ECD Standing CurrentAPI" [ref=e159] [cursor=pointer]:
+              - img [ref=e160] [cursor=pointer]
+              - generic [ref=e166] [cursor=pointer]: ECD Standing Current
+              - generic [ref=e167] [cursor=pointer]: API
+        - generic [ref=e168]:
+          - button "Data & System ▶" [ref=e169] [cursor=pointer]:
+            - generic [ref=e170] [cursor=pointer]: Data & System
+            - generic [ref=e171] [cursor=pointer]: ▶
+          - generic [ref=e172]:
+            - button "InstrumentsAPI" [ref=e173] [cursor=pointer]:
+              - img [ref=e174] [cursor=pointer]
+              - generic [ref=e177] [cursor=pointer]: Instruments
+              - generic [ref=e178] [cursor=pointer]: API
+            - button "Run HistoryAPI" [ref=e179] [cursor=pointer]:
+              - img [ref=e180] [cursor=pointer]
+              - generic [ref=e184] [cursor=pointer]: Run History
+              - generic [ref=e185] [cursor=pointer]: API
+            - button "Analytics" [ref=e186] [cursor=pointer]:
+              - img [ref=e187] [cursor=pointer]
+              - generic [ref=e190] [cursor=pointer]: Analytics
+            - button "OCR VisionAPI" [ref=e191] [cursor=pointer]:
+              - img [ref=e192] [cursor=pointer]
+              - generic [ref=e197] [cursor=pointer]: OCR Vision
+              - generic [ref=e198] [cursor=pointer]: API
+            - button "Validity" [ref=e199] [cursor=pointer]:
+              - img [ref=e200] [cursor=pointer]
+              - generic [ref=e203] [cursor=pointer]: Validity
+            - button "Settings" [ref=e204] [cursor=pointer]:
+              - img [ref=e205] [cursor=pointer]
+              - generic [ref=e216] [cursor=pointer]: Settings
+      - generic [ref=e218]:
+        - paragraph [ref=e219]: IntelliLab GC v2.0
+        - paragraph [ref=e220]: Blue Lab Edition
+  - main [ref=e221]:
+    - generic [ref=e224]:
+      - generic [ref=e225]:
+        - generic [ref=e226]:
+          - heading "AI Troubleshooter" [level=1] [ref=e227]
+          - paragraph [ref=e228]: Intelligent diagnostic assistant for GC method optimization and problem solving
+        - generic [ref=e229]:
+          - generic [ref=e230]: AI Online
+          - generic [ref=e231]: Expert Mode
+      - generic [ref=e232]:
+        - generic [ref=e234]:
+          - generic [ref=e236]:
+            - img [ref=e237]
+            - heading "Diagnostic Chat" [level=3] [ref=e240]
+          - generic [ref=e242]:
+            - generic [ref=e245]:
+              - paragraph [ref=e246]: Hello! I'm your AI troubleshooting assistant. I can analyze your chromatogram data against expert rules and provide targeted recommendations. Upload your data or run a demo analysis to get started.
+              - paragraph [ref=e247]: 9:43:25 PM
+            - generic [ref=e249]:
+              - textbox "Describe your GC issue or ask a question..." [ref=e251]
+              - button [disabled] [ref=e252]:
+                - img [ref=e253]
+        - generic [ref=e256]:
+          - generic [ref=e257]:
+            - generic [ref=e259]:
+              - heading "Rules Analysis" [level=3] [ref=e260]
+              - button [ref=e261] [cursor=pointer]:
+                - img [ref=e262] [cursor=pointer]
+            - paragraph [ref=e265]: Click the play button to run automated troubleshooting analysis
+          - generic [ref=e266]:
+            - heading "Common Issues" [level=3] [ref=e268]
+            - generic [ref=e270]:
+              - button "Peak splitting or tailing" [ref=e271] [cursor=pointer]
+              - button "Baseline noise or drift" [ref=e272] [cursor=pointer]
+              - button "Poor resolution between peaks" [ref=e273] [cursor=pointer]
+              - button "Inconsistent retention times" [ref=e274] [cursor=pointer]
+              - button "Low signal intensity" [ref=e275] [cursor=pointer]
+              - button "Column performance issues" [ref=e276] [cursor=pointer]
+          - generic [ref=e277]:
+            - heading "AI Suggestions" [level=3] [ref=e279]
+            - generic [ref=e281]:
+              - generic [ref=e282]:
+                - generic [ref=e283]:
+                  - heading "Peak Tailing Issue" [level=4] [ref=e284]
+                  - generic [ref=e285]: high
+                - paragraph [ref=e286]: Multiple peaks showing excessive tailing in your chromatogram
+                - generic [ref=e287]:
+                  - generic [ref=e288]: Peak Shape
+                  - button "Apply Fix" [ref=e289] [cursor=pointer]
+              - generic [ref=e290]:
+                - generic [ref=e291]:
+                  - heading "Baseline Drift" [level=4] [ref=e292]
+                  - generic [ref=e293]: medium
+                - paragraph [ref=e294]: Gradual baseline shift observed during temperature programming
+                - generic [ref=e295]:
+                  - generic [ref=e296]: Baseline
+                  - button "Apply Fix" [ref=e297] [cursor=pointer]
+              - generic [ref=e298]:
+                - generic [ref=e299]:
+                  - heading "Low Sensitivity" [level=4] [ref=e300]
+                  - generic [ref=e301]: medium
+                - paragraph [ref=e302]: Signal intensity lower than expected for standard concentrations
+                - generic [ref=e303]:
+                  - generic [ref=e304]: Detection
+                  - button "Apply Fix" [ref=e305] [cursor=pointer]
+      - generic [ref=e306]:
+        - generic [ref=e308]:
+          - img [ref=e309]
+          - heading "Expert Knowledge Base" [level=3] [ref=e311]
+        - generic [ref=e313]:
+          - generic [ref=e314]:
+            - img [ref=e316]
+            - heading "Method Optimization" [level=3] [ref=e319]
+            - paragraph [ref=e320]: Expert guidance for improving separation efficiency and peak resolution
+          - generic [ref=e321]:
+            - img [ref=e323]
+            - heading "Troubleshooting" [level=3] [ref=e325]
+            - paragraph [ref=e326]: Systematic approach to diagnosing and resolving common GC problems
+          - generic [ref=e327]:
+            - img [ref=e329]
+            - heading "Interactive Support" [level=3] [ref=e331]
+            - paragraph [ref=e332]: Real-time assistance with parameter adjustments and method development
+```

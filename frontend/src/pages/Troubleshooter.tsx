@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
 import { Badge, Button, Input, Textarea } from '../components/ui';
-import { Bot, Send, Lightbulb, AlertTriangle, CheckCircle, MessageSquare, Play, RefreshCw } from 'lucide-react';
+import { Bot, Send, Lightbulb, AlertTriangle, CheckCircle, MessageSquare, Play, RefreshCw, Eye, FlaskConical } from 'lucide-react';
 import { TroubleshooterEngine, TroubleshooterRules, RuleResult, mockChromatogramData } from '../lib/troubleshooter';
 
 interface Message {
@@ -20,6 +21,8 @@ interface Suggestion {
 }
 
 export const Troubleshooter: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -32,6 +35,46 @@ export const Troubleshooter: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [ruleResults, setRuleResults] = useState<RuleResult[]>([]);
   const [troubleshooterEngine, setTroubleshooterEngine] = useState<TroubleshooterEngine | null>(null);
+  const [ocrContext, setOcrContext] = useState<any>(null);
+
+  // Handle OCR context from URL parameters
+  useEffect(() => {
+    const contextParam = searchParams.get('context');
+    
+    if (contextParam) {
+      try {
+        const context = JSON.parse(decodeURIComponent(contextParam));
+        setOcrContext(context);
+        
+        // Update initial message with OCR context
+        const ocrMessage: Message = {
+          id: 'ocr-analysis',
+          type: 'assistant',
+          content: `I've received your chromatogram analysis results from OCR Vision:
+
+**Analysis Summary:**
+- Overall Quality: ${context.overall_quality}%
+- Baseline Quality: ${context.baseline_quality}%
+- Peak Count: ${context.peak_count}
+- Average S/N Ratio: ${context.avg_snr.toFixed(1)}
+- Poor S/N Peaks: ${context.poor_snr_count}
+- Tailing Issues: ${context.tailing_issues}
+
+${context.recommendations.length > 0 ? `**Initial Recommendations:**\n${context.recommendations.map((r: string) => `• ${r}`).join('\n')}` : ''}
+
+What specific issue would you like me to help troubleshoot?`,
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [prev[0], ocrMessage]);
+        
+        // Clear URL params after loading
+        setSearchParams({});
+      } catch (error) {
+        console.error('Failed to parse OCR context from URL:', error);
+      }
+    }
+  }, [searchParams, setSearchParams]);
 
   const suggestions: Suggestion[] = [
     {
@@ -206,6 +249,50 @@ export const Troubleshooter: React.FC = () => {
     setInputMessage(issue);
   };
 
+  const applyRecommendationInSandbox = (recommendation: string, ruleId?: string) => {
+    // Create parameters to pass to sandbox
+    const params = new URLSearchParams();
+    
+    // Pass recommendation details
+    params.set('recommendation', encodeURIComponent(recommendation));
+    if (ruleId) {
+      params.set('rule', encodeURIComponent(ruleId));
+    }
+    
+    // Pass current OCR context if available
+    if (ocrContext) {
+      params.set('context', encodeURIComponent(JSON.stringify(ocrContext)));
+    }
+    
+    // Include mock chromatogram data for testing
+    const mockData = {
+      preset: 'troubleshooter_scenario',
+      peaks: mockChromatogramData.peaks,
+      baseline_quality: ocrContext?.baseline_quality || 85,
+      source: 'troubleshooter'
+    };
+    
+    params.set('data', encodeURIComponent(JSON.stringify(mockData)));
+    
+    // Navigate to sandbox with parameters
+    navigate(`/sandbox?${params.toString()}`);
+  };
+
+  const applySuggestionInSandbox = (suggestion: Suggestion) => {
+    const params = new URLSearchParams();
+    
+    params.set('suggestion', encodeURIComponent(suggestion.title));
+    params.set('description', encodeURIComponent(suggestion.description));
+    params.set('category', encodeURIComponent(suggestion.category));
+    params.set('priority', encodeURIComponent(suggestion.priority));
+    
+    if (ocrContext) {
+      params.set('context', encodeURIComponent(JSON.stringify(ocrContext)));
+    }
+    
+    navigate(`/sandbox?${params.toString()}`);
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'error';
@@ -230,6 +317,25 @@ export const Troubleshooter: React.FC = () => {
           <Badge variant="info">Expert Mode</Badge>
         </div>
       </div>
+
+      {/* OCR Context Banner */}
+      {ocrContext && (
+        <div className="card bg-green-50 border-green-200">
+          <div className="card-content">
+            <div className="flex items-center gap-3">
+              <Eye className="text-green-600" size={20} />
+              <div>
+                <h3 className="font-medium text-green-900">OCR Analysis Context Loaded</h3>
+                <p className="text-sm text-green-700">
+                  Analyzing chromatogram with {ocrContext.peak_count} peaks, 
+                  {ocrContext.overall_quality}% overall quality, 
+                  {ocrContext.poor_snr_count} peaks with poor S/N ratio.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Chat Interface */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -288,11 +394,13 @@ export const Troubleshooter: React.FC = () => {
                       placeholder="Describe your GC issue or ask a question..."
                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                       className="flex-1"
+                      data-testid="message-input"
                     />
                     <Button 
                       onClick={handleSendMessage}
                       disabled={!inputMessage.trim() || isProcessing}
                       className="px-3"
+                      data-testid="send-message-btn"
                     >
                       <Send size={18} />
                     </Button>
@@ -356,9 +464,21 @@ export const Troubleshooter: React.FC = () => {
                         </div>
                       )}
                       {result.recommendations.length > 0 && (
-                        <div className="space-y-1">
+                        <div className="space-y-2">
                           {result.recommendations.map((rec, index) => (
-                            <p key={index} className="text-xs text-text-secondary">• {rec}</p>
+                            <div key={index} className="flex items-start justify-between gap-2">
+                              <p className="text-xs text-text-secondary flex-1">• {rec}</p>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-xs px-2 py-1 h-6 min-w-0 flex-shrink-0"
+                                onClick={() => applyRecommendationInSandbox(rec, result.rule.id)}
+                                data-testid={`apply-recommendation-${result.rule.id}-${index}`}
+                              >
+                                <FlaskConical size={12} className="mr-1" />
+                                Apply
+                              </Button>
+                            </div>
                           ))}
                         </div>
                       )}
@@ -414,7 +534,14 @@ export const Troubleshooter: React.FC = () => {
                     <p className="text-xs text-text-secondary mb-2">{suggestion.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-text-tertiary">{suggestion.category}</span>
-                      <Button size="sm" variant="outline" className="text-xs px-2 py-1">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="text-xs px-2 py-1"
+                        onClick={() => applySuggestionInSandbox(suggestion)}
+                        data-testid={`apply-suggestion-${suggestion.id}`}
+                      >
+                        <FlaskConical size={12} className="mr-1" />
                         Apply Fix
                       </Button>
                     </div>

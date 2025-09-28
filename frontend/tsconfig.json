@@ -23,10 +23,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "playwright"]
   },
   "include": [
-    "src"
+    "src",
+    "tests",
+    "playwright.config.ts"
   ],
   "exclude": [
     "src/_backup_ui_20250917",

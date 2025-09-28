@@ -1,0 +1,6 @@
+{
+  "response": "Based on your chromatogram analysis showing 2 peaks with 68% overall quality, I can help troubleshoot the issues. The peak quality suggests some optimization opportunities.\n\n**Key Observations:**\n- Peak 1 (Methane): Excellent quality (95%) at 1.2 min\n- Peak 2 (Ethane): Good quality (92%) at 2.1 min\n- Overall quality at 68% indicates room for improvement\n\n**Recommendations:**\n1. **Column Conditioning**: Run a blank gradient to remove contaminants\n2. **Temperature Program**: Consider optimizing your oven ramp rate\n3. **Injection Technique**: Verify split ratio is appropriate for sample concentration\n\n**Next Steps:**\n- Check baseline stability\n- Verify detector temperature\n- Consider column maintenance\n\nWould you like me to elaborate on any of these recommendations?",
+  "confidence": 0.92,
+  "response_time_ms": 1250,
+  "context_used": true
+}

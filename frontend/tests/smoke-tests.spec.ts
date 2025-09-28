@@ -7,7 +7,7 @@ import { test, expect, Page } from '@playwright/test';
  * Covers both desktop and mobile viewports with comprehensive error detection.
  * 
  * Prerequisites:
- * - Frontend server running on localhost:3000
+ * - Frontend server running on localhost:5173
  * - Backend server optional (tests handle offline gracefully)
  */
 
@@ -35,7 +35,7 @@ test.describe('IntelliLab GC Smoke Tests', () => {
     });
 
     // Navigate to the application
-    await page.goto('http://localhost:3000');
+    await page.goto('/');
     
     // Wait for the app to load
     await page.waitForSelector('nav[role="navigation"]', { timeout: 30000 });
@@ -61,7 +61,7 @@ test.describe('IntelliLab GC Smoke Tests', () => {
 
     test('should click all Topbar controls without errors', async ({ page }) => {
       // Click mobile menu button (should exist but may be hidden on desktop)
-      const mobileMenuButton = page.getByLabel('Open mobile menu');
+      const mobileMenuButton = page.getByTestId('mobile-menu-toggle');
       if (await mobileMenuButton.isVisible()) {
         await mobileMenuButton.click();
         await page.waitForTimeout(300);
@@ -275,7 +275,7 @@ test.describe('IntelliLab GC Smoke Tests', () => {
 
     test('should click all mobile controls without errors', async ({ page }) => {
       // Click mobile menu button (should be visible on mobile)
-      const mobileMenuButton = page.getByLabel('Open mobile menu');
+      const mobileMenuButton = page.getByTestId('mobile-menu-toggle');
       await expect(mobileMenuButton).toBeVisible();
       await mobileMenuButton.click();
       await page.waitForTimeout(500);
@@ -292,7 +292,7 @@ test.describe('IntelliLab GC Smoke Tests', () => {
 
     test('should navigate through sidebar on mobile without errors', async ({ page }) => {
       // Open mobile menu first
-      const mobileMenuButton = page.getByLabel('Open mobile menu');
+      const mobileMenuButton = page.getByTestId('mobile-menu-toggle');
       await mobileMenuButton.click();
       await page.waitForTimeout(500);
 
@@ -448,6 +448,54 @@ test.describe('IntelliLab GC Smoke Tests', () => {
       // Verify app stability
       await expect(page.locator('nav[role="navigation"]')).toBeVisible();
     });
+  });
+
+  test('OCR Vision page - upload and analyze test image', async ({ page }) => {
+    await page.goto('/analysis/ocr');
+    await page.waitForLoadState('networkidle');
+
+    // Verify page loaded
+    await expect(page.locator('h1')).toContainText('OCR Vision Analysis');
+
+    // Create a test image file (1x1 pixel PNG)
+    const testImageBuffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+      'base64'
+    );
+
+    // Upload test image
+    const fileInput = page.getByTestId('ocr-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-chromatogram.png',
+      mimeType: 'image/png',
+      buffer: testImageBuffer,
+    });
+
+    // Wait for preview to appear
+    await expect(page.locator('img[alt="Chromatogram preview"]')).toBeVisible();
+
+    // Click analyze button
+    const analyzeButton = page.locator('button', { hasText: 'Analyze' });
+    await expect(analyzeButton).toBeVisible();
+    await analyzeButton.click();
+
+    // Wait for analysis to complete (or error)
+    await page.waitForTimeout(3000);
+
+    // Check that peaks table appears (even if empty due to mock data)
+    const resultsSection = page.locator('text=Analysis Results').locator('..');
+    await expect(resultsSection).toBeVisible();
+
+    // Verify no console errors occurred
+    if (consoleErrors.length > 0) {
+      console.log('Console Errors during OCR test:', consoleErrors);
+    }
+    if (pageErrors.length > 0) {
+      console.log('Page Errors during OCR test:', pageErrors);
+    }
+
+    expect(consoleErrors.length).toBe(0);
+    expect(pageErrors.length).toBe(0);
   });
 });
 

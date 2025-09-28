@@ -1,0 +1,33 @@
+{
+  "peaks": [
+    {
+      "id": "peak-1",
+      "name": "Methane",
+      "retention_time": 1.2,
+      "area": 145000,
+      "height": 12000,
+      "snr": 125.3,
+      "tailing_factor": 1.2
+    },
+    {
+      "id": "peak-2", 
+      "name": "Ethane",
+      "retention_time": 2.1,
+      "area": 230000,
+      "height": 18500,
+      "snr": 98.7,
+      "tailing_factor": 1.1
+    }
+  ],
+  "baseline": {
+    "quality_score": 68,
+    "drift": 0.02,
+    "noise_level": 12.4
+  },
+  "overall_quality": 68,
+  "recommendations": [
+    "Peak separation is excellent",
+    "Consider optimizing injection volume for better peak symmetry"
+  ],
+  "troubleshooting_suggestions": []
+}

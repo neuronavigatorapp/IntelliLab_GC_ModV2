@@ -1,0 +1,118 @@
+name: Comprehensive Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * *" # nightly canary (02:30 UTC)
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps
+      - name: Ensure no skipped/only tests
+        working-directory: frontend
+        run: npm run guard:tests || (echo "Guard failed" && exit 1)
+      - name: Run Quality Gates (visual + a11y + performance)
+        working-directory: frontend
+        run: npm run test:guards
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gates-report
+          path: frontend/playwright-report
+          if-no-files-found: ignore
+
+  mock-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps
+      - name: Ensure no skipped/only tests
+        working-directory: frontend
+        run: npm run guard:tests || (echo "Guard failed" && exit 1)
+      - name: Run mock-first E2E
+        working-directory: frontend
+        run: npm run test:e2e
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mock-e2e-report
+          path: frontend/playwright-report
+          if-no-files-found: ignore
+
+  real-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install backend deps
+        run: |
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; else pip install fastapi uvicorn pydantic numpy; fi
+      - name: Start backend (uvicorn)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          nohup python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 > backend.log 2>&1 &
+          for i in {1..30}; do
+            curl -sf http://127.0.0.1:8000/api/health && break || sleep 2
+          done
+          curl -sf http://127.0.0.1:8000/openapi.json > /dev/null
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps
+      - name: Ensure no skipped/only tests
+        working-directory: frontend
+        run: npm run guard:tests || (echo "Guard failed" && exit 1)
+      - name: Real API tests
+        working-directory: frontend
+        env:
+          USE_REAL_API: "1"
+        run: npm run test:e2e:real || true
+      - name: Upload backend & Playwright logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-e2e-artifacts
+          path: |
+            backend.log
+            frontend/playwright-report
+          if-no-files-found: ignore
