@@ -49,27 +49,39 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: process.env.USE_REAL_API ? [
-    // Real API mode - start both frontend and backend
-    {
-      command: 'cd .. && .\\venv\\Scripts\\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000',
-      url: 'http://localhost:8000/api/health',
-      reuseExistingServer: true,
-      timeout: 30000,
-    },
-    {
-      command: 'npm run dev',
-      url: process.env.BASE_URL || 'http://localhost:5176',
-      reuseExistingServer: true,
-      timeout: 30000,
+  webServer: (() => {
+    const baseURL = process.env.BASE_URL || 'http://localhost:5176';
+    const isProductionURL = baseURL.includes('https://');
+    
+    if (isProductionURL) {
+      // Production mode - no local servers needed
+      return undefined;
+    } else if (process.env.USE_REAL_API) {
+      // Local real API mode - start both frontend and backend
+      return [
+        {
+          command: 'cd .. && .\\venv\\Scripts\\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000',
+          url: 'http://localhost:8000/api/health',
+          reuseExistingServer: true,
+          timeout: 30000,
+        },
+        {
+          command: 'npm run dev',
+          url: baseURL,
+          reuseExistingServer: true,
+          timeout: 30000,
+        }
+      ];
+    } else {
+      // Mock mode - only start frontend
+      return [
+        {
+          command: 'npm run dev',
+          url: baseURL,
+          reuseExistingServer: true,
+          timeout: 30000,
+        }
+      ];
     }
-  ] : [
-    // Mock mode - only start frontend
-    {
-      command: 'npm run dev',
-      url: process.env.BASE_URL || 'http://localhost:5176',
-      reuseExistingServer: true,
-      timeout: 30000,
-    }
-  ],
+  })(),
 });
