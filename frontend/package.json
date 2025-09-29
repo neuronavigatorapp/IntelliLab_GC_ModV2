@@ -107,6 +107,7 @@
         "mocks:refresh:dry": "node scripts/refresh-mocks.mjs --dry-run",
         "mocks:refresh:health": "node scripts/refresh-mocks.mjs --endpoint health",
         "contracts:fetch": "node scripts/fetch-openapi.mjs",
+        "production:smoke-test": "node scripts/production-smoke-test.mjs",
         "dev": "vite",
         "preview": "vite preview --port 5173",
         "analyze": "npm run build && npx vite-bundle-analyzer build"

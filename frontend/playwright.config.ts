@@ -24,7 +24,7 @@ export default defineConfig({
   globalSetup: './tests/global-setup.ts',
   outputDir: 'test-results/',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: process.env.BASE_URL || 'http://localhost:5176',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -59,7 +59,7 @@ export default defineConfig({
     },
     {
       command: 'npm run dev',
-      url: 'http://localhost:5173',
+      url: process.env.BASE_URL || 'http://localhost:5176',
       reuseExistingServer: true,
       timeout: 30000,
     }
@@ -67,7 +67,7 @@ export default defineConfig({
     // Mock mode - only start frontend
     {
       command: 'npm run dev',
-      url: 'http://localhost:5173',
+      url: process.env.BASE_URL || 'http://localhost:5176',
       reuseExistingServer: true,
       timeout: 30000,
     }
