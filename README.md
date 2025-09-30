@@ -287,7 +287,18 @@ Our testing infrastructure ensures:
 - **🌐 API Reliability** - Real backend integration validation
 - **🔥 Quality Gates** - Combined validation before deployment
 
-## 📄 License
+## � Production Deployment
+
+### Runtime Requirements
+- **Python 3.11+** - Pinned to Python 3.11.9 in `backend/runtime.txt` for optimal Render deployment compatibility with numpy 1.24.x
+- **Node.js 18+** - For frontend build and deployment
+
+### Deployment Configuration
+- **Frontend**: Deployed to Vercel with environment-specific configuration
+- **Backend**: Deployed to Render using `render.yaml` blueprint with Python 3.11 runtime specification
+- **Environment Variables**: Configured for production domains including gcintellilab.com
+
+## �📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 

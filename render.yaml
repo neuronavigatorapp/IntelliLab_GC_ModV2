@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: IntelliLab_GC
+    env: python
+    rootDir: backend
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      - key: ALLOWED_ORIGINS
+        value: https://gcintellilab.com,https://www.gcintellilab.com,https://frontend-m7ctarwqm-neuronavigatorapps-projects.vercel.app

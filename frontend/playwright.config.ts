@@ -52,7 +52,7 @@ export default defineConfig({
   webServer: (() => {
     const baseURL = process.env.BASE_URL || 'http://localhost:5176';
     const isProductionURL = baseURL.includes('https://');
-    
+
     if (isProductionURL) {
       // Production mode - no local servers needed
       return undefined;
