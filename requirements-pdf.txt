@@ -1,0 +1,22 @@
+# PDF Processing Dependencies for Local Knowledge Base
+# These packages support local document ingestion and retrieval
+
+# PDF processing
+PyPDF2==3.0.1
+pdfplumber==0.9.0
+
+# Text processing and embeddings (local)
+sentence-transformers==2.2.2
+transformers==4.33.2
+
+# Vector storage (local)
+faiss-cpu==1.7.4
+chromadb==0.4.10
+
+# Document parsing
+python-docx==0.8.11
+openpyxl==3.1.2
+
+# Text processing utilities
+nltk==3.8.1
+spacy==3.6.1
